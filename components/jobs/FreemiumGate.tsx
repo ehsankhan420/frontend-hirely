@@ -61,7 +61,7 @@ export default function FreemiumGate({ totalCount, hiddenCount }: FreemiumGatePr
               Unlock {hiddenCount} more jobs
             </h3>
             <p className="text-slate-600 mb-8 max-w-sm mx-auto">
-              You've seen the top 5 of{" "}
+              You&apos;ve seen the top 5 of{" "}
               <span className="font-semibold text-slate-900">{totalCount} matching jobs</span>.
               Upgrade to Premium to view the rest and get full AI match scores.
             </p>

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import JobCard from "@/components/jobs/JobCard";
 import JobFiltersPanel from "@/components/jobs/JobFilters";

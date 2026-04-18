@@ -59,7 +59,11 @@ interface SchedulerStatus {
     start: string;
     end: string;
     duration: string;
-    results: any;
+    results: {
+      linkedin_scraped?: number;
+      indeed_scraped?: number;
+      ingestion?: string;
+    };
     status: string;
     sources?: string[];
     keywords?: string[];
@@ -96,7 +100,7 @@ export default function AdminSchedulerPage() {
       } else {
         toast.error("Failed to fetch scheduler data. Check API key.");
       }
-    } catch (e) {
+    } catch {
       toast.error("Error communicating with backend.");
     }
   };

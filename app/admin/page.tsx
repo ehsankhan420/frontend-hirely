@@ -11,7 +11,6 @@ import {
   Briefcase,
   BadgeCheck,
   TrendingUp,
-  Clock,
   BarChart3,
   Activity,
   CheckCircle2,
@@ -81,11 +80,14 @@ interface SchedulerStatus {
   upcoming_runs: Array<{ id: string; next_run: string }>;
 }
 
+type TimeFilter = "Daily" | "Weekly" | "Monthly" | "Annually";
+const TIME_FILTERS: TimeFilter[] = ["Daily", "Weekly", "Monthly", "Annually"];
+
 export default function AdminDashboardPage() {
   const [user, setUser] = useState<User | null>(null);
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [scraperStatus, setScraperStatus] = useState<SchedulerStatus | null>(null);
-  const [timeFilter, setTimeFilter] = useState<'Daily' | 'Weekly' | 'Monthly' | 'Annually'>('Monthly');
+  const [timeFilter, setTimeFilter] = useState<TimeFilter>("Monthly");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -235,10 +237,10 @@ export default function AdminDashboardPage() {
                       </span>
                       <div className="flex items-center gap-3">
                           <div className="hidden sm:flex bg-slate-100/80 p-1 rounded-xl">
-                            {['Daily', 'Weekly', 'Monthly', 'Annually'].map((tf) => (
+                            {TIME_FILTERS.map((tf) => (
                                <button 
                                  key={tf}
-                                 onClick={() => setTimeFilter(tf as any)}
+                                 onClick={() => setTimeFilter(tf)}
                                  className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${timeFilter === tf ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
                                >
                                  {tf}

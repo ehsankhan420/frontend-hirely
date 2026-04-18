@@ -32,13 +32,6 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-// ─── Score helpers ─────────────────────────────────────────────────────────────
-function scoreColor(score: number) {
-  if (score >= 75) return "text-emerald-600 bg-emerald-500";
-  if (score >= 40) return "text-amber-600 bg-amber-500";
-  return "text-slate-500 bg-slate-400";
-}
-
 function scoreTextColor(score: number, max: number) {
   const pct = (score / max) * 100;
   if (pct >= 75) return "text-emerald-700";
@@ -497,7 +490,7 @@ export default function JobDetailPage() {
 
                 <div className="flex items-start gap-2.5 px-4 py-3 rounded-lg bg-slate-50 text-sm text-slate-600">
                   <CircleAlert className="h-5 w-5 shrink-0 text-slate-400 mt-0.5" />
-                  Applications are completed directly on the employer's platform. We do not track applications.
+                  Applications are completed directly on the employer&apos;s platform. We do not track applications.
                 </div>
               </div>
             </SectionCard>

@@ -316,7 +316,7 @@ export default function UploadCVPage() {
                 </h1>
 
                 <p className="text-slate-500 text-[18px] leading-relaxed font-medium max-w-lg">
-                  We'll extract your skills, experience, and title to automatically rank every visa-sponsored job against your profile.
+                  We&apos;ll extract your skills, experience, and title to automatically rank every visa-sponsored job against your profile.
                 </p>
               </div>
 
@@ -381,7 +381,7 @@ export default function UploadCVPage() {
                           Profile Verified!
                         </h2>
                         <p className="text-slate-500 font-medium text-[16px] max-w-xs mx-auto">
-                          Your profile is locked in. Let's find some visa-sponsored roles.
+                          Your profile is locked in. Let&apos;s find some visa-sponsored roles.
                         </p>
                       </div>
                       <div className="space-y-4 pt-4 max-w-md mx-auto">
@@ -417,7 +417,7 @@ export default function UploadCVPage() {
                           CV profile saved!
                         </h2>
                         <p className="text-slate-500 font-medium text-[15px]">
-                          <span className="font-bold text-slate-700">{extracted.skills?.length || 0} skills detected</span>. We're ready to find matches.
+                          <span className="font-bold text-slate-700">{extracted.skills?.length || 0} skills detected</span>. We&apos;re ready to find matches.
                         </p>
                       </div>
 
@@ -476,7 +476,7 @@ export default function UploadCVPage() {
                           Review Extracted Profile
                         </h2>
                         <p className="text-slate-500 font-medium">
-                          We've extracted the following from your CV. Edit anything that looks wrong before continuing.
+                          We&apos;ve extracted the following from your CV. Edit anything that looks wrong before continuing.
                         </p>
                       </div>
 
@@ -626,7 +626,7 @@ export default function UploadCVPage() {
                               Reading your CV...
                             </p>
                             <p className="text-[14px] text-slate-500 mt-2 font-medium">
-                              This won't take long.
+                              This won&apos;t take long.
                             </p>
                           </motion.div>
                         ) : (

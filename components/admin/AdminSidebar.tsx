@@ -18,7 +18,6 @@ import {
   Menu,
   X,
   Clock,
-  Settings
 } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 

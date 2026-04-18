@@ -25,8 +25,6 @@ import {
   BadgeCheck,
   XCircle,
   Clock,
-  Filter,
-  ChevronDown,
   X
 } from "lucide-react";
 import { toast } from "sonner";
@@ -512,7 +510,10 @@ export default function AdminJobsPage() {
               </Select>
               
               {/* Sort Order Filter */}
-              <Select value={sortOrder} onValueChange={(v: any) => setSortOrder(v)}>
+              <Select
+                value={sortOrder}
+                onValueChange={(v) => setSortOrder(v === "asc" ? "asc" : "desc")}
+              >
                 <SelectTrigger className="w-[140px] h-12 bg-white border border-slate-200/80 text-slate-700 text-[13px] font-bold rounded-[14px] shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all focus:ring-2 focus:ring-blue-500 focus:ring-offset-0">
                   <SelectValue placeholder="Sort By" />
                 </SelectTrigger>

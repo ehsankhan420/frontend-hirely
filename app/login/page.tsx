@@ -130,7 +130,7 @@ function LoginPageContent() {
             Every job here will sponsor your UK visa.
           </h1>
           <p className="text-white/60 text-lg leading-relaxed">
-            Stop wasting applications on employers who can't help you.
+            Stop wasting applications on employers who can&apos;t help you.
             Hirely only shows jobs from Home-Office-verified sponsors.
           </p>
 

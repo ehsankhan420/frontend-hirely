@@ -7,9 +7,6 @@ import { motion, Variants } from "framer-motion";
 import {
   BadgeCheck,
   Briefcase,
-  FileText,
-  Search,
-  Star,
   Zap,
   ArrowRight,
   ShieldCheck,
@@ -90,7 +87,7 @@ export default function LandingPage() {
             variants={STAGGER_CHILD_VARIANTS}
             className="text-lg md:text-xl text-slate-500 mb-10 max-w-2xl mx-auto leading-relaxed"
          >
-            Stop wasting applications on companies that can't hire internationals. 
+                  Stop wasting applications on companies that can&apos;t hire internationals. 
             Hirely cross-references millions of jobs with the Home Office register to show you exclusively eligible roles.
           </motion.p>
           
@@ -284,7 +281,7 @@ export default function LandingPage() {
       {/* Pricing Section - Minimalist */}
       <section className="py-24 bg-white px-6">
         <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-slate-900 mb-4">Start simple, upgrade when you're ready.</h2>
+          <h2 className="text-3xl font-bold tracking-tight text-slate-900 mb-4">Start simple, upgrade when you&apos;re ready.</h2>
           <p className="text-slate-500 mb-16">Always 100% verified sponsors. Pick the tier that matches your dedication.</p>
           
           <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto text-left">
