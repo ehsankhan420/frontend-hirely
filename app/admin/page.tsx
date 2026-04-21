@@ -70,7 +70,11 @@ const itemVariants: Variants = {
 };
 
 const PIPELINE_API_KEY = process.env.NEXT_PUBLIC_PIPELINE_API_KEY || "change-me-to-a-random-secret";
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const configuredApiUrl = (process.env.NEXT_PUBLIC_API_URL || "").trim();
+const isLocalHost =
+  typeof window !== "undefined" &&
+  (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
+const API_URL = configuredApiUrl || (isLocalHost ? "http://localhost:8000" : "");
 
 interface SchedulerStatus {
   is_running: boolean;
@@ -126,11 +130,15 @@ export default function AdminDashboardPage() {
 
         // Fetch Scraper Status
         try {
-          const res = await fetch(`${API_URL}/api/pipeline/scheduler/status`, {
-            headers: { "X-API-Key": PIPELINE_API_KEY, "Content-Type": "application/json" },
-          });
-          if (res.ok) {
-            setScraperStatus(await res.json());
+          if (API_URL) {
+            const res = await fetch(`${API_URL}/api/pipeline/scheduler/status`, {
+              headers: { "X-API-Key": PIPELINE_API_KEY, "Content-Type": "application/json" },
+            });
+            if (res.ok) {
+              setScraperStatus(await res.json());
+            }
+          } else {
+            console.error("Scheduler fetch skipped: NEXT_PUBLIC_API_URL is not configured.");
           }
         } catch (e) {
           console.error("Scheduler fetch failed", e);

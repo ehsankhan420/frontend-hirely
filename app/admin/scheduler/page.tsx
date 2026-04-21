@@ -71,7 +71,11 @@ interface SchedulerStatus {
 }
 
 const PIPELINE_API_KEY = process.env.NEXT_PUBLIC_PIPELINE_API_KEY || "change-me-to-a-random-secret";
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const configuredApiUrl = (process.env.NEXT_PUBLIC_API_URL || "").trim();
+const isLocalHost =
+  typeof window !== "undefined" &&
+  (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
+const API_URL = configuredApiUrl || (isLocalHost ? "http://localhost:8000" : "");
 
 export default function AdminSchedulerPage() {
   const [user, setUser] = useState<User | null>(null);
@@ -86,6 +90,11 @@ export default function AdminSchedulerPage() {
   const [status, setStatus] = useState<SchedulerStatus | null>(null);
 
   const fetchData = async () => {
+    if (!API_URL) {
+      toast.error("Backend API URL is not configured. Set NEXT_PUBLIC_API_URL in Netlify.");
+      return;
+    }
+
     try {
       const headers = { "X-API-Key": PIPELINE_API_KEY, "Content-Type": "application/json" };
       
@@ -114,6 +123,10 @@ export default function AdminSchedulerPage() {
 
   const handleSaveConfig = async () => {
     if (!config) return;
+    if (!API_URL) {
+      toast.error("Backend API URL is not configured.");
+      return;
+    }
     setSaving(true);
     try {
       const res = await fetch(`${API_URL}/api/pipeline/scheduler/config`, {
@@ -135,6 +148,10 @@ export default function AdminSchedulerPage() {
   };
 
   const handleTrigger = async (sourcesOverride?: string[]) => {
+    if (!API_URL) {
+      toast.error("Backend API URL is not configured.");
+      return;
+    }
     setTriggering(true);
     try {
       const keywords = manualKeywords
@@ -171,6 +188,10 @@ export default function AdminSchedulerPage() {
   };
 
   const handleStop = async () => {
+    if (!API_URL) {
+      toast.error("Backend API URL is not configured.");
+      return;
+    }
     setStopping(true);
     try {
       const res = await fetch(`${API_URL}/api/pipeline/scheduler/stop`, {
