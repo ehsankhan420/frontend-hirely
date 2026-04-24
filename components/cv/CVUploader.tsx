@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,6 +16,18 @@ function normalizeParsedCVProfile(profile: ParsedCVProfile): ParsedCVProfile {
   const skills = Array.from(
     new Set((profile.skills || []).map((skill) => skill.trim()).filter(Boolean))
   );
+  const experienceBreakdown = (profile.experience_breakdown || [])
+    .map((item) => ({
+      role: item?.role?.trim() || "",
+      period: item?.period?.trim() || "",
+      years:
+        typeof item?.years === "number" && Number.isFinite(item.years)
+          ? item.years
+          : typeof item?.years === "string"
+            ? parseFloat(item.years)
+            : NaN,
+    }))
+    .filter((item) => item.role && item.period && Number.isFinite(item.years));
 
   const experience =
     typeof profile.experience_years === "number" && Number.isFinite(profile.experience_years)
@@ -29,6 +41,7 @@ function normalizeParsedCVProfile(profile: ParsedCVProfile): ParsedCVProfile {
     job_title: profile.job_title?.trim() || undefined,
     skills,
     experience_years: Number.isFinite(experience as number) ? (experience as number) : undefined,
+    experience_breakdown: experienceBreakdown,
   };
 }
 
@@ -93,7 +106,8 @@ export default function CVUploader({ user, onProfileUpdated }: CVUploaderProps) 
     setUploading(true);
     try {
       const result = await uploadCV(file);
-      setExtracted(result.extracted);
+      hasFreshUploadRef.current = true;
+      setExtracted(normalizeParsedCVProfile(result.extracted));
       toast.success("CV parsed! Review the extracted fields below.");
     } catch (err: unknown) {
       const msg = getApiErrorMessage(err, "Failed to parse CV");
@@ -103,10 +117,9 @@ export default function CVUploader({ user, onProfileUpdated }: CVUploaderProps) 
     }
   };
 
-    hasFreshUploadRef.current = true;
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
-      setExtracted(normalizeParsedCVProfile(result.extracted));
+    const file = e.dataTransfer.files?.[0];
     if (file) handleFileUpload(file);
   };
 
@@ -212,6 +225,26 @@ export default function CVUploader({ user, onProfileUpdated }: CVUploaderProps) 
                 placeholder="e.g. 4.5"
               />
             </div>
+
+            {(extracted.experience_breakdown?.length || 0) > 0 && (
+              <div className="space-y-2">
+                <Label>Experience by Role</Label>
+                <div className="space-y-2">
+                  {(extracted.experience_breakdown || []).map((entry, index) => (
+                    <div
+                      key={`${entry.role}-${entry.period}-${index}`}
+                      className="rounded-md border bg-muted/30 px-3 py-2"
+                    >
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="text-sm font-medium">{entry.role}</span>
+                        <span className="text-sm font-semibold">{entry.years} years</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-1">{entry.period}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <Separator />
 

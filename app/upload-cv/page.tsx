@@ -27,6 +27,18 @@ function normalizeParsedCVProfile(profile: ParsedCVProfile): ParsedCVProfile {
   const skills = Array.from(
     new Set((profile.skills || []).map((skill) => skill.trim()).filter(Boolean))
   );
+  const experienceBreakdown = (profile.experience_breakdown || [])
+    .map((item) => ({
+      role: item?.role?.trim() || "",
+      period: item?.period?.trim() || "",
+      years:
+        typeof item?.years === "number" && Number.isFinite(item.years)
+          ? item.years
+          : typeof item?.years === "string"
+            ? Number.parseFloat(item.years)
+            : NaN,
+    }))
+    .filter((item) => item.role && item.period && Number.isFinite(item.years));
 
   const experience =
     typeof profile.experience_years === "number" && Number.isFinite(profile.experience_years)
@@ -40,6 +52,7 @@ function normalizeParsedCVProfile(profile: ParsedCVProfile): ParsedCVProfile {
     job_title: profile.job_title?.trim() || undefined,
     skills,
     experience_years: Number.isFinite(experience as number) ? (experience as number) : undefined,
+    experience_breakdown: experienceBreakdown,
   };
 }
 
@@ -462,6 +475,27 @@ export default function UploadCVPage() {
                             </span>
                           </div>
                         )}
+                        {(extracted.experience_breakdown?.length || 0) > 0 && (
+                          <div className="pt-3 border-t border-slate-200/60">
+                            <span className="text-slate-400 font-bold uppercase tracking-wider text-[12px]">
+                              Where Experience Was Gained
+                            </span>
+                            <div className="mt-3 space-y-2">
+                              {(extracted.experience_breakdown || []).map((entry, index) => (
+                                <div
+                                  key={`${entry.role}-${entry.period}-${index}`}
+                                  className="rounded-xl border border-slate-200 bg-white px-3 py-2"
+                                >
+                                  <div className="flex items-center justify-between gap-3 text-[14px]">
+                                    <span className="font-bold text-slate-800">{entry.role}</span>
+                                    <span className="font-extrabold text-blue-700">{entry.years} years</span>
+                                  </div>
+                                  <p className="text-[12px] font-medium text-slate-500 mt-1">{entry.period}</p>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                         <div className="flex justify-between items-center text-[15px] pt-3 border-t border-slate-200/60">
                           <span className="text-slate-400 font-bold uppercase tracking-wider text-[12px]">Skills</span>
                           <span className="font-extrabold text-blue-600 bg-blue-50 px-3 py-1 rounded-lg border border-blue-100">
@@ -543,6 +577,28 @@ export default function UploadCVPage() {
                             className={inputClass}
                           />
                         </div>
+
+                        {(extracted.experience_breakdown?.length || 0) > 0 && (
+                          <div>
+                            <label className="block text-[13px] font-bold text-slate-500 uppercase tracking-widest mb-3">
+                              Experience by Role
+                            </label>
+                            <div className="space-y-2.5 rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
+                              {(extracted.experience_breakdown || []).map((entry, index) => (
+                                <div
+                                  key={`${entry.role}-${entry.period}-${index}`}
+                                  className="rounded-xl border border-slate-200 bg-white px-3 py-2"
+                                >
+                                  <div className="flex items-center justify-between gap-3 text-[14px]">
+                                    <span className="font-bold text-slate-800">{entry.role}</span>
+                                    <span className="font-extrabold text-blue-700">{entry.years} years</span>
+                                  </div>
+                                  <p className="text-[12px] font-medium text-slate-500 mt-1">{entry.period}</p>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
 
                         <div>
                           <label className="flex items-center gap-2 text-[13px] font-bold text-slate-500 uppercase tracking-widest mb-3">

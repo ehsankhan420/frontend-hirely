@@ -13,10 +13,17 @@ export interface User {
   created_at: string;
 }
 
+export interface ExperienceBreakdownItem {
+  role: string;
+  period: string;
+  years: number;
+}
+
 export interface ParsedCVProfile {
   job_title?: string;
   skills: string[];
   experience_years?: number;
+  experience_breakdown?: ExperienceBreakdownItem[];
   location_preference?: string;
   raw_text_preview?: string;
 }
