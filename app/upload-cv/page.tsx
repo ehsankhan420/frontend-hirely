@@ -78,6 +78,7 @@ const FEATURES = [
 export default function UploadCVPage() {
   const router = useRouter();
   const initializedRef = useRef(false);
+  const hasFreshUploadRef = useRef(false);
   const [userName, setUserName] = useState<string>("");
   const [loading, setLoading] = useState(true);
 
@@ -106,7 +107,7 @@ export default function UploadCVPage() {
 
       getCVProfile()
         .then((profile) => {
-          if (profile?.parsed_cv) {
+          if (profile?.parsed_cv && !hasFreshUploadRef.current) {
             setCvSaved(true);
             setExtracted(profile.parsed_cv);
           }
@@ -121,8 +122,10 @@ export default function UploadCVPage() {
       return;
     }
     setUploading(true);
+    hasFreshUploadRef.current = true;
     try {
       const result = await uploadCV(file);
+      setCvSaved(false);
       setExtracted(result.extracted);
       toast.success("CV parsed! Review and confirm the fields below.");
     } catch (err: unknown) {
