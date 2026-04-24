@@ -17,6 +17,7 @@ export interface ParsedCVProfile {
   job_title?: string;
   skills: string[];
   experience_years?: number;
+  location_preference?: string;
   raw_text_preview?: string;
 }
 

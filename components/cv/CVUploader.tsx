@@ -12,6 +12,26 @@ import { ParsedCVProfile, User } from "@/types";
 import { Upload, FileText, CheckCircle2, X, Plus } from "lucide-react";
 import { toast } from "sonner";
 
+function normalizeParsedCVProfile(profile: ParsedCVProfile): ParsedCVProfile {
+  const skills = Array.from(
+    new Set((profile.skills || []).map((skill) => skill.trim()).filter(Boolean))
+  );
+
+  const experience =
+    typeof profile.experience_years === "number" && Number.isFinite(profile.experience_years)
+      ? profile.experience_years
+      : typeof profile.experience_years === "string"
+        ? parseFloat(profile.experience_years)
+        : undefined;
+
+  return {
+    ...profile,
+    job_title: profile.job_title?.trim() || undefined,
+    skills,
+    experience_years: Number.isFinite(experience as number) ? (experience as number) : undefined,
+  };
+}
+
 function getApiErrorMessage(err: unknown, fallback: string): string {
   const detail = (err as { response?: { data?: { detail?: unknown } } })?.response?.data?.detail;
 
@@ -53,10 +73,16 @@ export default function CVUploader({ user, onProfileUpdated }: CVUploaderProps) 
   const [uploading, setUploading] = useState(false);
   const [confirming, setConfirming] = useState(false);
   const [extracted, setExtracted] = useState<ParsedCVProfile | null>(
-    user.parsed_cv || null
+    user.parsed_cv ? normalizeParsedCVProfile(user.parsed_cv) : null
   );
+  const hasFreshUploadRef = useRef(false);
   const [newSkill, setNewSkill] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (hasFreshUploadRef.current) return;
+    setExtracted(user.parsed_cv ? normalizeParsedCVProfile(user.parsed_cv) : null);
+  }, [user.parsed_cv]);
 
   const handleFileUpload = async (file: File) => {
     if (file.size > 5 * 1024 * 1024) {
@@ -77,9 +103,10 @@ export default function CVUploader({ user, onProfileUpdated }: CVUploaderProps) 
     }
   };
 
+    hasFreshUploadRef.current = true;
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
-    const file = e.dataTransfer.files[0];
+      setExtracted(normalizeParsedCVProfile(result.extracted));
     if (file) handleFileUpload(file);
   };
 

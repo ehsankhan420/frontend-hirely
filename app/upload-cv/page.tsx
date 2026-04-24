@@ -23,6 +23,26 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
+function normalizeParsedCVProfile(profile: ParsedCVProfile): ParsedCVProfile {
+  const skills = Array.from(
+    new Set((profile.skills || []).map((skill) => skill.trim()).filter(Boolean))
+  );
+
+  const experience =
+    typeof profile.experience_years === "number" && Number.isFinite(profile.experience_years)
+      ? profile.experience_years
+      : typeof profile.experience_years === "string"
+        ? Number.parseFloat(profile.experience_years)
+        : undefined;
+
+  return {
+    ...profile,
+    job_title: profile.job_title?.trim() || undefined,
+    skills,
+    experience_years: Number.isFinite(experience as number) ? (experience as number) : undefined,
+  };
+}
+
 function getApiErrorMessage(err: unknown, fallback: string): string {
   const detail = (err as { response?: { data?: { detail?: unknown } } })
     ?.response?.data?.detail;
@@ -109,7 +129,7 @@ export default function UploadCVPage() {
         .then((profile) => {
           if (profile?.parsed_cv && !hasFreshUploadRef.current) {
             setCvSaved(true);
-            setExtracted(profile.parsed_cv);
+            setExtracted(normalizeParsedCVProfile(profile.parsed_cv));
           }
         })
         .catch(() => {});
@@ -126,7 +146,7 @@ export default function UploadCVPage() {
     try {
       const result = await uploadCV(file);
       setCvSaved(false);
-      setExtracted(result.extracted);
+      setExtracted(normalizeParsedCVProfile(result.extracted));
       toast.success("CV parsed! Review and confirm the fields below.");
     } catch (err: unknown) {
       const msg = getApiErrorMessage(
