@@ -23,22 +23,34 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
+function parseYearsValue(val: unknown): number {
+  if (typeof val === "number" && Number.isFinite(val)) return val;
+  if (typeof val === "string") {
+    const parsed = Number.parseFloat(val);
+    if (Number.isFinite(parsed)) return parsed;
+  }
+  return NaN;
+}
+
+function formatYears(years: number): string {
+  if (!Number.isFinite(years)) return "—";
+  // Round to 1 decimal place
+  const rounded = Math.round(years * 10) / 10;
+  return rounded % 1 === 0 ? rounded.toFixed(0) : rounded.toFixed(1);
+}
+
 function normalizeParsedCVProfile(profile: ParsedCVProfile): ParsedCVProfile {
   const skills = Array.from(
     new Set((profile.skills || []).map((skill) => skill.trim()).filter(Boolean))
   );
   const experienceBreakdown = (profile.experience_breakdown || [])
     .map((item) => ({
-      role: item?.role?.trim() || "",
-      period: item?.period?.trim() || "",
-      years:
-        typeof item?.years === "number" && Number.isFinite(item.years)
-          ? item.years
-          : typeof item?.years === "string"
-            ? Number.parseFloat(item.years)
-            : NaN,
+      role: (typeof item?.role === "string" ? item.role.trim() : String(item?.role || "")).trim(),
+      period: (typeof item?.period === "string" ? item.period.trim() : String(item?.period || "")).trim(),
+      years: parseYearsValue(item?.years),
     }))
-    .filter((item) => item.role && item.period && Number.isFinite(item.years));
+    // Keep entries that have at least a role name; years=0 or missing period are acceptable
+    .filter((item) => item.role && item.role !== "" && item.role !== "undefined");
 
   const experience =
     typeof profile.experience_years === "number" && Number.isFinite(profile.experience_years)
@@ -487,10 +499,12 @@ export default function UploadCVPage() {
                                   className="rounded-xl border border-slate-200 bg-white px-3 py-2"
                                 >
                                   <div className="flex items-center justify-between gap-3 text-[14px]">
-                                    <span className="font-bold text-slate-800">{entry.role}</span>
-                                    <span className="font-extrabold text-blue-700">{entry.years} years</span>
+                                    <span className="font-bold text-slate-800 break-words min-w-0 flex-1">{entry.role}</span>
+                                    {Number.isFinite(entry.years) && (
+                                      <span className="font-extrabold text-blue-700 shrink-0 whitespace-nowrap">{formatYears(entry.years)} years</span>
+                                    )}
                                   </div>
-                                  <p className="text-[12px] font-medium text-slate-500 mt-1">{entry.period}</p>
+                                  {entry.period && <p className="text-[12px] font-medium text-slate-500 mt-1">{entry.period}</p>}
                                 </div>
                               ))}
                             </div>
@@ -583,17 +597,19 @@ export default function UploadCVPage() {
                             <label className="block text-[13px] font-bold text-slate-500 uppercase tracking-widest mb-3">
                               Experience by Role
                             </label>
-                            <div className="space-y-2.5 rounded-2xl border border-slate-200 bg-slate-50/60 p-4">
+                            <div className="space-y-2.5 rounded-2xl border border-slate-200 bg-slate-50/60 p-4 max-h-[320px] overflow-y-auto">
                               {(extracted.experience_breakdown || []).map((entry, index) => (
                                 <div
                                   key={`${entry.role}-${entry.period}-${index}`}
                                   className="rounded-xl border border-slate-200 bg-white px-3 py-2"
                                 >
                                   <div className="flex items-center justify-between gap-3 text-[14px]">
-                                    <span className="font-bold text-slate-800">{entry.role}</span>
-                                    <span className="font-extrabold text-blue-700">{entry.years} years</span>
+                                    <span className="font-bold text-slate-800 break-words min-w-0 flex-1">{entry.role}</span>
+                                    {Number.isFinite(entry.years) && (
+                                      <span className="font-extrabold text-blue-700 shrink-0 whitespace-nowrap">{formatYears(entry.years)} years</span>
+                                    )}
                                   </div>
-                                  <p className="text-[12px] font-medium text-slate-500 mt-1">{entry.period}</p>
+                                  {entry.period && <p className="text-[12px] font-medium text-slate-500 mt-1">{entry.period}</p>}
                                 </div>
                               ))}
                             </div>
