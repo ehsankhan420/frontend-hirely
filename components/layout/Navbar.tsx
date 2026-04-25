@@ -3,10 +3,9 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { createClient } from "@/lib/supabase/client";
 import { createCheckoutSession } from "@/lib/api/payments";
-import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,7 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { User } from "@/types";
-import { Briefcase, Bookmark, Settings, LogOut, ShieldCheck, User as UserIcon } from "lucide-react";
+import { Briefcase, Bookmark, Settings, LogOut, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 
 interface NavbarProps {
