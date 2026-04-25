@@ -27,9 +27,25 @@ function formatYears(years: number): string {
   return rounded % 1 === 0 ? rounded.toFixed(0) : rounded.toFixed(1);
 }
 
+function canonicalizeSkill(skill: string): string {
+  const cleaned = skill.trim();
+  const normalized = cleaned.toLowerCase().replace(/[\/_-]+/g, " ").replace(/\s+/g, " ").trim();
+  if (
+    normalized === "ui ux"
+    || normalized === "ux ui"
+    || normalized === "ui ux design"
+    || normalized === "ux ui design"
+    || normalized === "ui ux designer"
+    || normalized === "ux ui designer"
+  ) {
+    return "UI/UX";
+  }
+  return cleaned;
+}
+
 function normalizeParsedCVProfile(profile: ParsedCVProfile): ParsedCVProfile {
   const skills = Array.from(
-    new Set((profile.skills || []).map((skill) => skill.trim()).filter(Boolean))
+    new Set((profile.skills || []).map((skill) => canonicalizeSkill(skill)).filter(Boolean))
   );
   const experienceBreakdown = (profile.experience_breakdown || [])
     .map((item) => ({
