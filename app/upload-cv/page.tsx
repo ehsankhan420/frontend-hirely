@@ -59,6 +59,19 @@ function normalizeParsedCVProfile(profile: ParsedCVProfile): ParsedCVProfile {
         ? Number.parseFloat(profile.experience_years)
         : undefined;
 
+  const fallbackRole = profile.job_title?.trim() || "";
+  if (
+    experienceBreakdown.length === 0
+    && Number.isFinite(experience as number)
+    && fallbackRole
+  ) {
+    experienceBreakdown.push({
+      role: fallbackRole,
+      period: "Based on CV profile",
+      years: experience as number,
+    });
+  }
+
   return {
     ...profile,
     job_title: profile.job_title?.trim() || undefined,
