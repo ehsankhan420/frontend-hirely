@@ -5,7 +5,6 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import Navbar from "@/components/layout/Navbar";
 import CVUploader from "@/components/cv/CVUploader";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
