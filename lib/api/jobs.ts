@@ -16,6 +16,26 @@ function normalizeText(value: string): string {
   return value.toLowerCase().replace(/[^a-z0-9\s]/g, " ").replace(/\s+/g, " ").trim();
 }
 
+function normalizeSkill(value: string): string {
+  return value.toLowerCase().replace(/[^a-z0-9\s]/g, " ").replace(/\s+/g, " ").trim();
+}
+
+function uniqueSkills(skills: string[]): string[] {
+  const seen = new Set<string>();
+  const out: string[] = [];
+
+  for (const raw of skills) {
+    const skill = (raw || "").trim();
+    if (!skill) continue;
+    const key = normalizeSkill(skill);
+    if (!key || seen.has(key)) continue;
+    seen.add(key);
+    out.push(skill);
+  }
+
+  return out;
+}
+
 function titleScore(userTitle: string | undefined, jobTitle: string): number {
   if (!userTitle) return 5;
 
@@ -40,23 +60,27 @@ function skillsScore(userSkills: string[], requiredSkills: string[]): {
   matchedSkills: string[];
   missingSkills: string[];
 } {
-  if (!requiredSkills.length) {
+  const normalizedRequiredSkills = uniqueSkills(requiredSkills || []);
+
+  if (!normalizedRequiredSkills.length) {
     return { score: 20, matchedSkills: [], missingSkills: [] };
   }
 
-  const userSkillsLower = new Set(userSkills.map((skill) => skill.toLowerCase()));
+  const userSkillsLower = new Set(
+    (userSkills || []).map((skill) => normalizeSkill(skill)).filter(Boolean)
+  );
   const matchedSkills: string[] = [];
   const missingSkills: string[] = [];
 
-  requiredSkills.forEach((skill) => {
-    if (userSkillsLower.has(skill.toLowerCase())) {
+  normalizedRequiredSkills.forEach((skill) => {
+    if (userSkillsLower.has(normalizeSkill(skill))) {
       matchedSkills.push(skill);
     } else {
       missingSkills.push(skill);
     }
   });
 
-  const ratio = matchedSkills.length / requiredSkills.length;
+  const ratio = matchedSkills.length / normalizedRequiredSkills.length;
   return { score: Math.round(ratio * 40), matchedSkills, missingSkills };
 }
 

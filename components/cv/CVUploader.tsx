@@ -1,15 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { uploadCV, confirmCVProfile } from "@/lib/api/users";
 import { ParsedCVProfile, User } from "@/types";
-import { Upload, FileText, CheckCircle2, X, Plus } from "lucide-react";
+import { Upload, FileText, CheckCircle2, X, Plus, UserCircle2, Briefcase, Calendar } from "lucide-react";
 import { toast } from "sonner";
 
 function parseYearsValue(val: unknown): number {
@@ -148,7 +147,7 @@ export default function CVUploader({ user, onProfileUpdated }: CVUploaderProps) 
       const result = await uploadCV(file);
       hasFreshUploadRef.current = true;
       setExtracted(normalizeParsedCVProfile(result.extracted));
-      toast.success("CV parsed! Review the extracted fields below.");
+      toast.success("CV parsed! Check out the extracted fields below.");
     } catch (err: unknown) {
       const msg = getApiErrorMessage(err, "Failed to parse CV");
       toast.error(msg);
@@ -174,7 +173,7 @@ export default function CVUploader({ user, onProfileUpdated }: CVUploaderProps) 
     try {
       const updatedUser = await confirmCVProfile(extracted);
       onProfileUpdated(updatedUser);
-      toast.success("CV profile saved! Your job matches will now be personalised.");
+      toast.success("CV profile seamlessly saved. Your job matches are now fully personalized.");
     } catch (err: unknown) {
       const msg = getApiErrorMessage(err, "Failed to save profile");
       toast.error(msg);
@@ -197,10 +196,30 @@ export default function CVUploader({ user, onProfileUpdated }: CVUploaderProps) 
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
+      {/* Existing profile indicator */}
+      {user.parsed_cv && !extracted && (
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="flex items-center gap-3 text-sm text-green-700 bg-green-50/50 backdrop-blur-sm border border-green-200/50 rounded-[16px] p-4 font-medium shadow-sm"
+        >
+          <div className="p-1 rounded-full bg-green-100 text-green-600">
+            <CheckCircle2 className="h-5 w-5 shrink-0" />
+          </div>
+          <span>
+            CV profile active — {" "}
+            <span className="font-bold">{user.parsed_cv.skills?.length || 0} skills</span> detected.
+            Upload a new CV to refresh your matches.
+          </span>
+        </motion.div>
+      )}
+
       {/* Upload Zone */}
-      <div
-        className="border-2 border-dashed border-border rounded-lg p-8 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50/50 transition-colors"
+      <motion.div
+        whileHover={{ scale: 1.01, borderColor: "#3b82f6", backgroundColor: "rgba(239, 246, 255, 0.5)" }}
+        whileTap={{ scale: 0.99 }}
+        className="relative overflow-hidden border-2 border-dashed border-slate-200 bg-slate-50/50 rounded-[20px] p-10 text-center cursor-pointer transition-colors duration-300"
         onDrop={handleDrop}
         onDragOver={(e) => e.preventDefault()}
         onClick={() => fileInputRef.current?.click()}
@@ -212,147 +231,188 @@ export default function CVUploader({ user, onProfileUpdated }: CVUploaderProps) 
           className="hidden"
           onChange={handleFileChange}
         />
-        <Upload className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
-        <p className="font-medium">Drop your CV here or click to upload</p>
-        <p className="text-sm text-muted-foreground mt-1">
-          PDF, DOC, or DOCX · Max 5MB
-        </p>
-        {uploading && (
-          <p className="text-sm text-blue-600 mt-2 animate-pulse">Parsing your CV...</p>
-        )}
-      </div>
+        <div className="absolute inset-0 bg-blue-50 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+        <div className="relative z-10 flex flex-col items-center justify-center">
+          <div className="h-16 w-16 bg-white shadow-sm border border-slate-100 rounded-[18px] flex items-center justify-center mb-4 transition-transform group-hover:scale-110">
+            <Upload className="h-7 w-7 text-blue-500" />
+          </div>
+          <p className="text-[17px] font-bold tracking-tight text-slate-800 mb-1">
+            Drag & drop your latest CV
+          </p>
+          <p className="text-[13px] font-medium text-slate-400">
+            Or click to browse (PDF, DOCX up to 5MB)
+          </p>
+
+          <AnimatePresence>
+            {uploading && (
+              <motion.div 
+                initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                animate={{ opacity: 1, height: "auto", marginTop: 16 }}
+                exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                className="overflow-hidden"
+              >
+                <div className="flex items-center gap-2 text-[14px] font-bold text-blue-600 bg-blue-50 px-4 py-2 rounded-full border border-blue-100 shadow-sm">
+                  <div className="h-3 w-3 rounded-full bg-blue-500 animate-ping" />
+                  Extracting semantic data...
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </motion.div>
 
       {/* Extracted Fields Editor */}
-      {extracted && (
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-base flex items-center gap-2">
-              <FileText className="h-4 w-4" />
-              Extracted CV Profile
-            </CardTitle>
-            <p className="text-sm text-muted-foreground">
-              Review and edit the fields below, then confirm to power your job matching.
-            </p>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {/* Job Title */}
-            <div className="space-y-1.5">
-              <Label htmlFor="job-title">Current / Most Recent Job Title</Label>
-              <Input
-                id="job-title"
-                value={extracted.job_title || ""}
-                onChange={(e) => setExtracted({ ...extracted, job_title: e.target.value })}
-                placeholder="e.g. Software Engineer"
-              />
+      <AnimatePresence>
+        {extracted && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            className="rounded-[24px] border border-blue-100/60 bg-gradient-to-br from-blue-50/30 to-white backdrop-blur-xl shadow-[0_8px_40px_rgb(59,130,246,0.06)] overflow-hidden p-6 md:p-8 space-y-8"
+          >
+            <div className="flex items-center gap-3 pb-6 border-b border-blue-100/50">
+              <div className="p-2.5 rounded-[12px] bg-blue-600 text-white shadow-[0_4px_14px_rgb(59,130,246,0.4)]">
+                <CheckCircle2 className="h-5 w-5" strokeWidth={2.5} />
+              </div>
+              <h2 className="text-[19px] font-extrabold text-slate-800 tracking-tight">Review Extracted Profile</h2>
             </div>
-
-            {/* Experience */}
-            <div className="space-y-1.5">
-              <Label htmlFor="experience">Years of Experience</Label>
-              <Input
-                id="experience"
-                type="number"
-                min="0"
-                max="50"
-                step="0.5"
-                value={extracted.experience_years ?? ""}
-                onChange={(e) =>
-                  setExtracted({
-                    ...extracted,
-                    experience_years: e.target.value ? parseFloat(e.target.value) : undefined,
-                  })
-                }
-                placeholder="e.g. 4.5"
-              />
-            </div>
-
-            {(extracted.experience_breakdown?.length || 0) > 0 && (
+            
+            {/* Job Title & Experience */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <Label>Experience by Role</Label>
-                <div className="space-y-2">
+                <Label htmlFor="job-title" className="text-[13px] font-bold tracking-wide text-slate-500 uppercase flex items-center gap-2">
+                  <UserCircle2 className="h-4 w-4" /> Current Role
+                </Label>
+                <Input
+                  id="job-title"
+                  value={extracted.job_title || ""}
+                  onChange={(e) => setExtracted({ ...extracted, job_title: e.target.value })}
+                  placeholder="e.g. Software Engineer"
+                  className="h-12 rounded-[14px] text-[15px] font-medium border-slate-200 bg-white shadow-sm transition-all duration-300 ease-in-out focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 hover:border-slate-300"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="experience" className="text-[13px] font-bold tracking-wide text-slate-500 uppercase flex items-center gap-2">
+                  <Calendar className="h-4 w-4" /> Total Years
+                </Label>
+                <Input
+                  id="experience"
+                  type="number"
+                  min="0"
+                  max="50"
+                  step="0.5"
+                  value={extracted.experience_years ?? ""}
+                  onChange={(e) =>
+                    setExtracted({
+                      ...extracted,
+                      experience_years: e.target.value ? parseFloat(e.target.value) : undefined,
+                    })
+                  }
+                  placeholder="e.g. 4.5"
+                  className="h-12 rounded-[14px] text-[15px] font-medium border-slate-200 bg-white shadow-sm transition-all duration-300 ease-in-out focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 hover:border-slate-300"
+                />
+              </div>
+            </div>
+
+            {/* Experience by Role Breakdown */}
+            {(extracted.experience_breakdown?.length || 0) > 0 && (
+              <div className="space-y-3 pt-2">
+                <Label className="text-[13px] font-bold tracking-wide text-slate-500 uppercase flex items-center gap-2 mb-3">
+                  <Briefcase className="h-4 w-4" /> Component Experience
+                </Label>
+                <div className="space-y-2.5">
                   {(extracted.experience_breakdown || []).map((entry, index) => (
-                    <div
+                    <motion.div
+                      whileHover={{ scale: 1.01 }}
                       key={`${entry.role}-${entry.period}-${index}`}
-                      className="rounded-md border bg-muted/30 px-3 py-2"
+                      className="rounded-[16px] border border-slate-200/80 bg-white p-4 shadow-sm hover:shadow-md transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                     >
-                      <div className="flex items-center justify-between gap-3">
-                        <span className="text-sm font-medium break-words min-w-0 flex-1">{entry.role}</span>
-                        {Number.isFinite(entry.years) && (
-                          <span className="text-sm font-semibold shrink-0 whitespace-nowrap">{formatYears(entry.years)} years</span>
-                        )}
+                      <div className="flex-1 min-w-0">
+                        <span className="text-[15px] font-bold text-slate-800 break-words block">{entry.role}</span>
+                        {entry.period && <p className="text-[13px] font-medium text-slate-400 mt-0.5">{entry.period}</p>}
                       </div>
-                      {entry.period && <p className="text-xs text-muted-foreground mt-1">{entry.period}</p>}
-                    </div>
+                      
+                      {Number.isFinite(entry.years) && (
+                        <div className="bg-slate-50 border border-slate-100 rounded-[10px] px-3 py-1.5 shrink-0 self-start sm:self-auto">
+                          <span className="text-[14px] font-extrabold text-blue-700 whitespace-nowrap">{formatYears(entry.years)} yrs</span>
+                        </div>
+                      )}
+                    </motion.div>
                   ))}
                 </div>
               </div>
             )}
 
-            <Separator />
+            <div className="h-px w-full bg-slate-200/60" />
 
-            {/* Skills */}
-            <div className="space-y-2">
-              <Label>Skills ({extracted.skills.length} detected)</Label>
-              <div className="flex flex-wrap gap-2">
-                {extracted.skills.map((skill) => (
-                  <Badge
-                    key={skill}
-                    variant="secondary"
-                    className="pr-1 gap-1 cursor-pointer"
-                  >
-                    {skill}
-                    <button
-                      onClick={() => removeSkill(skill)}
-                      className="ml-0.5 hover:text-destructive"
+            {/* Skills Array */}
+            <div className="space-y-3">
+              <Label className="text-[13px] font-bold tracking-wide text-slate-500 uppercase flex items-center gap-2 mb-3">
+                Identified Skills <span className="bg-slate-200 text-slate-600 px-2 rounded-full text-[11px] leading-tight flex items-center h-5">{extracted.skills.length}</span>
+              </Label>
+              <div className="flex flex-wrap gap-2.5 mb-4">
+                <AnimatePresence>
+                  {extracted.skills.map((skill) => (
+                    <motion.div
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      exit={{ scale: 0.8, opacity: 0, width: 0, padding: 0, margin: 0 }}
+                      key={skill}
                     >
-                      <X className="h-3 w-3" />
-                    </button>
-                  </Badge>
-                ))}
+                      <Badge
+                        variant="secondary"
+                        className="rounded-[10px] px-3 py-1.5 bg-indigo-50/80 hover:bg-indigo-100/80 text-indigo-700 border border-indigo-100 font-bold tracking-wide text-[13px] shadow-sm flex items-center gap-1 transition-colors"
+                      >
+                        {skill}
+                        <button
+                          onClick={() => removeSkill(skill)}
+                          className="ml-1 p-0.5 rounded-full hover:bg-indigo-200 text-indigo-400 hover:text-indigo-800 transition-colors"
+                        >
+                          <X className="h-3 w-3" strokeWidth={3} />
+                        </button>
+                      </Badge>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
               </div>
-              {/* Add skill */}
+              
+              {/* Add Custom Skill */}
               <div className="flex gap-2">
                 <Input
                   value={newSkill}
                   onChange={(e) => setNewSkill(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && addSkill()}
-                  placeholder="Add a skill..."
-                  className="h-8 text-sm"
+                  placeholder="e.g. NextJS"
+                  className="h-10 rounded-[12px] flex-1 text-[14px] font-medium border-slate-200 bg-white shadow-sm transition-all duration-300 ease-in-out focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 hover:border-slate-300"
                 />
-                <Button
-                  variant="outline"
-                  size="sm"
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   onClick={addSkill}
-                  className="h-8 gap-1"
+                  className="h-10 px-4 rounded-[12px] border border-slate-200 bg-white text-slate-700 font-bold text-[14px] shadow-sm hover:shadow-md hover:bg-slate-50 transition-all flex items-center gap-1.5"
                 >
-                  <Plus className="h-3 w-3" />
+                  <Plus className="h-4 w-4" strokeWidth={3} />
                   Add
-                </Button>
+                </motion.button>
               </div>
             </div>
 
-            <Button
-              onClick={handleConfirm}
-              disabled={confirming}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white gap-2"
-            >
-              <CheckCircle2 className="h-4 w-4" />
-              {confirming ? "Saving..." : "Confirm & Save Profile"}
-            </Button>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Existing profile indicator */}
-      {user.parsed_cv && !extracted && (
-        <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg p-3">
-          <CheckCircle2 className="h-4 w-4 shrink-0" />
-          <span>
-            CV profile saved — {user.parsed_cv.skills?.length || 0} skills detected.
-            Upload a new CV to update it.
-          </span>
-        </div>
-      )}
+            <div className="pt-2">
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={handleConfirm}
+                disabled={confirming}
+                className="w-full h-14 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-[16px] font-extrabold text-[16px] shadow-[0_8px_30px_rgba(37,99,235,0.25)] transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                <CheckCircle2 className="h-5 w-5" strokeWidth={2.5} />
+                {confirming ? "Finalising Profile..." : "Lock in My Semantic Profile"}
+              </motion.button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

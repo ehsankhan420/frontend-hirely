@@ -187,6 +187,45 @@ export default function AdminSchedulerPage() {
     }
   };
 
+  const handleTriggerIndeedPipeline = async () => {
+    if (!API_URL) {
+      toast.error("Backend API URL is not configured.");
+      return;
+    }
+
+    setTriggering(true);
+    try {
+      const keywords = manualKeywords
+        .split(/[,\n]/)
+        .map((k) => k.trim())
+        .filter(Boolean);
+
+      const res = await fetch(`${API_URL}/api/pipeline/indeed/trigger`, {
+        method: "POST",
+        headers: { "X-API-Key": PIPELINE_API_KEY, "Content-Type": "application/json" },
+        body: JSON.stringify({ keywords }),
+      });
+
+      if (res.ok) {
+        const payload = await res.json().catch(() => ({}));
+        toast.success(
+          `Indeed pipeline triggered via n8n${keywords.length ? ` using ${keywords.length} custom keyword(s)` : ""}.`
+        );
+        if (payload?.ingest_contract?.callback_url) {
+          toast.message(`CSV ingest callback ready: ${payload.ingest_contract.callback_url}`);
+        }
+        setTimeout(() => fetchData(), 2000);
+      } else {
+        const err = await res.json().catch(() => ({}));
+        toast.error(err?.detail || "Failed to trigger Indeed pipeline");
+      }
+    } catch {
+      toast.error("Error triggering Indeed pipeline");
+    } finally {
+      setTriggering(false);
+    }
+  };
+
   const handleStop = async () => {
     if (!API_URL) {
       toast.error("Backend API URL is not configured.");
@@ -394,6 +433,14 @@ export default function AdminSchedulerPage() {
                     className="bg-blue-600 hover:bg-blue-700 text-white h-11 px-6 rounded-xl font-bold shadow-sm w-full"
                   >
                     {triggering ? "Starting Manual Run..." : "Execute Override Mode"}
+                  </Button>
+                  <Button
+                    onClick={handleTriggerIndeedPipeline}
+                    disabled={triggering || status.is_running || stopping}
+                    variant="outline"
+                    className="h-11 px-6 rounded-xl font-bold w-full border-blue-200 text-blue-700 hover:bg-blue-50"
+                  >
+                    {triggering ? "Starting Indeed Pipeline..." : "Run Indeed Pipeline"}
                   </Button>
                 </div>
               </div>

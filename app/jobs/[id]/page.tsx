@@ -46,6 +46,28 @@ function scoreBgColor(score: number, max: number) {
   return "bg-slate-400";
 }
 
+function normalizeSkillToken(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function uniqueSkills(skills: string[]): string[] {
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const raw of skills) {
+    const skill = (raw || "").trim();
+    if (!skill) continue;
+    const key = normalizeSkillToken(skill);
+    if (!key || seen.has(key)) continue;
+    seen.add(key);
+    out.push(skill);
+  }
+  return out;
+}
+
 const JOB_TYPE_COLORS: Record<string, string> = {
   "full-time": "text-emerald-700 bg-emerald-50 border-emerald-200",
   "part-time": "text-sky-700 bg-sky-50 border-sky-200",
@@ -184,6 +206,11 @@ export default function JobDetailPage() {
   if (!job) return null;
 
   const overallColor = scoreBgColor(job.match_score, 100);
+  const requiredSkills = uniqueSkills(job.required_skills || []);
+  const matchedSkillKeys = new Set((job.matched_skills || []).map((s) => normalizeSkillToken(s)));
+  const matchedSkills = requiredSkills.filter((s) => matchedSkillKeys.has(normalizeSkillToken(s)));
+  const missingSkills = requiredSkills.filter((s) => !matchedSkillKeys.has(normalizeSkillToken(s)));
+  const hasRequiredSkills = requiredSkills.length > 0;
   const scoreDetails = [
     {
       label: "Job Title match",
@@ -382,25 +409,33 @@ export default function JobDetailPage() {
                     <h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-emerald-600 mb-4">
                       <CheckCircle2 className="h-5 w-5" />
                       Matched Skills
-                      {job.matched_skills.length > 0 && (
+                      {matchedSkills.length > 0 && (
                         <span className="px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 text-xs">
-                          {job.matched_skills.length}
+                          {matchedSkills.length}
                         </span>
                       )}
                     </h3>
                     <div className="flex flex-wrap gap-2">
-                      {job.matched_skills.length > 0 ? (
-                        job.matched_skills.map((skill) => (
+                      {hasRequiredSkills ? (
+                        matchedSkills.length > 0 ? (
+                          matchedSkills.map((skill) => (
+                            <span
+                              key={skill}
+                              className="inline-flex items-center px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-sm font-medium text-emerald-700"
+                            >
+                              {skill}
+                            </span>
+                          ))
+                        ) : (
                           <span
-                            key={skill}
-                            className="inline-flex items-center px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-sm font-medium text-emerald-700"
+                            className="text-sm text-slate-500 italic"
                           >
-                            {skill}
+                            No direct skill matches found.
                           </span>
-                        ))
+                        )
                       ) : (
                         <span className="text-sm text-slate-500 italic">
-                          No direct skill matches found.
+                          Employer did not list required skills for this job.
                         </span>
                       )}
                     </div>
@@ -411,25 +446,33 @@ export default function JobDetailPage() {
                     <h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-rose-600 mb-4">
                       <XCircle className="h-5 w-5" />
                       Missing Skills
-                      {job.missing_skills.length > 0 && (
+                      {missingSkills.length > 0 && (
                         <span className="px-2 py-0.5 rounded-md bg-rose-100 text-rose-800 text-xs">
-                          {job.missing_skills.length}
+                          {missingSkills.length}
                         </span>
                       )}
                     </h3>
                     <div className="flex flex-wrap gap-2">
-                      {job.missing_skills.length > 0 ? (
-                        job.missing_skills.map((skill) => (
+                      {hasRequiredSkills ? (
+                        missingSkills.length > 0 ? (
+                          missingSkills.map((skill) => (
+                            <span
+                              key={skill}
+                              className="inline-flex items-center px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-sm font-medium text-slate-600"
+                            >
+                              {skill}
+                            </span>
+                          ))
+                        ) : (
                           <span
-                            key={skill}
-                            className="inline-flex items-center px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-sm font-medium text-slate-600"
+                            className="text-sm text-emerald-600 italic font-medium"
                           >
-                            {skill}
+                            You match all listed required skills.
                           </span>
-                        ))
+                        )
                       ) : (
-                        <span className="text-sm text-emerald-600 italic font-medium">
-                          🎉 You match all listed required skills.
+                        <span className="text-sm text-slate-500 italic">
+                          No required skill list was provided for this job.
                         </span>
                       )}
                     </div>
@@ -549,13 +592,13 @@ export default function JobDetailPage() {
             </SectionCard>
 
             {/* Required skills list */}
-            {job.required_skills.length > 0 && (
+            {requiredSkills.length > 0 && (
               <SectionCard>
                 <SectionHeader title="All Requirements" icon={Trophy} />
                 <div className="p-6">
                   <div className="flex flex-wrap gap-2">
-                    {job.required_skills.map((skill) => {
-                      const isMatched = job.matched_skills.includes(skill);
+                    {requiredSkills.map((skill) => {
+                      const isMatched = matchedSkillKeys.has(normalizeSkillToken(skill));
                       return (
                         <span
                           key={skill}
@@ -576,7 +619,7 @@ export default function JobDetailPage() {
                     })}
                   </div>
                   <div className="mt-5 pt-4 border-t border-slate-100 text-sm font-medium text-slate-500">
-                    <span className="text-slate-900">{job.matched_skills.length}</span> out of {job.required_skills.length} skills matched
+                    <span className="text-slate-900">{matchedSkills.length}</span> out of {requiredSkills.length} skills matched
                   </div>
                 </div>
               </SectionCard>

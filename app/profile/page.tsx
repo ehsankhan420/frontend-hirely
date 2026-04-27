@@ -243,7 +243,7 @@ function ProfilePageContent() {
                           value={name}
                           onChange={(e) => setName(e.target.value)}
                           placeholder="e.g. Jane Doe"
-                          className="h-12 rounded-[14px] text-[15px] font-medium border-slate-200 bg-slate-50/50 shadow-sm focus-visible:ring-blue-500 focus-visible:bg-white transition-all"
+                          className="h-12 rounded-[14px] text-[15px] font-medium border-slate-200 bg-slate-50/50 shadow-sm focus-visible:bg-white transition-all duration-300 ease-in-out focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 hover:border-slate-300"
                         />
                       </div>
                       <div className="space-y-2">
@@ -254,7 +254,7 @@ function ProfilePageContent() {
                           value={location}
                           onChange={(e) => setLocation(e.target.value)}
                           placeholder="e.g. London, UK"
-                          className="h-12 rounded-[14px] text-[15px] font-medium border-slate-200 bg-slate-50/50 shadow-sm focus-visible:ring-blue-500 focus-visible:bg-white transition-all"
+                          className="h-12 rounded-[14px] text-[15px] font-medium border-slate-200 bg-slate-50/50 shadow-sm focus-visible:bg-white transition-all duration-300 ease-in-out focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 hover:border-slate-300"
                         />
                       </div>
                     </div>
@@ -295,7 +295,7 @@ function ProfilePageContent() {
                     <p className="text-slate-500 font-medium text-[14px] mb-6">
                       Upload your latest CV to let our matching engine perfectly map your skills to active sponsor licenses. 
                     </p>
-                    <div className="bg-slate-50/50 rounded-[20px] pb-2 border-2 border-dashed border-slate-200 overflow-hidden">
+                    <div className="pt-2">
                       <CVUploader
                         user={user}
                         onProfileUpdated={(updatedUser) => setUser(updatedUser)}
