@@ -2,13 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { uploadCV, confirmCVProfile } from "@/lib/api/users";
 import { ParsedCVProfile, User } from "@/types";
-import { Upload, FileText, CheckCircle2, X, Plus, UserCircle2, Briefcase, Calendar } from "lucide-react";
+import { Upload, CheckCircle2, X, Plus, UserCircle2, Briefcase, Calendar } from "lucide-react";
 import { toast } from "sonner";
 
 function parseYearsValue(val: unknown): number {
