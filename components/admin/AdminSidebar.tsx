@@ -14,11 +14,11 @@ import {
   ChevronLeft,
   ChevronRight,
   LogOut,
-  ShieldCheck,
   Menu,
   X,
   Clock,
 } from "lucide-react";
+import Image from "next/image";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 interface AdminSidebarProps {
@@ -107,10 +107,13 @@ export default function AdminSidebar({ user }: AdminSidebarProps) {
               className="flex items-center gap-3 overflow-hidden cursor-pointer"
             >
               <div className="bg-blue-600 p-1.5 rounded-lg shadow-sm shrink-0">
-                <img 
+                <Image 
                   src="/hirely_wordmark_white.png" 
                   alt="Hirely" 
+                  width={120}
+                  height={24}
                   className="h-6 w-auto object-contain"
+                  priority
                 />
               </div>
               <div className="overflow-hidden whitespace-nowrap">
@@ -122,10 +125,13 @@ export default function AdminSidebar({ user }: AdminSidebarProps) {
 
         {collapsed && !mobile && (
           <div className="w-full flex justify-center py-2 h-[80px] items-center">
-            <img 
+            <Image 
               src="/hirely_icon_blue.png" 
               alt="Hirely" 
+              width={40}
+              height={40}
               className="h-10 w-10 object-contain cursor-pointer transform transition-transform hover:scale-105"
+              priority
             />
           </div>
         )}

@@ -5,7 +5,8 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { getMe } from "@/lib/api/users";
-import { Briefcase, ArrowRight, Eye, EyeOff } from "lucide-react";
+import { ArrowRight, Eye, EyeOff } from "lucide-react";
+import Image from "next/image";
 import { toast } from "sonner";
 
 export default function LoginPage() {
@@ -108,10 +109,13 @@ function LoginPageContent() {
 
         {/* Top — logo */}
         <div className="relative z-10 flex items-center">
-          <img 
+          <Image 
             src="/hirely_wordmark_white.png" 
             alt="Hirely" 
+            width={160}
+            height={32}
             className="h-8 w-auto object-contain"
+            priority
           />
         </div>
 
@@ -160,10 +164,13 @@ function LoginPageContent() {
           <div className="flex lg:hidden justify-center mb-8">
             <Link href="/" className="flex items-center">
               <div className="bg-blue-600 p-1.5 rounded-lg shadow-sm">
-                <img 
+                <Image 
                   src="/hirely_wordmark_white.png" 
                   alt="Hirely" 
+                  width={120}
+                  height={24}
                   className="h-6 w-auto object-contain"
+                  priority
                 />
               </div>
             </Link>

@@ -15,7 +15,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { User } from "@/types";
-import { Briefcase, Bookmark, Settings, LogOut, ShieldCheck } from "lucide-react";
+import { Bookmark, Settings, LogOut, ShieldCheck } from "lucide-react";
+import Image from "next/image";
 import { toast } from "sonner";
 
 interface NavbarProps {
@@ -83,10 +84,13 @@ export default function Navbar({ user }: NavbarProps) {
               If the image itself has a solid background, this wrapper color will just be hidden behind it.
             */}
             <div className="bg-blue-600 p-1.5 rounded-lg shadow-sm">
-              <img 
+              <Image 
                 src="/hirely_wordmark_white.png" 
                 alt="Hirely" 
+                width={120}
+                height={24}
                 className="h-6 w-auto object-contain"
+                priority
               />
             </div>
           </motion.div>

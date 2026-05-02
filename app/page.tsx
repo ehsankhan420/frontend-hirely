@@ -6,13 +6,13 @@ import { Badge } from "@/components/ui/badge";
 import { motion, Variants } from "framer-motion";
 import {
   BadgeCheck,
-  Briefcase,
   Zap,
   ArrowRight,
   ShieldCheck,
   LineChart,
   CheckCircle2
 } from "lucide-react";
+import Image from "next/image";
 
 const STAGGER_CHILD_VARIANTS: Variants = {
   hidden: { opacity: 0, y: 20 },
@@ -38,10 +38,13 @@ export default function LandingPage() {
         <div className="container mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
           <div className="flex items-center group cursor-pointer">
             <div className="bg-blue-600 p-1.5 rounded-lg shadow-sm transition-transform group-hover:scale-105">
-              <img 
+              <Image 
                 src="/hirely_wordmark_white.png" 
                 alt="Hirely" 
+                width={100}
+                height={20}
                 className="h-5 w-auto object-contain"
+                priority
               />
             </div>
           </div>
@@ -368,9 +371,11 @@ export default function LandingPage() {
         <div className="container mx-auto max-w-6xl flex flex-col md:flex-row items-center justify-between text-sm text-slate-500">
           <div className="flex items-center mb-4 md:mb-0">
             <div className="bg-slate-800 p-1.5 rounded-md">
-              <img 
+              <Image 
                 src="/hirely_wordmark_white.png" 
                 alt="Hirely" 
+                width={80}
+                height={16}
                 className="h-4 w-auto object-contain opacity-80"
               />
             </div>

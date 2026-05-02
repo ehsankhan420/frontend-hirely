@@ -3,12 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { createClient } from "@/lib/supabase/client";
 import { uploadCV, confirmCVProfile, getCVProfile } from "@/lib/api/users";
 import { ParsedCVProfile } from "@/types";
 import {
-  Briefcase,
   ArrowRight,
   CheckCircle2,
   Loader2,
@@ -298,10 +298,13 @@ export default function UploadCVPage() {
           >
             <div className="flex items-center justify-center shrink-0">
               <div className="bg-blue-600 p-1.5 rounded-lg shadow-sm">
-                <img 
+                <Image 
                   src="/hirely_wordmark_white.png" 
                   alt="Hirely" 
+                  width={120}
+                  height={24}
                   className="h-6 w-auto object-contain"
+                  priority
                 />
               </div>
             </div>

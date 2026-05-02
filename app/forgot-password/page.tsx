@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Briefcase, CheckCircle2 } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
+import Image from "next/image";
 import { toast } from "sonner";
 
 export default function ForgotPasswordPage() {
@@ -57,10 +58,13 @@ export default function ForgotPasswordPage() {
         <div className="flex justify-center mb-6">
           <Link href="/" className="flex items-center">
             <div className="bg-blue-600 p-1.5 rounded-lg shadow-sm">
-              <img 
+              <Image 
                 src="/hirely_wordmark_white.png" 
                 alt="Hirely" 
+                width={120}
+                height={24}
                 className="h-6 w-auto object-contain"
+                priority
               />
             </div>
           </Link>
