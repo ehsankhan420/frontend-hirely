@@ -71,16 +71,25 @@ export default function Navbar({ user }: NavbarProps) {
       <div className="container mx-auto flex h-20 max-w-7xl items-center justify-between px-4 lg:px-8">
         
         {/* Logo Section */}
-        <Link href={user ? "/jobs" : "/"} className="flex items-center gap-3 overflow-hidden cursor-pointer group">
+        <Link href={user ? "/jobs" : "/"} className="flex items-center overflow-hidden cursor-pointer group">
           <motion.div 
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] shadow-sm"
-            style={{ background: "linear-gradient(135deg, #3b82f6, #2563eb)", boxShadow: "0 6px 16px rgba(59,130,246,0.3)" }}
+            className="flex items-center justify-center shrink-0"
           >
-            <Briefcase className="h-5 w-5 text-white" />
+            {/* 
+              Note: The image is named _white, so we add a dark background 
+              to ensure it's visible on this light navbar. 
+              If the image itself has a solid background, this wrapper color will just be hidden behind it.
+            */}
+            <div className="bg-blue-600 p-1.5 rounded-lg shadow-sm">
+              <img 
+                src="/hirely_wordmark_white.png" 
+                alt="Hirely" 
+                className="h-6 w-auto object-contain"
+              />
+            </div>
           </motion.div>
-          <span className="text-[22px] font-extrabold tracking-tight text-slate-800 leading-tight">Hirely</span>
         </Link>
 
         {/* Desktop Nav Links */}

@@ -104,16 +104,16 @@ export default function AdminSidebar({ user }: AdminSidebarProps) {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -10 }}
               transition={{ duration: 0.2 }}
-              className="flex items-center gap-4 overflow-hidden cursor-pointer"
+              className="flex items-center gap-3 overflow-hidden cursor-pointer"
             >
-              <div 
-                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[14px] shadow-sm transform transition-transform hover:scale-105"
-                style={{ background: "linear-gradient(135deg, #3b82f6, #2563eb)", boxShadow: "0 6px 16px rgba(59,130,246,0.3)" }}
-              >
-                <ShieldCheck className="h-6 w-6 text-white" />
+              <div className="bg-blue-600 p-1.5 rounded-lg shadow-sm shrink-0">
+                <img 
+                  src="/hirely_wordmark_white.png" 
+                  alt="Hirely" 
+                  className="h-6 w-auto object-contain"
+                />
               </div>
               <div className="overflow-hidden whitespace-nowrap">
-                <p className="text-2xl font-extrabold tracking-tight text-slate-800 leading-tight">Hirely</p>
                 <p className="text-[12px] font-bold text-slate-500 uppercase tracking-widest leading-none mt-1">Workspace</p>
               </div>
             </motion.div>
@@ -122,12 +122,11 @@ export default function AdminSidebar({ user }: AdminSidebarProps) {
 
         {collapsed && !mobile && (
           <div className="w-full flex justify-center py-2 h-[80px] items-center">
-            <div 
-              className="flex shrink-0 h-12 w-12 items-center justify-center rounded-[14px] shadow-sm cursor-pointer transform transition-transform hover:scale-105"
-              style={{ background: "linear-gradient(135deg, #3b82f6, #2563eb)", boxShadow: "0 6px 16px rgba(59,130,246,0.3)" }}
-            >
-              <ShieldCheck className="h-6 w-6 text-white" />
-            </div>
+            <img 
+              src="/hirely_icon_blue.png" 
+              alt="Hirely" 
+              className="h-10 w-10 object-contain cursor-pointer transform transition-transform hover:scale-105"
+            />
           </div>
         )}
 

@@ -107,16 +107,12 @@ function LoginPageContent() {
         }} />
 
         {/* Top — logo */}
-        <div className="relative z-10 flex items-center gap-2.5">
-          <div style={{
-            width: 36, height: 36, borderRadius: 10,
-            background: "linear-gradient(135deg, #3b82f6, #2563eb)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            boxShadow: "0 4px 12px rgba(59,130,246,0.4)"
-          }}>
-            <Briefcase className="h-4 w-4 text-white" />
-          </div>
-          <span className="text-xl font-bold text-white">Hirely</span>
+        <div className="relative z-10 flex items-center">
+          <img 
+            src="/hirely_wordmark_white.png" 
+            alt="Hirely" 
+            className="h-8 w-auto object-contain"
+          />
         </div>
 
         {/* Middle — headline */}
@@ -162,15 +158,14 @@ function LoginPageContent() {
 
           {/* Mobile logo */}
           <div className="flex lg:hidden justify-center mb-8">
-            <Link href="/" className="flex items-center gap-2">
-              <div style={{
-                width: 36, height: 36, borderRadius: 10,
-                background: "linear-gradient(135deg, #3b82f6, #2563eb)",
-                display: "flex", alignItems: "center", justifyContent: "center"
-              }}>
-                <Briefcase className="h-4 w-4 text-white" />
+            <Link href="/" className="flex items-center">
+              <div className="bg-blue-600 p-1.5 rounded-lg shadow-sm">
+                <img 
+                  src="/hirely_wordmark_white.png" 
+                  alt="Hirely" 
+                  className="h-6 w-auto object-contain"
+                />
               </div>
-              <span className="text-2xl font-bold text-slate-800">Hirely</span>
             </Link>
           </div>
 

@@ -294,15 +294,17 @@ export default function UploadCVPage() {
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <Link
             href="/"
-            className="flex items-center gap-3 overflow-hidden cursor-pointer"
+            className="flex items-center overflow-hidden cursor-pointer group"
           >
-             <div 
-               className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] shadow-sm transform transition-transform hover:scale-105"
-               style={{ background: "linear-gradient(135deg, #3b82f6, #2563eb)", boxShadow: "0 6px 16px rgba(59,130,246,0.3)" }}
-             >
-               <Briefcase className="h-[22px] w-[22px] text-white" />
-             </div>
-             <span className="text-[22px] font-extrabold tracking-tight text-slate-800 leading-tight">Hirely</span>
+            <div className="flex items-center justify-center shrink-0">
+              <div className="bg-blue-600 p-1.5 rounded-lg shadow-sm">
+                <img 
+                  src="/hirely_wordmark_white.png" 
+                  alt="Hirely" 
+                  className="h-6 w-auto object-contain"
+                />
+              </div>
+            </div>
           </Link>
 
           <button

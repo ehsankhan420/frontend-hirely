@@ -55,11 +55,14 @@ export default function ForgotPasswordPage() {
     <div className="min-h-screen flex items-center justify-center bg-muted/30 px-4">
       <div className="w-full max-w-md">
         <div className="flex justify-center mb-6">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-600">
-              <Briefcase className="h-5 w-5 text-white" />
+          <Link href="/" className="flex items-center">
+            <div className="bg-blue-600 p-1.5 rounded-lg shadow-sm">
+              <img 
+                src="/hirely_wordmark_white.png" 
+                alt="Hirely" 
+                className="h-6 w-auto object-contain"
+              />
             </div>
-            <span className="text-2xl font-bold">Hirely</span>
           </Link>
         </div>
 

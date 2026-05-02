@@ -36,11 +36,14 @@ export default function LandingPage() {
       {/* Navigation */}
       <nav className="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-lg border-b border-slate-200/50">
         <div className="container mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-          <div className="flex items-center gap-2 group cursor-pointer">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 shadow-sm shadow-indigo-200 transition-transform group-hover:scale-105">
-              <Briefcase className="h-4 w-4 text-white" />
+          <div className="flex items-center group cursor-pointer">
+            <div className="bg-blue-600 p-1.5 rounded-lg shadow-sm transition-transform group-hover:scale-105">
+              <img 
+                src="/hirely_wordmark_white.png" 
+                alt="Hirely" 
+                className="h-5 w-auto object-contain"
+              />
             </div>
-            <span className="text-xl font-bold tracking-tight text-slate-900">Hirely</span>
           </div>
           <div className="flex items-center gap-4">
                <Link href="/login" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors hidden sm:block">
@@ -363,11 +366,14 @@ export default function LandingPage() {
       {/* Minimalistic Final Footer */}
       <footer className="py-8 bg-slate-950 px-6">
         <div className="container mx-auto max-w-6xl flex flex-col md:flex-row items-center justify-between text-sm text-slate-500">
-          <div className="flex items-center gap-2 mb-4 md:mb-0">
-            <div className="flex h-6 w-6 items-center justify-center rounded bg-slate-800">
-              <Briefcase className="h-3 w-3 text-white" />
+          <div className="flex items-center mb-4 md:mb-0">
+            <div className="bg-slate-800 p-1.5 rounded-md">
+              <img 
+                src="/hirely_wordmark_white.png" 
+                alt="Hirely" 
+                className="h-4 w-auto object-contain opacity-80"
+              />
             </div>
-            <span className="font-semibold text-slate-200 tracking-tight">Hirely</span>
           </div>
           <div className="flex gap-6">
             <Link href="#" className="hover:text-slate-300 transition-colors">Privacy</Link>
