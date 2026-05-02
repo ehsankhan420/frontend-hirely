@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import Navbar from "@/components/layout/Navbar";
 import JobCard from "@/components/jobs/JobCard";
 import JobFiltersPanel from "@/components/jobs/JobFilters";
+import ScraperSourceToggle from "@/components/jobs/ScraperSourceToggle";
 import FreemiumGate from "@/components/jobs/FreemiumGate";
 import { getJobs } from "@/lib/api/jobs";
 import { getMe } from "@/lib/api/users";
@@ -43,6 +44,7 @@ export default function JobsPage() {
   const [jobData, setJobData] = useState<JobListResponse | null>(null);
   const [filters, setFilters] = useState<JobFilters>({ sort: "match" });
   const [loading, setLoading] = useState(true);
+  const [scraperSource, setScraperSource] = useState<"linkedin" | "indeed" | undefined>(undefined);
 
   useEffect(() => {
     getMe()
@@ -66,17 +68,28 @@ export default function JobsPage() {
   }, []);
 
   useEffect(() => {
-    fetchJobs(filters);
-  }, [filters, fetchJobs]);
+    const updatedFilters = { ...filters, scraper_source: scraperSource };
+    fetchJobs(updatedFilters);
+  }, [filters, scraperSource, fetchJobs]);
 
   const handleFiltersChange = (newFilters: JobFilters) =>
     setFilters(newFilters);
+
+  const handleScraperSourceChange = (source: "linkedin" | "indeed" | "all") => {
+    if (source === "all") {
+      setScraperSource(undefined);
+    } else {
+      setScraperSource(source);
+    }
+  };
 
   const hiddenCount = jobData
     ? jobData.total_count - jobData.returned_count
     : 0;
 
   const visibleJobs = jobData?.jobs || [];
+  
+  // Calculate stats from visible results (what user sees)
   const topMatchCount = visibleJobs.filter((j) => j.match_score >= 70).length;
   const avgMatchScore = visibleJobs.length
     ? Math.round(
@@ -84,6 +97,10 @@ export default function JobsPage() {
           visibleJobs.length
       )
     : 0;
+
+  // Calculate LinkedIn and Indeed counts from visible jobs
+  const linkedinCount = visibleJobs.filter(j => j.scraper_source === 'linkedin').length;
+  const indeedCount = visibleJobs.filter(j => j.scraper_source === 'indeed').length;
 
   const activeFilters = [
     filters.search ? `Search: ${filters.search}` : null,
@@ -222,20 +239,34 @@ export default function JobsPage() {
 
         {/* Results layout */}
         <motion.div variants={itemVariants} className="space-y-6 pt-2">
-          <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-200">
-            <h2 className="text-xl font-bold text-slate-800 tracking-tight flex items-center gap-2.5">
-              <Sparkles className="h-5 w-5 text-blue-600" />
-              {jobData?.total_count || 0} matching jobs
-              {jobData?.is_limited && (
-                <span className="ml-2 px-2.5 py-1 rounded-[6px] text-[10px] font-bold uppercase tracking-widest bg-slate-100 text-slate-500 border border-slate-200">
-                  Free tier filter
-                </span>
-              )}
-            </h2>
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-[10px] bg-white border border-slate-200 text-[13px] font-bold text-slate-600 shadow-sm shadow-slate-200/50">
-              <Filter className="h-4 w-4 text-slate-400" />
-              {sortLabel}
+          <div className="space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-200">
+              <h2 className="text-xl font-bold text-slate-800 tracking-tight flex items-center gap-2.5">
+                <Sparkles className="h-5 w-5 text-blue-600" />
+                {jobData?.total_count || 0} matching jobs
+                {jobData?.is_limited && (
+                  <span className="ml-2 px-2.5 py-1 rounded-[6px] text-[10px] font-bold uppercase tracking-widest bg-slate-100 text-slate-500 border border-slate-200">
+                    Free tier filter
+                  </span>
+                )}
+              </h2>
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-[10px] bg-white border border-slate-200 text-[13px] font-bold text-slate-600 shadow-sm shadow-slate-200/50">
+                <Filter className="h-4 w-4 text-slate-400" />
+                {sortLabel}
+              </div>
             </div>
+
+            {/* Scraper Source Toggle */}
+            {(linkedinCount > 0 || indeedCount > 0) && (
+              <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ type: "spring", stiffness: 300, damping: 25 }}>
+                <ScraperSourceToggle
+                  linkedinCount={linkedinCount}
+                  indeedCount={indeedCount}
+                  onSourceChange={handleScraperSourceChange}
+                  isLoading={loading}
+                />
+              </motion.div>
+            )}
           </div>
 
           {loading ? (

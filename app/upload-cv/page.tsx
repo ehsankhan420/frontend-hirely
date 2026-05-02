@@ -201,7 +201,7 @@ export default function UploadCVPage() {
       const result = await uploadCV(file);
       setCvSaved(false);
       setExtracted(normalizeParsedCVProfile(result.extracted));
-      toast.success("CV parsed! Review and confirm the fields below.");
+      toast.success("CV processed! Review and confirm the fields below.");
     } catch (err: unknown) {
       const msg = getApiErrorMessage(
         err,
@@ -686,7 +686,7 @@ export default function UploadCVPage() {
                         </div>
                       </div>
 
-                      <div className="pt-4 border-t border-slate-100">
+                      <div className="pt-4 border-t border-slate-100 space-y-3">
                         <button
                           onClick={handleConfirm}
                           disabled={confirming}
@@ -698,6 +698,23 @@ export default function UploadCVPage() {
                             <CheckCircle2 className="h-5 w-5" strokeWidth={3} />
                           )}
                           {confirming ? "Saving Profile..." : "Confirm & Save Profile"}
+                        </button>
+                        <button
+                          onClick={() => fileInputRef.current?.click()}
+                          disabled={uploading}
+                          className="w-full text-[14px] font-bold text-slate-600 hover:text-slate-900 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-colors py-3 rounded-[14px] disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                        >
+                          {uploading ? (
+                            <>
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                              Uploading...
+                            </>
+                          ) : (
+                            <>
+                              <Upload className="h-4 w-4" strokeWidth={3} />
+                              Add CV Again
+                            </>
+                          )}
                         </button>
                       </div>
                     </motion.div>

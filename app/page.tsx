@@ -287,16 +287,15 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto text-left">
             {/* Free */}
             <div className="border border-slate-200 rounded-3xl p-8 hover:border-slate-300 transition-colors">
-               <h3 className="text-xl font-bold text-slate-900 mb-2">Free Core</h3>
+               <h3 className="text-xl font-bold text-slate-900 mb-2">Freemium</h3>
                <p className="text-slate-500 text-sm mb-6">For casual searching and validation.</p>
                <div className="mb-8">
                   <span className="text-4xl font-extrabold text-slate-900">£0</span>
-                  <span className="text-slate-500 font-medium tracking-wide"> /forever</span>
                </div>
                <ul className="space-y-4 mb-8">
                   {[
                      "Automated CV Parsing",
-                     "5 full match jobs per search",
+                     "3 full match jobs per search",
                      "Save up to 3 jobs",
                      "Access to verified sponsor database"
                   ].map(f => (

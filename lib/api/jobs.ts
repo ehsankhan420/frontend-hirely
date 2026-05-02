@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/client";
 import { getMe } from "./users";
 import { Job, JobFilters, JobListResponse, JobWithMatch, MatchBreakdown, ParsedCVProfile, User } from "@/types";
 
-const FREE_JOB_LIMIT = 5;
+const FREE_JOB_LIMIT = 3;
 
 type ApiLikeError = Error & { response?: { data?: { detail?: string } } };
 
@@ -176,6 +176,7 @@ export async function getJobs(filters: JobFilters = {}): Promise<JobListResponse
   if (filters.job_type) query = query.eq("job_type", filters.job_type);
   if (filters.salary_min !== undefined) query = query.gte("salary_min", filters.salary_min);
   if (filters.salary_max !== undefined) query = query.lte("salary_max", filters.salary_max);
+  if (filters.scraper_source) query = query.eq("scraper_source", filters.scraper_source);
 
   const { data, error } = await query;
   if (error) {
@@ -185,12 +186,17 @@ export async function getJobs(filters: JobFilters = {}): Promise<JobListResponse
   const jobs = (data || []) as Job[];
   const savedJobIds = await getSavedJobIds(currentUser.id);
   const jobsWithMatch = jobs.map((job) => toJobWithMatch(job, currentUser, savedJobIds));
+  
+  // Apply sorting to all matching jobs first
   const sortMode = filters.sort || "match";
-
   if (sortMode === "match") {
     jobsWithMatch.sort((a, b) => b.match_score - a.match_score);
   } else if (sortMode === "recent") {
-    jobsWithMatch.sort((a, b) => new Date(b.posted_date).getTime() - new Date(a.posted_date).getTime());
+    jobsWithMatch.sort((a, b) => {
+      const dateA = new Date(b.posted_date).getTime();
+      const dateB = new Date(a.posted_date).getTime();
+      return dateA - dateB;
+    });
   } else if (sortMode === "salary") {
     jobsWithMatch.sort((a, b) => (b.salary_max || b.salary_min || 0) - (a.salary_max || a.salary_min || 0));
   }

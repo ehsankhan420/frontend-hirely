@@ -50,6 +50,9 @@ export interface Job {
   sponsorship_confirmed: boolean;
   seniority_level: SeniorityLevel;
   created_at: string;
+  scraper_source?: "linkedin" | "indeed" | "manual";
+  session_id?: string;
+  scraped_at?: string;
 }
 
 export interface JobWithMatch extends Job {
@@ -120,5 +123,6 @@ export interface JobFilters {
   job_type?: JobType;
   salary_min?: number;
   salary_max?: number;
+  scraper_source?: "linkedin" | "indeed";
   sort?: "match" | "recent" | "salary";
 }
