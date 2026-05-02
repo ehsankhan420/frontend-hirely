@@ -136,6 +136,91 @@ function SectionHeader({ title, icon: Icon }: { title: string; icon: React.Eleme
   );
 }
 
+// ─── Smart Job Description Formatter ──────────────────────────────────────────
+function JobDescriptionFormatter({ text, companyName }: { text: string; companyName?: string }) {
+  if (!text) return null;
+
+  const baseHeaders = [
+    "About the Role",
+    "About the role",
+    "About Us",
+    "About us",
+    "Key Responsibilities",
+    "Responsibilities",
+    "What You'll Do",
+    "What You Will Do",
+    "Requirements",
+    "Qualifications",
+    "Required Skills",
+    "Bonus Points",
+    "Nice to Have",
+    "Benefits",
+    "What We Offer",
+    "Platform Modernization & Cloud Architecture",
+    "Cross-Functional Collaboration & Support",
+    "Back-End & Full Stack Development",
+    "Your Role",
+    "The Role"
+  ];
+
+  const headers = [...baseHeaders];
+  if (companyName) {
+    headers.push(`About ${companyName}`);
+  }
+
+  let processedText = text;
+
+  // Add newlines before bullet points (•, ●, ▪, or ' - ')
+  processedText = processedText.replace(/([•●▪]|\s-\s)/g, '\n$1');
+
+  // Add newlines and bold markers around headers
+  headers.forEach(header => {
+    // Regex for exact match, case insensitive, optionally followed by a colon
+    const regex = new RegExp(`(${header}:?)`, 'gi');
+    processedText = processedText.replace(regex, '\n\n###$1###\n');
+  });
+
+  // Clean up excessive newlines
+  processedText = processedText.replace(/\n{3,}/g, '\n\n').trim();
+
+  // Split into blocks by double newline
+  const blocks = processedText.split('\n\n');
+
+  return (
+    <div className="space-y-5 text-slate-700 leading-relaxed text-[15px]">
+      {blocks.map((block, index) => {
+        // If it's a header block
+        if (block.includes('###')) {
+          const parts = block.split('###');
+          return (
+            <div key={index} className="space-y-2 mt-6 first:mt-0">
+              {parts.map((part, pIdx) => {
+                if (pIdx % 2 === 1) {
+                  return (
+                    <h3 key={pIdx} className="text-lg font-extrabold text-slate-900 tracking-tight mt-6 mb-2">
+                      {part}
+                    </h3>
+                  );
+                }
+                return part.trim() ? (
+                  <p key={pIdx} className="whitespace-pre-wrap">{part.trim()}</p>
+                ) : null;
+              })}
+            </div>
+          );
+        }
+
+        // Regular paragraph
+        return (
+          <p key={index} className="whitespace-pre-wrap">
+            {block.trim()}
+          </p>
+        );
+      })}
+    </div>
+  );
+}
+
 // ─── Page ──────────────────────────────────────────────────────────────────────
 export default function JobDetailPage() {
   const params = useParams();
@@ -485,9 +570,7 @@ export default function JobDetailPage() {
             <SectionCard>
               <SectionHeader title="Full Job Description" icon={GraduationCap} />
               <div className="p-6 md:p-8">
-                <div className="whitespace-pre-wrap text-base leading-relaxed text-slate-700 font-normal">
-                  {job.description}
-                </div>
+                <JobDescriptionFormatter text={job.description} companyName={job.company_name} />
               </div>
             </SectionCard>
           </div>
