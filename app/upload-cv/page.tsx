@@ -128,22 +128,16 @@ const STEPS = [
 const FEATURES = [
   {
     icon: Zap,
-    color: "text-amber-600",
-    bg: "bg-amber-50 border-amber-200",
-    title: "Instant parsing",
+    title: "Instant analysis",
     desc: "Your CV is analysed in seconds — no manual entry needed.",
   },
   {
     icon: Shield,
-    color: "text-emerald-600",
-    bg: "bg-emerald-50 border-emerald-200",
     title: "Private & secure",
     desc: "Your file is stored securely and only accessible by you.",
   },
   {
     icon: Sparkles,
-    color: "text-indigo-600",
-    bg: "bg-indigo-50 border-indigo-200",
     title: "Better job matches",
     desc: "Jobs are ranked by how well they match your actual profile.",
   },
@@ -295,10 +289,6 @@ export default function UploadCVPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans relative overflow-hidden">
-      {/* Ambient Glows */}
-      <div className="fixed top-[-20%] right-[-10%] w-[800px] h-[800px] bg-blue-400/10 blur-[120px] -z-10 rounded-full pointer-events-none" />
-      <div className="fixed bottom-[-20%] left-[-10%] w-[600px] h-[600px] bg-indigo-400/10 blur-[120px] -z-10 rounded-full pointer-events-none" />
-
       {/* Header */}
       <header className="sticky top-0 z-50 bg-slate-50/80 backdrop-blur-xl border-b border-slate-200/50">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -337,10 +327,10 @@ export default function UploadCVPage() {
                     <div
                       className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 font-bold text-[14px] transition-all duration-300 ${
                         isDone
-                          ? "bg-emerald-500 text-white shadow-[0_4px_14px_rgba(16,185,129,0.3)]"
+                          ? "bg-blue-600 text-white"
                           : isActive
-                          ? "bg-blue-600 text-white shadow-[0_4px_14px_rgba(37,99,235,0.3)] border-2 border-blue-100"
-                          : "bg-slate-200 text-slate-500 border border-slate-300"
+                          ? "bg-blue-600 text-white shadow-sm"
+                          : "bg-slate-200 text-slate-500"
                       }`}
                     >
                       {isDone ? (
@@ -368,64 +358,47 @@ export default function UploadCVPage() {
           {/* Two-column layout grid */}
           <div className="grid lg:grid-cols-[1fr_1.1fr] gap-12 lg:gap-20 items-start">
             {/* Left — copy */}
-            <motion.div variants={itemVariants} className="space-y-10 lg:sticky lg:top-32">
+            <motion.div variants={itemVariants} className="space-y-8 lg:sticky lg:top-32">
               <div>
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-indigo-100 bg-indigo-50 text-[12px] font-bold uppercase tracking-widest text-indigo-700 mb-6 shadow-sm">
-                  <Sparkles className="h-4 w-4" />
-                  Personalised matches
-                </div>
-
-                <h1 className="text-4xl md:text-[56px] font-extrabold text-slate-900 leading-[1.1] tracking-tight mb-6">
+                <h1 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight tracking-tight mb-4">
                   {userName ? (
                     <>
-                      Welcome,{" "}
-                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
-                        {userName.split(" ")[0]}!
-                      </span>
+                      Welcome, <span className="text-blue-600">{userName.split(" ")[0]}!</span>
                     </>
                   ) : (
                     "Almost there!"
                   )}
                   <br />
-                  <span className="text-slate-400 font-bold text-3xl md:text-[40px] mt-2 block">
+                  <span className="text-slate-500 mt-2 block">
                     Upload your CV
                   </span>
                 </h1>
 
-                <p className="text-slate-500 text-[18px] leading-relaxed font-medium max-w-lg">
+                <p className="text-slate-500 text-[16px] leading-relaxed max-w-md">
                   We&apos;ll extract your skills, experience, and title to automatically rank every visa-sponsored job against your profile.
                 </p>
               </div>
 
-              <div className="space-y-6 pt-8 border-t border-slate-200/80">
+              <div className="space-y-6 pt-6 border-t border-slate-200/80">
                 {FEATURES.map((f, i) => {
                   const Icon = f.icon;
-                  // Map legacy colors to new design system classes dynamically
-                  const colorMap: Record<string, {text: string, bg: string}> = {
-                     "text-amber-600": { text: "text-amber-600", bg: "bg-amber-50" },
-                     "text-emerald-600": { text: "text-emerald-600", bg: "bg-emerald-50" },
-                     "text-indigo-600": { text: "text-blue-600", bg: "bg-blue-50" }
-                  };
-                  const styles = colorMap[f.color] || { text: "text-slate-600", bg: "bg-slate-50" };
 
                   return (
                     <motion.div 
                       key={f.title} 
-                      className="flex items-start gap-5 p-4 rounded-[24px] hover:bg-white border border-transparent hover:border-slate-200 hover:shadow-sm transition-all duration-300 group"
+                      className="flex items-start gap-4 p-2"
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.2 + (i * 0.1) }}
                     >
-                      <div
-                        className={`shrink-0 flex h-14 w-14 items-center justify-center rounded-[16px] transition-transform duration-300 group-hover:scale-110 shadow-sm border border-slate-100 ${styles.bg}`}
-                      >
-                        <Icon className={`h-6 w-6 ${styles.text}`} strokeWidth={2.5} />
+                      <div className="shrink-0 pt-0.5">
+                        <Icon className="h-5 w-5 text-blue-600" strokeWidth={2.5} />
                       </div>
-                      <div className="pt-1">
-                        <p className="text-[17px] font-extrabold text-slate-800">
+                      <div>
+                        <p className="text-[16px] font-bold text-slate-800">
                           {f.title}
                         </p>
-                        <p className="text-[14px] text-slate-500 mt-1 font-medium leading-relaxed max-w-sm">
+                        <p className="text-[14px] text-slate-500 mt-0.5 max-w-sm">
                           {f.desc}
                         </p>
                       </div>
@@ -436,7 +409,7 @@ export default function UploadCVPage() {
             </motion.div>
 
             {/* Right — upload card */}
-            <motion.div variants={itemVariants} className="rounded-[32px] border border-slate-200/80 bg-white/80 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.04)] overflow-hidden relative min-h-[500px] flex flex-col justify-center">
+            <motion.div variants={itemVariants} className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden relative min-h-[500px] flex flex-col justify-center">
               <AnimatePresence mode="wait">
               <div className="p-8 md:p-12 relative z-10 w-full h-full flex flex-col justify-center">
                   {/* Already saved — no extracted data shown */}
@@ -464,7 +437,7 @@ export default function UploadCVPage() {
                       <div className="space-y-4 pt-4 max-w-md mx-auto">
                         <button
                           onClick={handleContinue}
-                          className="w-full flex items-center justify-center gap-3 py-4 rounded-[16px] font-bold text-[16px] text-white bg-blue-600 hover:bg-blue-700 transition-all shadow-[0_4px_14px_rgba(37,99,235,0.3)]"
+                          className="w-full flex items-center justify-center gap-3 py-3.5 rounded-xl font-bold text-[15px] text-white bg-blue-600 hover:bg-blue-700 transition-all shadow-sm"
                         >
                           <LayoutDashboard className="h-5 w-5" strokeWidth={2.5} />
                           View Job Matches
@@ -550,7 +523,7 @@ export default function UploadCVPage() {
                       <div className="space-y-4 pt-2">
                         <button
                           onClick={handleContinue}
-                          className="w-full flex items-center justify-center gap-2 py-4 rounded-[16px] font-bold text-[16px] text-white bg-blue-600 hover:bg-blue-700 transition-all shadow-[0_4px_14px_rgba(37,99,235,0.3)]"
+                          className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold text-[15px] text-white bg-blue-600 hover:bg-blue-700 transition-all shadow-sm"
                         >
                           View Job Matches <ArrowRight className="h-5 w-5" strokeWidth={3} />
                         </button>
@@ -690,7 +663,7 @@ export default function UploadCVPage() {
                         <button
                           onClick={handleConfirm}
                           disabled={confirming}
-                          className="w-full flex items-center justify-center gap-2 py-4 rounded-[16px] font-bold text-[16px] text-white bg-blue-600 hover:bg-blue-700 transition-all shadow-[0_4px_14px_rgba(37,99,235,0.3)] disabled:opacity-60 disabled:cursor-not-allowed"
+                          className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold text-[15px] text-white bg-blue-600 hover:bg-blue-700 transition-all shadow-sm disabled:opacity-60 disabled:cursor-not-allowed"
                         >
                           {confirming ? (
                             <Loader2 className="h-5 w-5 animate-spin" />
@@ -702,7 +675,7 @@ export default function UploadCVPage() {
                         <button
                           onClick={() => fileInputRef.current?.click()}
                           disabled={uploading}
-                          className="w-full text-[14px] font-bold text-slate-600 hover:text-slate-900 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-colors py-3 rounded-[14px] disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                          className="w-full text-[14px] font-bold text-slate-600 hover:text-slate-900 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-colors py-2.5 rounded-xl disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                         >
                           {uploading ? (
                             <>
@@ -745,12 +718,12 @@ export default function UploadCVPage() {
                           setDragOver(true);
                         }}
                         onDragLeave={() => setDragOver(false)}
-                        className={`relative group cursor-pointer rounded-[32px] border-2 border-dashed p-10 md:p-14 text-center transition-all duration-300 w-full ${
+                        className={`relative group cursor-pointer rounded-2xl border-2 border-dashed p-10 md:p-14 text-center transition-all duration-300 w-full ${
                           dragOver
                             ? "border-blue-400 bg-blue-50/80 scale-[1.02]"
                             : uploading
                             ? "border-blue-200 bg-slate-50/50"
-                            : "border-slate-300 bg-slate-50/80 hover:border-blue-400 hover:bg-blue-50/40 hover:shadow-lg hover:shadow-blue-900/5"
+                            : "border-slate-300 bg-slate-50/80 hover:border-blue-400 hover:bg-blue-50/40 hover:shadow-sm"
                         }`}
                       >
                         <input
