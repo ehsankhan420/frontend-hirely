@@ -142,9 +142,7 @@ function JobDescriptionFormatter({ text, companyName }: { text: string; companyN
 
   const baseHeaders = [
     "About the Role",
-    "About the role",
     "About Us",
-    "About us",
     "Key Responsibilities",
     "Responsibilities",
     "What You'll Do",
@@ -159,6 +157,11 @@ function JobDescriptionFormatter({ text, companyName }: { text: string; companyN
     "Platform Modernization & Cloud Architecture",
     "Cross-Functional Collaboration & Support",
     "Back-End & Full Stack Development",
+    "Technical Skills & Experience",
+    "Essential",
+    "Desirable",
+    "Why You'll Love working here",
+    "Why You’ll Love working here",
     "Your Role",
     "The Role"
   ];
@@ -168,16 +171,22 @@ function JobDescriptionFormatter({ text, companyName }: { text: string; companyN
     headers.push(`About ${companyName}`);
   }
 
+  // Also match ALL CAPS versions of these headers
+  const allCapsHeaders = headers.map(h => h.toUpperCase());
+  const matchHeaders = [...headers, ...allCapsHeaders];
+
   let processedText = text;
 
   // Add newlines before bullet points (•, ●, ▪, or ' - ')
   processedText = processedText.replace(/([•●▪]|\s-\s)/g, '\n$1');
 
   // Add newlines and bold markers around headers
-  headers.forEach(header => {
-    // Regex for exact match, case insensitive, optionally followed by a colon
-    const regex = new RegExp(`(${header}:?)`, 'gi');
-    processedText = processedText.replace(regex, '\n\n###$1###\n');
+  // Using case-sensitive matching (no 'i' flag) so we don't accidentally match lowercase words like "requirements" mid-sentence.
+  matchHeaders.forEach(header => {
+    // Regex for exact match, case sensitive, optionally followed by a colon
+    // We use a safe boundary match that handles punctuation
+    const regex = new RegExp(`(^|\\s)(${header}:?)(\\s|$)`, 'g');
+    processedText = processedText.replace(regex, '$1\n\n###$2###\n\n$3');
   });
 
   // Clean up excessive newlines
@@ -187,17 +196,17 @@ function JobDescriptionFormatter({ text, companyName }: { text: string; companyN
   const blocks = processedText.split('\n\n');
 
   return (
-    <div className="space-y-5 text-slate-700 leading-relaxed text-[15px]">
+    <div className="space-y-4 text-slate-700 leading-relaxed text-[15px]">
       {blocks.map((block, index) => {
         // If it's a header block
         if (block.includes('###')) {
           const parts = block.split('###');
           return (
-            <div key={index} className="space-y-2 mt-6 first:mt-0">
+            <div key={index} className="space-y-2 mt-8 first:mt-0">
               {parts.map((part, pIdx) => {
                 if (pIdx % 2 === 1) {
                   return (
-                    <h3 key={pIdx} className="text-lg font-extrabold text-slate-900 tracking-tight mt-6 mb-2">
+                    <h3 key={pIdx} className="text-[17px] font-extrabold text-slate-900 tracking-tight mt-6 mb-2">
                       {part}
                     </h3>
                   );
