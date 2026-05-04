@@ -65,34 +65,27 @@ export default function Navbar({ user }: NavbarProps) {
   }
 
   return (
-    <header 
+    <header
       className="sticky top-0 z-50 w-full bg-white/90 backdrop-blur-xl border-b border-slate-200/60 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] transition-all duration-300"
       style={{ fontFamily: "'Inter', sans-serif" }}
     >
       <div className="container mx-auto flex h-20 max-w-7xl items-center justify-between px-4 lg:px-8">
-        
+
         {/* Logo Section */}
         <Link href={user ? "/jobs" : "/"} className="flex items-center overflow-hidden cursor-pointer group">
-          <motion.div 
+          <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="flex items-center justify-center shrink-0"
           >
-            {/* 
-              Note: The image is named _white, so we add a dark background 
-              to ensure it's visible on this light navbar. 
-              If the image itself has a solid background, this wrapper color will just be hidden behind it.
-            */}
-            <div className="bg-blue-600 p-1.5 rounded-lg shadow-sm">
-              <Image 
-                src="/hirely_wordmark_white.png" 
-                alt="Hirely" 
-                width={120}
-                height={24}
-                className="h-6 w-auto object-contain"
-                priority
-              />
-            </div>
+            <Image
+              src="/hirely_wordmark_transparent_dark.png"
+              alt="Hirely"
+              width={300}
+              height={60}
+              className="h-[60px] w-auto object-contain scale-110 object-left -ml-5"
+              priority
+            />
           </motion.div>
         </Link>
 
@@ -106,11 +99,10 @@ export default function Navbar({ user }: NavbarProps) {
                   <motion.div
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className={`px-4 py-2.5 rounded-[12px] font-bold text-[14px] transition-all duration-200 cursor-pointer flex items-center gap-2 ${
-                      active
-                        ? "bg-blue-50 shadow-inner border border-blue-100/50 text-blue-700" 
+                    className={`px-4 py-2.5 rounded-[12px] font-bold text-[14px] transition-all duration-200 cursor-pointer flex items-center gap-2 ${active
+                        ? "bg-blue-50 shadow-inner border border-blue-100/50 text-blue-700"
                         : "text-slate-500 hover:bg-slate-50 hover:text-slate-800 border border-transparent"
-                    }`}
+                      }`}
                   >
                     {link.label}
                   </motion.div>
@@ -124,7 +116,7 @@ export default function Navbar({ user }: NavbarProps) {
         <div className="flex items-center gap-4">
           {user ? (
             <div className="flex items-center gap-4">
-              
+
               {/* Badges & Upgrade Button */}
               <div className="hidden sm:flex items-center gap-3">
                 {user.role === "free" && (
@@ -156,7 +148,7 @@ export default function Navbar({ user }: NavbarProps) {
               {/* Profile Dropdown */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <motion.button 
+                  <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className="focus:outline-none rounded-full"
@@ -173,21 +165,21 @@ export default function Navbar({ user }: NavbarProps) {
                     <p className="text-[14px] font-bold text-slate-800 leading-tight truncate">{user.name || "User"}</p>
                     <p className="text-[12px] font-semibold text-slate-500 truncate mt-0.5">{user.email}</p>
                   </div>
-                  
+
                   <DropdownMenuItem asChild className="rounded-[10px] cursor-pointer focus:bg-blue-50 focus:text-blue-700 py-2.5 mt-1 font-semibold text-slate-600 text-[13px]">
                     <Link href="/profile" className="flex items-center">
                       <Settings className="mr-2.5 h-4 w-4" />
                       Profile & CV
                     </Link>
                   </DropdownMenuItem>
-                  
+
                   <DropdownMenuItem asChild className="rounded-[10px] cursor-pointer focus:bg-blue-50 focus:text-blue-700 py-2.5 font-semibold text-slate-600 text-[13px]">
                     <Link href="/my-jobs" className="flex items-center">
                       <Bookmark className="mr-2.5 h-4 w-4" />
                       My Jobs
                     </Link>
                   </DropdownMenuItem>
-                  
+
                   {user.role === "admin" && (
                     <DropdownMenuItem asChild className="rounded-[10px] cursor-pointer focus:bg-purple-50 focus:text-purple-700 py-2.5 font-semibold text-slate-600 text-[13px]">
                       <Link href="/admin" className="flex items-center">
@@ -196,9 +188,9 @@ export default function Navbar({ user }: NavbarProps) {
                       </Link>
                     </DropdownMenuItem>
                   )}
-                  
+
                   <DropdownMenuSeparator className="my-1.5" />
-                  
+
                   <DropdownMenuItem
                     onClick={handleSignOut}
                     disabled={loading}
@@ -215,7 +207,7 @@ export default function Navbar({ user }: NavbarProps) {
             /* Unauthenticated State */
             <div className="flex items-center gap-3">
               <Link href="/login">
-                <motion.button 
+                <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   className="px-4 py-2 font-bold text-slate-500 hover:text-slate-800 hover:bg-slate-50 rounded-[12px] text-[14px] transition-colors"
@@ -224,7 +216,7 @@ export default function Navbar({ user }: NavbarProps) {
                 </motion.button>
               </Link>
               <Link href="/register">
-                <motion.button 
+                <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-[12px] font-bold text-[14px] shadow-[0_4px_14px_rgba(37,99,235,0.3)] transition-all flex items-center"

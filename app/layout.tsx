@@ -1,11 +1,19 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Plus_Jakarta_Sans, Outfit } from "next/font/google";
 import "./globals.css";
 import CookieConsentBanner from "@/components/CookieConsentBanner";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/components/theme-provider";
 
-const inter = Inter({ subsets: ["latin"] });
+const jakarta = Plus_Jakarta_Sans({ 
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
 
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: "--font-heading",
+});
 export const metadata: Metadata = {
   title: "Hirely — UK Visa Sponsorship Jobs",
   description:
@@ -20,10 +28,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
-        {children}
-        <CookieConsentBanner />
-        <Toaster richColors position="top-right" />
+      <body className={`${jakarta.variable} ${outfit.variable} font-sans antialiased`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+          <CookieConsentBanner />
+          <Toaster richColors position="top-right" />
+        </ThemeProvider>
       </body>
     </html>
   );

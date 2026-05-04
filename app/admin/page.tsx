@@ -160,7 +160,7 @@ export default function AdminDashboardPage() {
     <AdminLayout user={user}>
       {loading ? (
         <div className="flex flex-col items-center justify-center min-h-[70vh] gap-4" style={{ fontFamily: "'Inter', sans-serif" }}>
-          <div className="h-8 w-8 animate-spin rounded-full border-[3px] border-slate-200 border-t-blue-600 shadow-sm" />
+          <div className="h-8 w-8 animate-spin rounded-full border-[3px] border-slate-200 dark:border-slate-800 border-t-blue-600 shadow-sm" />
           <p className="text-slate-400 text-xs tracking-widest uppercase font-bold">Synchronizing core...</p>
         </div>
       ) : (
@@ -209,22 +209,22 @@ export default function AdminDashboardPage() {
                 <motion.div 
                     variants={itemVariants} 
                     key={config.key} 
-                    className={`bg-white rounded-[24px] border border-slate-200/80 p-6 flex flex-col justify-between shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:border-slate-300 transition-all duration-300 group overflow-hidden relative`}
+                    className={`bg-white dark:bg-slate-900 rounded-[24px] border border-slate-200/80 dark:border-slate-800/80 p-6 flex flex-col justify-between shadow-[0_2px_10px_rgba(0,0,0,0.02)] dark:shadow-none hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] dark:hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)] hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-300 group overflow-hidden relative`}
                 >
                   <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none transform translate-x-1/4 -translate-y-1/4 group-hover:scale-110 group-hover:opacity-10 transition-all duration-500">
                      <config.icon className="w-32 h-32" style={{ color: config.color }} />
                   </div>
                   
                   <div className="flex items-center gap-4 mb-6 relative z-10">
-                    <div className={`flex w-12 h-12 shrink-0 items-center justify-center rounded-[14px] ${config.bgClass}`}>
+                    <div className={`flex w-12 h-12 shrink-0 items-center justify-center rounded-[14px] ${config.bgClass} dark:bg-slate-800/50`}>
                       <config.icon className="h-6 w-6" style={{ color: config.color }} strokeWidth={2.5} />
                     </div>
-                    <p className="text-sm font-bold text-slate-500 uppercase tracking-widest">
+                    <p className="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">
                       {config.label}
                     </p>
                   </div>
                   <div className="relative z-10">
-                    <p className="text-[2.5rem] font-extrabold tracking-tight text-slate-800 leading-none">
+                    <p className="text-[2.5rem] font-extrabold tracking-tight text-slate-800 dark:text-white leading-none">
                       {Number(stats[config.key]).toLocaleString()}
                     </p>
                   </div>
@@ -236,26 +236,26 @@ export default function AdminDashboardPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 pt-2">
               {/* Graphical Growth Monitor */}
               {stats && (
-                <motion.div variants={itemVariants} className="col-span-1 lg:col-span-7 bg-white rounded-[24px] border border-slate-200/80 p-7 shadow-[0_2px_10px_rgba(0,0,0,0.02)] flex flex-col">
+                <motion.div variants={itemVariants} className="col-span-1 lg:col-span-7 bg-white dark:bg-slate-900 rounded-[24px] border border-slate-200/80 dark:border-slate-800/80 p-7 shadow-[0_2px_10px_rgba(0,0,0,0.02)] dark:shadow-none flex flex-col">
                   
-                  <div className="flex justify-between items-center pb-5 border-b border-slate-100">
-                      <span className="font-bold text-slate-800 tracking-tight flex items-center gap-2.5 text-lg">
+                  <div className="flex justify-between items-center pb-5 border-b border-slate-100 dark:border-slate-800">
+                      <span className="font-bold text-slate-800 dark:text-white tracking-tight flex items-center gap-2.5 text-lg">
                           <BarChart3 className="w-5 h-5 text-blue-500" />
                           Growth Monitor
                       </span>
                       <div className="flex items-center gap-3">
-                          <div className="hidden sm:flex bg-slate-100/80 p-1 rounded-xl">
+                          <div className="hidden sm:flex bg-slate-100/80 dark:bg-slate-800/80 p-1 rounded-xl">
                             {TIME_FILTERS.map((tf) => (
                                <button 
                                  key={tf}
                                  onClick={() => setTimeFilter(tf)}
-                                 className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${timeFilter === tf ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                                 className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${timeFilter === tf ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}
                                >
                                  {tf}
                                </button>
                             ))}
                           </div>
-                          <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-[8px] bg-slate-50 border border-slate-200 text-[11px] font-bold text-slate-500 uppercase tracking-widest shadow-sm">
+                          <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-[8px] bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest shadow-sm">
                             <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
                             Live
                           </div>
@@ -317,21 +317,21 @@ export default function AdminDashboardPage() {
                      )}
                   </div>
                   
-                  <div className="flex justify-between items-end mt-4 pt-4 border-t border-slate-100">
+                  <div className="flex justify-between items-end mt-4 pt-4 border-t border-slate-100 dark:border-slate-800">
                      <div>
                        <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest block mb-1">
                           Acquisitions {timeFilter === 'Daily' ? 'Today' : timeFilter === 'Weekly' ? 'This Week' : timeFilter === 'Monthly' ? 'This Month' : 'This Year'}
                        </span>
-                       <span className="text-3xl font-extrabold text-slate-800 tracking-tight">{stats?.new_this_month} Users</span>
+                       <span className="text-3xl font-extrabold text-slate-800 dark:text-white tracking-tight">{stats?.new_this_month} Users</span>
                      </div>
                      
                      {/* Modern progress distribution */}
                      <div className="w-[180px] flex flex-col gap-2">
-                        <div className="flex items-center justify-between text-[11px] font-semibold text-slate-500">
+                        <div className="flex items-center justify-between text-[11px] font-semibold text-slate-500 dark:text-slate-400">
                            <span>Free: {stats.free_users}</span>
-                           <span className="text-blue-600">Pro: {stats.premium_users}</span>
+                           <span className="text-blue-600 dark:text-blue-400">Pro: {stats.premium_users}</span>
                         </div>
-                        <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden flex shadow-inner">
+                        <div className="w-full bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden flex shadow-inner">
                             <motion.div 
                                 initial={{ width: 0 }}
                                 animate={{ width: `${Math.max(5, (stats.premium_users / Math.max(1, stats.free_users + stats.premium_users)) * 100)}%` }}
@@ -346,18 +346,18 @@ export default function AdminDashboardPage() {
               )}
 
               {/* Scraper Details Widget */}
-              <motion.div variants={itemVariants} className="col-span-1 lg:col-span-5 bg-white rounded-[24px] border border-slate-200/80 p-7 shadow-[0_2px_10px_rgba(0,0,0,0.02)] flex flex-col overflow-hidden relative">
+              <motion.div variants={itemVariants} className="col-span-1 lg:col-span-5 bg-white dark:bg-slate-900 rounded-[24px] border border-slate-200/80 dark:border-slate-800/80 p-7 shadow-[0_2px_10px_rgba(0,0,0,0.02)] dark:shadow-none flex flex-col overflow-hidden relative">
                 
                 {/* Subtle tech background pattern */}
-                <div className="absolute top-0 right-0 w-full h-full opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#3b82f6 2px, transparent 2px)', backgroundSize: '24px 24px'}}></div>
+                <div className="absolute top-0 right-0 w-full h-full opacity-[0.03] dark:opacity-[0.05] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#3b82f6 2px, transparent 2px)', backgroundSize: '24px 24px'}}></div>
                 
-                <div className="flex justify-between items-center pb-5 border-b border-slate-100 relative z-10">
-                    <span className="font-bold text-slate-800 tracking-tight flex items-center gap-2.5 text-lg">
+                <div className="flex justify-between items-center pb-5 border-b border-slate-100 dark:border-slate-800 relative z-10">
+                    <span className="font-bold text-slate-800 dark:text-white tracking-tight flex items-center gap-2.5 text-lg">
                         <Activity className="w-5 h-5 text-indigo-500" />
                         Scraper Engine Status
                     </span>
                     <Link href="/admin/scheduler">
-                        <Button variant="ghost" size="sm" className="h-8 text-xs font-bold text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 px-3 rounded-[8px]">
+                        <Button variant="ghost" size="sm" className="h-8 text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 px-3 rounded-[8px]">
                             Configure
                         </Button>
                     </Link>
@@ -367,13 +367,13 @@ export default function AdminDashboardPage() {
                   {scraperStatus ? (
                     <div className="space-y-5">
                       {/* Engine Running State */}
-                      <div className="flex items-center gap-4 bg-slate-50 border border-slate-200 rounded-[16px] p-4">
-                        <div className={`flex w-12 h-12 rounded-[12px] items-center justify-center shrink-0 ${scraperStatus.is_running ? 'bg-indigo-100 text-indigo-600' : 'bg-slate-200 text-slate-500'}`}>
+                      <div className="flex items-center gap-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-[16px] p-4">
+                        <div className={`flex w-12 h-12 rounded-[12px] items-center justify-center shrink-0 ${scraperStatus.is_running ? 'bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400' : 'bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400'}`}>
                            {scraperStatus.is_running ? <RefreshCw className="w-6 h-6 animate-spin" /> : <Zap className="w-6 h-6" />}
                         </div>
                         <div>
-                          <h4 className="font-extrabold text-slate-800 text-[15px]">Data Pipeline</h4>
-                          <p className={`text-xs font-bold uppercase tracking-wider mt-0.5 ${scraperStatus.is_running ? 'text-indigo-600' : 'text-slate-500'}`}>
+                          <h4 className="font-extrabold text-slate-800 dark:text-white text-[15px]">Data Pipeline</h4>
+                          <p className={`text-xs font-bold uppercase tracking-wider mt-0.5 ${scraperStatus.is_running ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500'}`}>
                             {scraperStatus.is_running ? "Extraction in progress" : "Currently Idle"}
                           </p>
                         </div>
@@ -381,17 +381,17 @@ export default function AdminDashboardPage() {
 
                       {/* Health Check grid */}
                       <div className="grid grid-cols-2 gap-3">
-                         <div className="border border-slate-100 rounded-[14px] p-4 flex flex-col items-center justify-center text-center bg-slate-50/50">
+                         <div className="border border-slate-100 dark:border-slate-800 rounded-[14px] p-4 flex flex-col items-center justify-center text-center bg-slate-50/50 dark:bg-slate-800/50">
                             <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">Automated Schedule</span>
                             {scraperStatus.is_enabled ? (
-                              <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 shadow-none"><CheckCircle2 className="w-3.5 h-3.5 mr-1" /> Active</Badge>
+                              <Badge className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800/50 shadow-none"><CheckCircle2 className="w-3.5 h-3.5 mr-1" /> Active</Badge>
                             ) : (
-                              <Badge className="bg-amber-100 text-amber-700 hover:bg-amber-100 border border-amber-200 shadow-none"><AlertCircle className="w-3.5 h-3.5 mr-1" /> Paused</Badge>
+                              <Badge className="bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/30 border border-amber-200 dark:border-amber-800/50 shadow-none"><AlertCircle className="w-3.5 h-3.5 mr-1" /> Paused</Badge>
                             )}
                          </div>
-                         <div className="border border-slate-100 rounded-[14px] p-4 flex flex-col items-center justify-center text-center bg-slate-50/50">
+                         <div className="border border-slate-100 dark:border-slate-800 rounded-[14px] p-4 flex flex-col items-center justify-center text-center bg-slate-50/50 dark:bg-slate-800/50">
                             <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Next Operation</span>
-                            <span className="text-sm font-extrabold text-slate-800">
+                            <span className="text-sm font-extrabold text-slate-800 dark:text-white">
                                {scraperStatus.upcoming_runs?.length > 0 
                                   ? new Date(scraperStatus.upcoming_runs[0].next_run).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
                                   : "Unscheduled"}
@@ -400,13 +400,13 @@ export default function AdminDashboardPage() {
                       </div>
 
                       {/* Current Indices */}
-                      <div className="bg-white border border-slate-100 shadow-sm rounded-[14px] px-5 py-4">
+                      <div className="bg-white dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700 shadow-sm dark:shadow-none rounded-[14px] px-5 py-4">
                         <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest block mb-3">Rotation Indices</span>
-                        <div className="flex justify-between items-center text-sm font-semibold text-slate-600">
+                        <div className="flex justify-between items-center text-sm font-semibold text-slate-600 dark:text-slate-300">
                            <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-[#0a66c2]" /> LinkedIn</span>
                            <span>Skill {scraperStatus.linkedin_next_index}</span>
                         </div>
-                        <div className="flex justify-between items-center text-sm font-semibold text-slate-600 mt-2">
+                        <div className="flex justify-between items-center text-sm font-semibold text-slate-600 dark:text-slate-300 mt-2">
                            <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-[#2164f4]" /> Indeed</span>
                            <span>Skill {scraperStatus.indeed_next_index}</span>
                         </div>

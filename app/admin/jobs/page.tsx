@@ -247,10 +247,10 @@ function buildJobIdentityKey(title: string, companyName: string, location: strin
 }
 
 const JOB_TYPE_COLORS: Record<string, string> = {
-  "full-time": "text-emerald-700 bg-emerald-50 border-emerald-200",
-  "part-time": "text-sky-700 bg-sky-50 border-sky-200",
-  contract: "text-amber-700 bg-amber-50 border-amber-200",
-  remote: "text-violet-700 bg-violet-50 border-violet-200",
+  "full-time": "text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 border-emerald-200 dark:border-emerald-800/50",
+  "part-time": "text-sky-700 dark:text-sky-400 bg-sky-50 dark:bg-sky-900/30 border-sky-200 dark:border-sky-800/50",
+  contract: "text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/30 border-amber-200 dark:border-amber-800/50",
+  remote: "text-violet-700 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/30 border-violet-200 dark:border-violet-800/50",
 };
 
 export default function AdminJobsPage() {
@@ -489,7 +489,7 @@ export default function AdminJobsPage() {
                  value={search}
                  onChange={(e) => setSearch(e.target.value)}
                  placeholder="Search jobs by title or company..."
-                 className="pl-11 h-12 bg-white border border-slate-200/80 text-slate-800 placeholder:text-slate-400 focus-visible:ring-blue-500 rounded-[14px] shadow-[0_2px_10px_rgba(0,0,0,0.02)] text-[15px] font-medium transition-shadow hover:shadow-[0_4px_20px_rgba(0,0,0,0.04)]"
+                 className="pl-11 h-12 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-slate-800 dark:text-slate-100 placeholder:text-slate-400 focus-visible:ring-blue-500 rounded-[14px] shadow-[0_2px_10px_rgba(0,0,0,0.02)] dark:shadow-none text-[15px] font-medium transition-shadow hover:shadow-[0_4px_20px_rgba(0,0,0,0.04)]"
                />
              </div>
            </div>
@@ -497,15 +497,15 @@ export default function AdminJobsPage() {
            <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">
               {/* Type Filter */}
               <Select value={typeFilter} onValueChange={setTypeFilter}>
-                <SelectTrigger className="w-[160px] h-12 bg-white border border-slate-200/80 text-slate-700 text-[13px] font-bold rounded-[14px] shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all focus:ring-2 focus:ring-blue-500 focus:ring-offset-0">
+                <SelectTrigger className="w-[160px] h-12 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-slate-700 dark:text-slate-200 text-[13px] font-bold rounded-[14px] shadow-[0_2px_10px_rgba(0,0,0,0.02)] dark:shadow-none hover:shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all focus:ring-2 focus:ring-blue-500 focus:ring-offset-0">
                   <SelectValue placeholder="All Job Types" />
                 </SelectTrigger>
-                <SelectContent className="rounded-[16px] border-slate-200 shadow-xl p-1 bg-white border border-slate-100">
-                  <SelectItem value="all" className="rounded-[10px] cursor-pointer font-bold text-slate-600 focus:bg-blue-50 focus:text-blue-700 text-[13px] py-2">All Job Types</SelectItem>
-                  <SelectItem value="full-time" className="rounded-[10px] cursor-pointer font-bold text-slate-600 focus:bg-blue-50 focus:text-blue-700 text-[13px] py-2">Full-Time</SelectItem>
-                  <SelectItem value="part-time" className="rounded-[10px] cursor-pointer font-bold text-slate-600 focus:bg-blue-50 focus:text-blue-700 text-[13px] py-2">Part-Time</SelectItem>
-                  <SelectItem value="contract" className="rounded-[10px] cursor-pointer font-bold text-slate-600 focus:bg-blue-50 focus:text-blue-700 text-[13px] py-2">Contract</SelectItem>
-                  <SelectItem value="remote" className="rounded-[10px] cursor-pointer font-bold text-slate-600 focus:bg-blue-50 focus:text-blue-700 text-[13px] py-2">Remote</SelectItem>
+                <SelectContent className="rounded-[16px] border-slate-200 dark:border-slate-800 shadow-xl p-1 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+                  <SelectItem value="all" className="rounded-[10px] cursor-pointer font-bold text-slate-600 dark:text-slate-300 focus:bg-blue-50 dark:focus:bg-blue-900/30 focus:text-blue-700 dark:focus:text-blue-400 text-[13px] py-2">All Job Types</SelectItem>
+                  <SelectItem value="full-time" className="rounded-[10px] cursor-pointer font-bold text-slate-600 dark:text-slate-300 focus:bg-blue-50 dark:focus:bg-blue-900/30 focus:text-blue-700 dark:focus:text-blue-400 text-[13px] py-2">Full-Time</SelectItem>
+                  <SelectItem value="part-time" className="rounded-[10px] cursor-pointer font-bold text-slate-600 dark:text-slate-300 focus:bg-blue-50 dark:focus:bg-blue-900/30 focus:text-blue-700 dark:focus:text-blue-400 text-[13px] py-2">Part-Time</SelectItem>
+                  <SelectItem value="contract" className="rounded-[10px] cursor-pointer font-bold text-slate-600 dark:text-slate-300 focus:bg-blue-50 dark:focus:bg-blue-900/30 focus:text-blue-700 dark:focus:text-blue-400 text-[13px] py-2">Contract</SelectItem>
+                  <SelectItem value="remote" className="rounded-[10px] cursor-pointer font-bold text-slate-600 dark:text-slate-300 focus:bg-blue-50 dark:focus:bg-blue-900/30 focus:text-blue-700 dark:focus:text-blue-400 text-[13px] py-2">Remote</SelectItem>
                 </SelectContent>
               </Select>
               
@@ -514,12 +514,12 @@ export default function AdminJobsPage() {
                 value={sortOrder}
                 onValueChange={(v) => setSortOrder(v === "asc" ? "asc" : "desc")}
               >
-                <SelectTrigger className="w-[140px] h-12 bg-white border border-slate-200/80 text-slate-700 text-[13px] font-bold rounded-[14px] shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all focus:ring-2 focus:ring-blue-500 focus:ring-offset-0">
+                <SelectTrigger className="w-[140px] h-12 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-slate-700 dark:text-slate-200 text-[13px] font-bold rounded-[14px] shadow-[0_2px_10px_rgba(0,0,0,0.02)] dark:shadow-none hover:shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all focus:ring-2 focus:ring-blue-500 focus:ring-offset-0">
                   <SelectValue placeholder="Sort By" />
                 </SelectTrigger>
-                <SelectContent className="rounded-[16px] border-slate-200 shadow-xl p-1 bg-white border border-slate-100">
-                  <SelectItem value="desc" className="rounded-[10px] cursor-pointer font-bold text-slate-600 focus:bg-blue-50 focus:text-blue-700 text-[13px] py-2">Newest First</SelectItem>
-                  <SelectItem value="asc" className="rounded-[10px] cursor-pointer font-bold text-slate-600 focus:bg-blue-50 focus:text-blue-700 text-[13px] py-2">Oldest First</SelectItem>
+                <SelectContent className="rounded-[16px] border-slate-200 dark:border-slate-800 shadow-xl p-1 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+                  <SelectItem value="desc" className="rounded-[10px] cursor-pointer font-bold text-slate-600 dark:text-slate-300 focus:bg-blue-50 dark:focus:bg-blue-900/30 focus:text-blue-700 dark:focus:text-blue-400 text-[13px] py-2">Newest First</SelectItem>
+                  <SelectItem value="asc" className="rounded-[10px] cursor-pointer font-bold text-slate-600 dark:text-slate-300 focus:bg-blue-50 dark:focus:bg-blue-900/30 focus:text-blue-700 dark:focus:text-blue-400 text-[13px] py-2">Oldest First</SelectItem>
                 </SelectContent>
               </Select>
 
@@ -536,11 +536,11 @@ export default function AdminJobsPage() {
         </motion.div>
 
         {/* Modern Bento Table */}
-        <motion.div variants={itemVariants} className="bg-white rounded-[24px] border border-slate-200/80 shadow-[0_2px_10px_rgba(0,0,0,0.02)] overflow-hidden relative">
+        <motion.div variants={itemVariants} className="bg-white dark:bg-slate-900 rounded-[24px] border border-slate-200/80 dark:border-slate-800 shadow-[0_2px_10px_rgba(0,0,0,0.02)] dark:shadow-none overflow-hidden relative">
           {loading ? (
             <div className="flex items-center justify-center py-32">
               <div className="flex flex-col items-center gap-4">
-                <div className="h-10 w-10 animate-spin rounded-full border-4 border-slate-100 border-t-blue-600" />
+                <div className="h-10 w-10 animate-spin rounded-full border-4 border-slate-100 dark:border-slate-800 border-t-blue-600 shadow-sm" />
                 <span className="text-sm font-bold tracking-widest text-slate-400 uppercase">Loading Jobs...</span>
               </div>
             </div>
@@ -548,7 +548,7 @@ export default function AdminJobsPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-slate-50/50 border-b border-slate-100">
+                  <tr className="bg-slate-50/50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800">
                     {["Job Title", "Company", "Location", "Type", "Sponsorship", "Posted", "Controls"].map(
                       (h, i) => (
                         <th
@@ -561,29 +561,29 @@ export default function AdminJobsPage() {
                     )}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                   {filtered.map((job) => (
                     <tr
                       key={job.id}
-                      className="hover:bg-blue-50/30 transition-colors group"
+                      className="hover:bg-blue-50/30 dark:hover:bg-blue-900/20 transition-colors group"
                     >
                       <td className="px-7 py-5">
-                        <span className="text-[15px] font-bold text-slate-800 line-clamp-2">
+                        <span className="text-[15px] font-bold text-slate-800 dark:text-slate-200 line-clamp-2">
                           {job.title}
                         </span>
                       </td>
                       <td className="px-7 py-5">
                         <div className="flex items-center gap-3">
-                           <div className="flex-shrink-0 w-8 h-8 rounded-[8px] bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-[13px]">
+                           <div className="flex-shrink-0 w-8 h-8 rounded-[8px] bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-100 dark:border-indigo-800/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold text-[13px]">
                                {job.company_name.charAt(0).toUpperCase()}
                            </div>
-                           <span className="text-sm font-semibold text-slate-600 truncate max-w-[200px]">
+                           <span className="text-sm font-semibold text-slate-600 dark:text-slate-300 truncate max-w-[200px]">
                              {job.company_name}
                            </span>
                         </div>
                       </td>
                       <td className="px-7 py-5">
-                        <span className="text-sm font-medium text-slate-500 whitespace-nowrap">
+                        <span className="text-sm font-medium text-slate-500 dark:text-slate-400 whitespace-nowrap">
                           {job.location}
                         </span>
                       </td>
@@ -591,7 +591,7 @@ export default function AdminJobsPage() {
                         <span
                           className={`inline-flex items-center px-3 py-1 rounded-[8px] text-[11px] font-bold border capitalize whitespace-nowrap ${
                             JOB_TYPE_COLORS[job.job_type] ||
-                            "text-slate-700 bg-slate-100 border-slate-200"
+                            "text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700"
                           }`}
                         >
                           {job.job_type}
@@ -599,11 +599,11 @@ export default function AdminJobsPage() {
                       </td>
                       <td className="px-7 py-5">
                         {job.sponsorship_confirmed ? (
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] text-[11px] font-bold border text-emerald-700 bg-emerald-50 border-emerald-200 whitespace-nowrap shadow-sm">
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] text-[11px] font-bold border text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 border-emerald-200 dark:border-emerald-800/50 whitespace-nowrap shadow-sm">
                             <BadgeCheck className="h-4 w-4" /> Allowed
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] text-[11px] font-bold border text-slate-600 bg-slate-50 border-slate-200 whitespace-nowrap shadow-sm">
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] text-[11px] font-bold border text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 whitespace-nowrap shadow-sm">
                             <XCircle className="h-4 w-4" /> Unknown
                           </span>
                         )}
@@ -611,7 +611,7 @@ export default function AdminJobsPage() {
                       <td className="px-7 py-5">
                          <div className="flex items-center gap-2">
                            <Clock className="w-3.5 h-3.5 text-slate-400" />
-                           <span className="text-[13px] font-semibold text-slate-500 whitespace-nowrap tracking-tight">
+                           <span className="text-[13px] font-semibold text-slate-500 dark:text-slate-400 whitespace-nowrap tracking-tight">
                              {formatDate(job.posted_date)}
                            </span>
                          </div>
@@ -620,7 +620,7 @@ export default function AdminJobsPage() {
                         <button
                           onClick={() => handleDeactivate(job.id)}
                           disabled={deletingId === job.id}
-                          className="p-2.5 rounded-[10px] text-slate-400 hover:text-red-600 hover:bg-red-50 border border-transparent hover:border-red-100 transition-colors shadow-sm"
+                          className="p-2.5 rounded-[10px] text-slate-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 border border-transparent hover:border-red-100 dark:hover:border-red-800/50 transition-colors shadow-sm"
                           title="Remove Job"
                         >
                           {deletingId === job.id ? (
@@ -635,8 +635,8 @@ export default function AdminJobsPage() {
                   {filtered.length === 0 && (
                     <tr>
                       <td colSpan={7} className="text-center py-20">
-                          <div className="inline-flex w-16 h-16 bg-slate-50 rounded-[16px] border border-slate-100 items-center justify-center mb-4 shadow-inner">
-                              <Briefcase className="w-8 h-8 text-slate-300" />
+                          <div className="inline-flex w-16 h-16 bg-slate-50 dark:bg-slate-800/50 rounded-[16px] border border-slate-100 dark:border-slate-800 items-center justify-center mb-4 shadow-inner">
+                              <Briefcase className="w-8 h-8 text-slate-300 dark:text-slate-600" />
                           </div>
                           <p className="text-slate-500 font-bold text-[15px]">{search ? "No jobs match your search." : "There are currently no active jobs."}</p>
                       </td>

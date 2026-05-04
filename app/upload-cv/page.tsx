@@ -22,6 +22,7 @@ import {
   LayoutDashboard,
 } from "lucide-react";
 import { toast } from "sonner";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 function parseYearsValue(val: unknown): number {
   if (typeof val === "number" && Number.isFinite(val)) return val;
@@ -262,17 +263,17 @@ export default function UploadCVPage() {
   // Loading screen
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">
         <div className="flex flex-col items-center gap-4">
-          <Loader2 className="h-10 w-10 animate-spin text-indigo-600" />
-          <p className="text-slate-500 font-medium">Loading…</p>
+          <Loader2 className="h-10 w-10 animate-spin text-indigo-600 dark:text-indigo-400" />
+          <p className="text-slate-500 dark:text-slate-400 font-medium">Loading…</p>
         </div>
       </div>
     );
   }
 
   const inputClass =
-    "w-full px-5 py-3.5 rounded-2xl text-[15px] font-bold text-slate-900 placeholder:text-slate-400 bg-slate-50 border border-slate-200 outline-none focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all shadow-inner";
+    "w-full px-5 py-3.5 rounded-2xl text-[15px] font-bold text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 outline-none focus:bg-white dark:focus:bg-slate-950 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all shadow-inner dark:shadow-none";
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -288,34 +289,43 @@ export default function UploadCVPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans relative overflow-hidden">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans relative overflow-hidden">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-slate-50/80 backdrop-blur-xl border-b border-slate-200/50">
+      <header className="sticky top-0 z-50 bg-slate-50/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-800/50">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <Link
             href="/"
             className="flex items-center overflow-hidden cursor-pointer group"
           >
             <div className="flex items-center justify-center shrink-0">
-              <div className="bg-blue-600 p-1.5 rounded-lg shadow-sm">
-                <Image 
-                  src="/hirely_wordmark_white.png" 
-                  alt="Hirely" 
-                  width={120}
-                  height={24}
-                  className="h-6 w-auto object-contain"
-                  priority
-                />
-              </div>
+              <Image 
+                src="/hirely_wordmark_transparent_dark.png" 
+                alt="Hirely" 
+                width={300}
+                height={60}
+                className="h-[60px] w-auto object-contain scale-110 object-left -ml-5 dark:hidden"
+                priority
+              />
+              <Image 
+                src="/hirely_wordmark_white.png" 
+                alt="Hirely" 
+                width={300}
+                height={60}
+                className="h-[60px] w-auto object-contain scale-110 object-left -ml-5 hidden dark:block"
+                priority
+              />
             </div>
           </Link>
 
-          <button
-            onClick={handleContinue}
-            className="flex items-center gap-2 text-[14px] font-bold text-slate-500 hover:text-slate-900 transition-colors py-2 px-4 rounded-xl hover:bg-slate-200/50"
-          >
-            Skip for now <ArrowRight className="h-4 w-4" strokeWidth={3} />
-          </button>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={handleContinue}
+              className="flex items-center gap-2 text-[14px] font-bold text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors py-2 px-4 rounded-xl hover:bg-slate-200/50 dark:hover:bg-slate-800/50"
+            >
+              Skip for now <ArrowRight className="h-4 w-4" strokeWidth={3} />
+            </button>
+            <ThemeToggle />
+          </div>
         </div>
       </header>
 
@@ -335,7 +345,7 @@ export default function UploadCVPage() {
                           ? "bg-blue-600 text-white"
                           : isActive
                           ? "bg-blue-600 text-white shadow-sm"
-                          : "bg-slate-200 text-slate-500"
+                          : "bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400"
                       }`}
                     >
                       {isDone ? (
@@ -346,14 +356,14 @@ export default function UploadCVPage() {
                     </div>
                     <span
                       className={`text-[14px] font-bold ${
-                        isDone || isActive ? "text-slate-900" : "text-slate-400"
+                        isDone || isActive ? "text-slate-900 dark:text-white" : "text-slate-400 dark:text-slate-500"
                       }`}
                     >
                       {step.label}
                     </span>
                   </div>
                   {i < STEPS.length - 1 && (
-                    <div className="w-12 h-1 rounded-full bg-slate-200" />
+                    <div className="w-12 h-1 rounded-full bg-slate-200 dark:bg-slate-800" />
                   )}
                 </div>
               );
@@ -363,47 +373,53 @@ export default function UploadCVPage() {
           {/* Two-column layout grid */}
           <div className="grid lg:grid-cols-[1fr_1.1fr] gap-12 lg:gap-20 items-start">
             {/* Left — copy */}
-            <motion.div variants={itemVariants} className="space-y-8 lg:sticky lg:top-32">
-              <div>
-                <h1 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight tracking-tight mb-4">
+            <motion.div variants={itemVariants} className="space-y-10 lg:sticky lg:top-32 relative lg:-mt-4">
+              {/* Decorative blob */}
+              <div className="absolute -top-10 -left-10 w-40 h-40 bg-blue-500/20 dark:bg-blue-600/10 blur-[60px] rounded-full z-0 pointer-events-none" />
+              
+              <div className="relative z-10">
+                <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight tracking-tight mb-4">
                   {userName ? (
                     <>
-                      Welcome, <span className="text-blue-600">{userName.split(" ")[0]}!</span>
+                      Welcome,{" "}
+                      <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-500 dark:from-blue-400 dark:to-indigo-300">
+                        {userName.split(" ")[0]}!
+                      </span>
                     </>
                   ) : (
                     "Almost there!"
                   )}
                   <br />
-                  <span className="text-slate-500 mt-2 block">
+                  <span className="text-slate-500 dark:text-slate-400 text-3xl md:text-4xl mt-1 block font-bold tracking-tight">
                     Upload your CV
                   </span>
                 </h1>
 
-                <p className="text-slate-500 text-[16px] leading-relaxed max-w-md">
+                <p className="text-slate-600 dark:text-slate-400 text-[17px] leading-relaxed max-w-md font-medium">
                   We&apos;ll extract your skills, experience, and title to automatically rank every visa-sponsored job against your profile.
                 </p>
               </div>
 
-              <div className="space-y-6 pt-6 border-t border-slate-200/80">
+              <div className="space-y-4 relative z-10">
                 {FEATURES.map((f, i) => {
                   const Icon = f.icon;
 
                   return (
                     <motion.div 
                       key={f.title} 
-                      className="flex items-start gap-4 p-2"
+                      className="flex items-start gap-5 p-5 rounded-2xl bg-white/60 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60 shadow-sm backdrop-blur-md hover:bg-white/80 dark:hover:bg-slate-900/60 hover:shadow-md transition-all duration-300 group"
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.2 + (i * 0.1) }}
                     >
-                      <div className="shrink-0 pt-0.5">
-                        <Icon className="h-5 w-5 text-blue-600" strokeWidth={2.5} />
+                      <div className="shrink-0 flex items-center justify-center w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-500/10 border border-blue-100 dark:border-blue-500/20 group-hover:scale-110 group-hover:bg-blue-100 dark:group-hover:bg-blue-500/20 transition-all duration-300 shadow-sm">
+                        <Icon className="h-6 w-6 text-blue-600 dark:text-blue-400" strokeWidth={2} />
                       </div>
-                      <div>
-                        <p className="text-[16px] font-bold text-slate-800">
+                      <div className="pt-0.5">
+                        <p className="text-[17px] font-bold text-slate-900 dark:text-white mb-1">
                           {f.title}
                         </p>
-                        <p className="text-[14px] text-slate-500 mt-0.5 max-w-sm">
+                        <p className="text-[15px] text-slate-500 dark:text-slate-400 leading-relaxed max-w-sm">
                           {f.desc}
                         </p>
                       </div>
@@ -414,7 +430,7 @@ export default function UploadCVPage() {
             </motion.div>
 
             {/* Right — upload card */}
-            <motion.div variants={itemVariants} className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden relative min-h-[500px] flex flex-col justify-center">
+            <motion.div variants={itemVariants} className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-hidden relative min-h-[500px] flex flex-col justify-center">
               <AnimatePresence mode="wait">
               <div className="p-8 md:p-12 relative z-10 w-full h-full flex flex-col justify-center">
                   {/* Already saved — no extracted data shown */}
@@ -427,15 +443,15 @@ export default function UploadCVPage() {
                       className="text-center space-y-8"
                     >
                       <div className="flex justify-center">
-                        <div className="h-24 w-24 rounded-[24px] bg-emerald-50 border border-emerald-100 flex items-center justify-center shadow-inner mx-auto text-emerald-500">
+                        <div className="h-24 w-24 rounded-[24px] bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/50 flex items-center justify-center shadow-inner dark:shadow-none mx-auto text-emerald-500 dark:text-emerald-400">
                           <UserCheck className="h-12 w-12" strokeWidth={2.5} />
                         </div>
                       </div>
                       <div>
-                        <h2 className="text-3xl font-extrabold text-slate-900 mb-3">
+                        <h2 className="text-3xl font-extrabold text-slate-900 dark:text-white mb-3">
                           Profile Verified!
                         </h2>
-                        <p className="text-slate-500 font-medium text-[16px] max-w-xs mx-auto">
+                        <p className="text-slate-500 dark:text-slate-400 font-medium text-[16px] max-w-xs mx-auto">
                           Your profile is locked in. Let&apos;s find some visa-sponsored roles.
                         </p>
                       </div>
@@ -449,7 +465,7 @@ export default function UploadCVPage() {
                         </button>
                         <button
                           onClick={() => setCvSaved(false)}
-                          className="w-full text-[14px] font-bold text-slate-400 hover:text-slate-800 transition-colors py-2"
+                          className="w-full text-[14px] font-bold text-slate-400 dark:text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition-colors py-2"
                         >
                           Upload a different CV
                         </button>
@@ -465,61 +481,61 @@ export default function UploadCVPage() {
                       exit={{ opacity: 0, scale: 0.95 }}
                     >
                       <div className="text-center py-2">
-                        <div className="h-20 w-20 rounded-[24px] bg-emerald-50 border border-emerald-100 flex items-center justify-center shadow-inner mx-auto mb-6 text-emerald-500">
+                        <div className="h-20 w-20 rounded-[24px] bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/50 flex items-center justify-center shadow-inner dark:shadow-none mx-auto mb-6 text-emerald-500 dark:text-emerald-400">
                           <CheckCircle2 className="h-10 w-10" strokeWidth={2.5} />
                         </div>
-                        <h2 className="text-[28px] font-extrabold text-slate-900 mb-2">
+                        <h2 className="text-[28px] font-extrabold text-slate-900 dark:text-white mb-2">
                           CV profile saved!
                         </h2>
-                        <p className="text-slate-500 font-medium text-[15px]">
-                          <span className="font-bold text-slate-700">{extracted.skills?.length || 0} skills detected</span>. We&apos;re ready to find matches.
+                        <p className="text-slate-500 dark:text-slate-400 font-medium text-[15px]">
+                          <span className="font-bold text-slate-700 dark:text-slate-300">{extracted.skills?.length || 0} skills detected</span>. We&apos;re ready to find matches.
                         </p>
                       </div>
 
                       {/* Summary Grid */}
-                      <div className="rounded-[24px] border border-slate-200 bg-slate-50/50 p-6 space-y-4 shadow-inner">
+                      <div className="rounded-[24px] border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/50 p-6 space-y-4 shadow-inner dark:shadow-none">
                         {extracted.job_title && (
                           <div className="flex justify-between items-center text-[15px]">
-                            <span className="text-slate-400 font-bold uppercase tracking-wider text-[12px]">Job title</span>
-                            <span className="font-extrabold text-slate-800">
+                            <span className="text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider text-[12px]">Job title</span>
+                            <span className="font-extrabold text-slate-800 dark:text-slate-200">
                               {extracted.job_title}
                             </span>
                           </div>
                         )}
                         {extracted.experience_years != null && (
-                          <div className="flex justify-between items-center text-[15px] pt-3 border-t border-slate-200/60">
-                            <span className="text-slate-400 font-bold uppercase tracking-wider text-[12px]">Experience</span>
-                            <span className="font-extrabold text-slate-800">
+                          <div className="flex justify-between items-center text-[15px] pt-3 border-t border-slate-200/60 dark:border-slate-800">
+                            <span className="text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider text-[12px]">Experience</span>
+                            <span className="font-extrabold text-slate-800 dark:text-slate-200">
                               {extracted.experience_years} years
                             </span>
                           </div>
                         )}
                         {(extracted.experience_breakdown?.length || 0) > 0 && (
-                          <div className="pt-3 border-t border-slate-200/60">
-                            <span className="text-slate-400 font-bold uppercase tracking-wider text-[12px]">
+                          <div className="pt-3 border-t border-slate-200/60 dark:border-slate-800">
+                            <span className="text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider text-[12px]">
                               Where Experience Was Gained
                             </span>
                             <div className="mt-3 space-y-2">
                               {(extracted.experience_breakdown || []).map((entry, index) => (
                                 <div
                                   key={`${entry.role}-${entry.period}-${index}`}
-                                  className="rounded-xl border border-slate-200 bg-white px-3 py-2"
+                                  className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2"
                                 >
                                   <div className="flex items-center justify-between gap-3 text-[14px]">
-                                    <span className="font-bold text-slate-800 break-words min-w-0 flex-1">{entry.role}</span>
+                                    <span className="font-bold text-slate-800 dark:text-slate-200 break-words min-w-0 flex-1">{entry.role}</span>
                                     {Number.isFinite(entry.years) && (
-                                      <span className="font-extrabold text-blue-700 shrink-0 whitespace-nowrap">{formatYears(entry.years)} years</span>
+                                      <span className="font-extrabold text-blue-700 dark:text-blue-400 shrink-0 whitespace-nowrap">{formatYears(entry.years)} years</span>
                                     )}
                                   </div>
-                                  {entry.period && <p className="text-[12px] font-medium text-slate-500 mt-1">{entry.period}</p>}
+                                  {entry.period && <p className="text-[12px] font-medium text-slate-500 dark:text-slate-400 mt-1">{entry.period}</p>}
                                 </div>
                               ))}
                             </div>
                           </div>
                         )}
-                        <div className="flex justify-between items-center text-[15px] pt-3 border-t border-slate-200/60">
-                          <span className="text-slate-400 font-bold uppercase tracking-wider text-[12px]">Skills</span>
-                          <span className="font-extrabold text-blue-600 bg-blue-50 px-3 py-1 rounded-lg border border-blue-100">
+                        <div className="flex justify-between items-center text-[15px] pt-3 border-t border-slate-200/60 dark:border-slate-800">
+                          <span className="text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider text-[12px]">Skills</span>
+                          <span className="font-extrabold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-lg border border-blue-100 dark:border-blue-800/50">
                             {extracted.skills?.length || 0} skills
                           </span>
                         </div>
@@ -549,18 +565,18 @@ export default function UploadCVPage() {
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -20 }}
                     >
-                      <div className="border-b border-slate-100 pb-6">
-                        <h2 className="text-[28px] font-extrabold text-slate-900 mb-2">
+                      <div className="border-b border-slate-100 dark:border-slate-800 pb-6">
+                        <h2 className="text-[28px] font-extrabold text-slate-900 dark:text-white mb-2">
                           Review Extracted Profile
                         </h2>
-                        <p className="text-slate-500 font-medium">
+                        <p className="text-slate-500 dark:text-slate-400 font-medium">
                           We&apos;ve extracted the following from your CV. Edit anything that looks wrong before continuing.
                         </p>
                       </div>
 
                       <div className="space-y-6">
                         <div>
-                          <label className="block text-[13px] font-bold text-slate-500 uppercase tracking-widest mb-3">
+                          <label className="block text-[13px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-3">
                             Job Title
                           </label>
                           <input
@@ -577,7 +593,7 @@ export default function UploadCVPage() {
                         </div>
 
                         <div>
-                          <label className="block text-[13px] font-bold text-slate-500 uppercase tracking-widest mb-3">
+                          <label className="block text-[13px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-3">
                             Years of Experience
                           </label>
                           <input
@@ -601,22 +617,22 @@ export default function UploadCVPage() {
 
                         {(extracted.experience_breakdown?.length || 0) > 0 && (
                           <div>
-                            <label className="block text-[13px] font-bold text-slate-500 uppercase tracking-widest mb-3">
+                            <label className="block text-[13px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-3">
                               Experience by Role
                             </label>
-                            <div className="space-y-2.5 rounded-2xl border border-slate-200 bg-slate-50/60 p-4 max-h-[320px] overflow-y-auto">
+                            <div className="space-y-2.5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-950/60 p-4 max-h-[320px] overflow-y-auto">
                               {(extracted.experience_breakdown || []).map((entry, index) => (
                                 <div
                                   key={`${entry.role}-${entry.period}-${index}`}
-                                  className="rounded-xl border border-slate-200 bg-white px-3 py-2"
+                                  className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2"
                                 >
                                   <div className="flex items-center justify-between gap-3 text-[14px]">
-                                    <span className="font-bold text-slate-800 break-words min-w-0 flex-1">{entry.role}</span>
+                                    <span className="font-bold text-slate-800 dark:text-slate-200 break-words min-w-0 flex-1">{entry.role}</span>
                                     {Number.isFinite(entry.years) && (
-                                      <span className="font-extrabold text-blue-700 shrink-0 whitespace-nowrap">{formatYears(entry.years)} years</span>
+                                      <span className="font-extrabold text-blue-700 dark:text-blue-400 shrink-0 whitespace-nowrap">{formatYears(entry.years)} years</span>
                                     )}
                                   </div>
-                                  {entry.period && <p className="text-[12px] font-medium text-slate-500 mt-1">{entry.period}</p>}
+                                  {entry.period && <p className="text-[12px] font-medium text-slate-500 dark:text-slate-400 mt-1">{entry.period}</p>}
                                 </div>
                               ))}
                             </div>
@@ -624,20 +640,20 @@ export default function UploadCVPage() {
                         )}
 
                         <div>
-                          <label className="flex items-center gap-2 text-[13px] font-bold text-slate-500 uppercase tracking-widest mb-3">
-                            Extracted Skills <span className="bg-blue-100 text-blue-700 font-black px-2 py-0.5 rounded-md">{extracted?.skills?.length || 0}</span>
+                          <label className="flex items-center gap-2 text-[13px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-3">
+                            Extracted Skills <span className="bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-400 font-black px-2 py-0.5 rounded-md">{extracted?.skills?.length || 0}</span>
                           </label>
-                          <div className="flex flex-wrap gap-2.5 mb-4 p-4 bg-slate-50/50 rounded-2xl border border-slate-200">
-                            {(!extracted?.skills || extracted.skills.length === 0) && <span className="text-slate-400 text-sm font-medium italic">No skills extracted automatically</span>}
+                          <div className="flex flex-wrap gap-2.5 mb-4 p-4 bg-slate-50/50 dark:bg-slate-950/50 rounded-2xl border border-slate-200 dark:border-slate-800">
+                            {(!extracted?.skills || extracted.skills.length === 0) && <span className="text-slate-400 dark:text-slate-500 text-sm font-medium italic">No skills extracted automatically</span>}
                             {(extracted?.skills || []).map((skill) => (
                               <span
                                 key={skill}
-                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[10px] text-[13px] font-bold shadow-sm border border-slate-200 bg-white text-slate-700 hover:border-slate-300 transition-colors"
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[10px] text-[13px] font-bold shadow-sm border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:border-slate-300 dark:hover:border-slate-600 transition-colors"
                               >
                                 {skill}
                                 <button
                                   onClick={() => removeSkill(skill)}
-                                  className="text-slate-400 hover:text-red-500 transition-colors ml-1 p-0.5 rounded-md hover:bg-red-50"
+                                  className="text-slate-400 dark:text-slate-500 hover:text-red-500 dark:hover:text-red-400 transition-colors ml-1 p-0.5 rounded-md hover:bg-red-50 dark:hover:bg-red-900/20"
                                 >
                                   <X className="h-3.5 w-3.5" strokeWidth={3} />
                                 </button>
@@ -656,7 +672,7 @@ export default function UploadCVPage() {
                             />
                             <button
                               onClick={addSkill}
-                              className="flex items-center justify-center h-full px-5 rounded-[14px] text-[14px] font-bold text-slate-600 bg-white shadow-sm border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all shrink-0"
+                              className="flex items-center justify-center h-full px-5 rounded-[14px] text-[14px] font-bold text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 shadow-sm border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shrink-0"
                             >
                               <Plus className="h-5 w-5" strokeWidth={3} />
                             </button>
@@ -664,7 +680,7 @@ export default function UploadCVPage() {
                         </div>
                       </div>
 
-                      <div className="pt-4 border-t border-slate-100 space-y-3">
+                      <div className="pt-4 border-t border-slate-100 dark:border-slate-800 space-y-3">
                         <button
                           onClick={handleConfirm}
                           disabled={confirming}
@@ -680,7 +696,7 @@ export default function UploadCVPage() {
                         <button
                           onClick={() => fileInputRef.current?.click()}
                           disabled={uploading}
-                          className="w-full text-[14px] font-bold text-slate-600 hover:text-slate-900 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-colors py-2.5 rounded-xl disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                          className="w-full text-[14px] font-bold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors py-2.5 rounded-xl disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                         >
                           {uploading ? (
                             <>
@@ -706,10 +722,10 @@ export default function UploadCVPage() {
                       exit={{ opacity: 0, scale: 0.95 }}
                     >
                       <div className="text-center">
-                        <h2 className="text-[32px] font-extrabold text-slate-900 mb-3 tracking-tight">
+                        <h2 className="text-[32px] font-extrabold text-slate-900 dark:text-white mb-3 tracking-tight">
                           Upload your CV
                         </h2>
-                        <p className="text-slate-500 font-medium text-[16px]">
+                        <p className="text-slate-500 dark:text-slate-400 font-medium text-[16px]">
                           <strong>PDF, DOC, or DOCX</strong> up to 5MB.
                         </p>
                       </div>
@@ -725,10 +741,10 @@ export default function UploadCVPage() {
                         onDragLeave={() => setDragOver(false)}
                         className={`relative group cursor-pointer rounded-2xl border-2 border-dashed p-10 md:p-14 text-center transition-all duration-300 w-full ${
                           dragOver
-                            ? "border-blue-400 bg-blue-50/80 scale-[1.02]"
+                            ? "border-blue-400 dark:border-blue-500 bg-blue-50/80 dark:bg-blue-900/20 scale-[1.02]"
                             : uploading
-                            ? "border-blue-200 bg-slate-50/50"
-                            : "border-slate-300 bg-slate-50/80 hover:border-blue-400 hover:bg-blue-50/40 hover:shadow-sm"
+                            ? "border-blue-200 dark:border-blue-800/50 bg-slate-50/50 dark:bg-slate-900/50"
+                            : "border-slate-300 dark:border-slate-700 bg-slate-50/80 dark:bg-slate-900/50 hover:border-blue-400 dark:hover:border-blue-500 hover:bg-blue-50/40 dark:hover:bg-blue-900/10 hover:shadow-sm"
                         }`}
                       >
                         <input
@@ -740,23 +756,23 @@ export default function UploadCVPage() {
                         />
                         {uploading ? (
                           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col items-center">
-                            <Loader2 className="h-14 w-14 animate-spin text-blue-600 mb-6" strokeWidth={2.5} />
-                            <p className="text-[18px] font-extrabold text-slate-900">
+                            <Loader2 className="h-14 w-14 animate-spin text-blue-600 dark:text-blue-500 mb-6" strokeWidth={2.5} />
+                            <p className="text-[18px] font-extrabold text-slate-900 dark:text-white">
                               Reading your CV...
                             </p>
-                            <p className="text-[14px] text-slate-500 mt-2 font-medium">
+                            <p className="text-[14px] text-slate-500 dark:text-slate-400 mt-2 font-medium">
                               This won&apos;t take long.
                             </p>
                           </motion.div>
                         ) : (
                           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center">
-                            <div className="mx-auto h-24 w-24 flex items-center justify-center rounded-[24px] bg-white border border-slate-200 shadow-sm mb-6 group-hover:scale-110 group-hover:-translate-y-2 transition-all duration-500 ease-out group-hover:shadow-[0_8px_30px_rgba(37,99,235,0.12)]">
-                              <Upload className="h-10 w-10 text-slate-300 group-hover:text-blue-600 transition-colors duration-300" strokeWidth={2.5} />
+                            <div className="mx-auto h-24 w-24 flex items-center justify-center rounded-[24px] bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm mb-6 group-hover:scale-110 group-hover:-translate-y-2 transition-all duration-500 ease-out group-hover:shadow-[0_8px_30px_rgba(37,99,235,0.12)]">
+                              <Upload className="h-10 w-10 text-slate-300 dark:text-slate-500 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300" strokeWidth={2.5} />
                             </div>
-                            <p className="text-[18px] font-extrabold text-slate-800 tracking-tight">
+                            <p className="text-[18px] font-extrabold text-slate-800 dark:text-slate-200 tracking-tight">
                               Drag and drop your CV here
                             </p>
-                            <p className="text-[14px] font-bold text-slate-400 uppercase tracking-widest mt-4">
+                            <p className="text-[14px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-4">
                               Or click to upload a file
                             </p>
                           </motion.div>
@@ -766,7 +782,7 @@ export default function UploadCVPage() {
                       <div className="pt-4 flex justify-center">
                         <button
                           onClick={handleContinue}
-                          className="text-[14px] font-bold text-slate-400 hover:text-slate-800 transition-colors py-2 px-6 rounded-full hover:bg-slate-100"
+                          className="text-[14px] font-bold text-slate-400 dark:text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition-colors py-2 px-6 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
                         >
                           Skip for now and go to jobs
                         </button>

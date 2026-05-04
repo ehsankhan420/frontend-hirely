@@ -323,58 +323,58 @@ export default function AdminSchedulerPage() {
           <div className="grid md:grid-cols-2 gap-6 pt-4">
             
             {/* Status Panel */}
-            <motion.div variants={itemVariants} className="bg-white rounded-[24px] border border-slate-200/80 shadow-[0_2px_10px_rgba(0,0,0,0.02)] p-8">
-              <h2 className="text-lg font-bold flex items-center gap-2 mb-6 text-slate-800">
+            <motion.div variants={itemVariants} className="bg-white dark:bg-slate-900 rounded-[24px] border border-slate-200/80 dark:border-slate-800 shadow-[0_2px_10px_rgba(0,0,0,0.02)] dark:shadow-none p-8">
+              <h2 className="text-lg font-bold flex items-center gap-2 mb-6 text-slate-800 dark:text-white">
                 <Activity className="w-5 h-5 text-blue-500" />
                 Current Status
               </h2>
               
               <div className="space-y-4">
-                <div className="flex justify-between items-center p-4 bg-slate-50 border border-slate-100 rounded-2xl">
-                  <span className="text-[14px] font-bold text-slate-600">Scheduler State</span>
-                  <span className={`px-3 py-1.5 flex items-center gap-1.5 rounded-xl text-[12px] font-bold shadow-sm border ${status.is_enabled ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-red-50 text-red-700 border-red-200'}`}>
+                <div className="flex justify-between items-center p-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-2xl">
+                  <span className="text-[14px] font-bold text-slate-600 dark:text-slate-300">Scheduler State</span>
+                  <span className={`px-3 py-1.5 flex items-center gap-1.5 rounded-xl text-[12px] font-bold shadow-sm border ${status.is_enabled ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/50' : 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 border-red-200 dark:border-red-800/50'}`}>
                     {status.is_enabled ? <CheckCircle2 className="w-3.5 h-3.5" /> : <AlertCircle className="w-3.5 h-3.5" />}
                     {status.is_enabled ? "Active" : "Disabled"}
                   </span>
                 </div>
                 
-                <div className="flex justify-between items-center p-4 bg-slate-50 border border-slate-100 rounded-2xl">
-                  <span className="text-[14px] font-bold text-slate-600">Background Process</span>
-                  <span className={`px-3 py-1.5 flex items-center gap-1.5 rounded-xl text-[12px] font-bold shadow-sm border ${status.is_running ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-slate-50 text-slate-600 border-slate-200'}`}>
+                <div className="flex justify-between items-center p-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-2xl">
+                  <span className="text-[14px] font-bold text-slate-600 dark:text-slate-300">Background Process</span>
+                  <span className={`px-3 py-1.5 flex items-center gap-1.5 rounded-xl text-[12px] font-bold shadow-sm border ${status.is_running ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-800/50' : 'bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700'}`}>
                     {status.is_running ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : null}
                     {status.is_running ? "Processing" : "Idle"}
                   </span>
                 </div>
 
-                <div className="flex justify-between items-center p-4 bg-slate-50 border border-slate-100 rounded-2xl">
-                  <span className="text-[14px] font-bold text-slate-600">Rotation Progress</span>
+                <div className="flex justify-between items-center p-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-2xl">
+                  <span className="text-[14px] font-bold text-slate-600 dark:text-slate-300">Rotation Progress</span>
                   <div className="text-right flex flex-col gap-0.5">
-                    <p className="text-[13px] font-semibold text-slate-500">LinkedIn Skill Index: <span className="text-blue-600 bg-blue-50 px-1.5 rounded-md">{status.linkedin_next_index}</span></p>
-                    <p className="text-[13px] font-semibold text-slate-500">Indeed Skill Index: <span className="text-blue-600 bg-blue-50 px-1.5 rounded-md">{status.indeed_next_index}</span></p>
+                    <p className="text-[13px] font-semibold text-slate-500 dark:text-slate-400">LinkedIn Skill Index: <span className="text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-1.5 rounded-md">{status.linkedin_next_index}</span></p>
+                    <p className="text-[13px] font-semibold text-slate-500 dark:text-slate-400">Indeed Skill Index: <span className="text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-1.5 rounded-md">{status.indeed_next_index}</span></p>
                   </div>
                 </div>
 
-                <div className="p-4 bg-blue-50/50 border border-blue-100/50 rounded-2xl">
-                  <span className="text-[14px] font-bold flex items-center gap-2 text-blue-700 mb-3">
+                <div className="p-4 bg-blue-50/50 dark:bg-blue-900/20 border border-blue-100/50 dark:border-blue-800/30 rounded-2xl">
+                  <span className="text-[14px] font-bold flex items-center gap-2 text-blue-700 dark:text-blue-400 mb-3">
                     <CalendarDays className="w-4 h-4" /> Upcoming Scheduled Runs
                   </span>
                   {status.upcoming_runs.length > 0 ? (
                     <div className="space-y-2">
-                       <div className="text-[13px] font-semibold text-blue-700 bg-white px-3 py-2 rounded-xl shadow-sm border border-blue-100/60 flex items-center gap-2">
+                       <div className="text-[13px] font-semibold text-blue-700 dark:text-blue-400 bg-white dark:bg-slate-800 px-3 py-2 rounded-xl shadow-sm border border-blue-100/60 dark:border-blue-800/50 flex items-center gap-2">
                          <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
                          {new Date(status.upcoming_runs[0].next_run).toLocaleString()}
                        </div>
                     </div>
                   ) : (
-                    <span className="text-[13px] font-semibold text-slate-500">No scheduled runs configured</span>
+                    <span className="text-[13px] font-semibold text-slate-500 dark:text-slate-400">No scheduled runs configured</span>
                   )}
                 </div>
               </div>
             </motion.div>
 
             {/* Manual Controls */}
-            <motion.div variants={itemVariants} className="bg-white rounded-[24px] border border-slate-200/80 shadow-[0_2px_10px_rgba(0,0,0,0.02)] p-8">
-              <h2 className="text-lg font-bold mb-6 text-slate-800 flex items-center gap-2">
+            <motion.div variants={itemVariants} className="bg-white dark:bg-slate-900 rounded-[24px] border border-slate-200/80 dark:border-slate-800 shadow-[0_2px_10px_rgba(0,0,0,0.02)] dark:shadow-none p-8">
+              <h2 className="text-lg font-bold mb-6 text-slate-800 dark:text-white flex items-center gap-2">
                  <PlayCircle className="w-5 h-5 text-blue-500" />
                  Manual Run Controls
               </h2>
@@ -389,9 +389,9 @@ export default function AdminSchedulerPage() {
                         if (manualSources.includes("linkedin")) setManualSources((prev) => prev.filter((s) => s !== "linkedin"));
                         else setManualSources((prev) => Array.from(new Set([...prev, "linkedin"])));
                       }}
-                      className={`flex items-center gap-2.5 text-[14px] font-bold px-4 py-2 border rounded-xl cursor-pointer transition-all outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${manualSources.includes("linkedin") ? "bg-blue-50 border-blue-200 text-blue-700 shadow-sm" : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"}`}
+                      className={`flex items-center gap-2.5 text-[14px] font-bold px-4 py-2 border rounded-xl cursor-pointer transition-all outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${manualSources.includes("linkedin") ? "bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800/50 text-blue-700 dark:text-blue-400 shadow-sm" : "bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700"}`}
                     >
-                      <div className={`w-4 h-4 rounded-[5px] flex items-center justify-center transition-colors border ${manualSources.includes("linkedin") ? "bg-blue-600 border-blue-600 text-white" : "border-slate-300 bg-white"}`}>
+                      <div className={`w-4 h-4 rounded-[5px] flex items-center justify-center transition-colors border ${manualSources.includes("linkedin") ? "bg-blue-600 dark:bg-blue-500 border-blue-600 dark:border-blue-500 text-white" : "border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800"}`}>
                         {manualSources.includes("linkedin") && <Check className="w-3 h-3" strokeWidth={4} />}
                       </div>
                       LinkedIn Pipeline
@@ -403,9 +403,9 @@ export default function AdminSchedulerPage() {
                         if (manualSources.includes("indeed")) setManualSources((prev) => prev.filter((s) => s !== "indeed"));
                         else setManualSources((prev) => Array.from(new Set([...prev, "indeed"])));
                       }}
-                      className={`flex items-center gap-2.5 text-[14px] font-bold px-4 py-2 border rounded-xl cursor-pointer transition-all outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${manualSources.includes("indeed") ? "bg-blue-50 border-blue-200 text-blue-700 shadow-sm" : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"}`}
+                      className={`flex items-center gap-2.5 text-[14px] font-bold px-4 py-2 border rounded-xl cursor-pointer transition-all outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${manualSources.includes("indeed") ? "bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800/50 text-blue-700 dark:text-blue-400 shadow-sm" : "bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700"}`}
                     >
-                      <div className={`w-4 h-4 rounded-[5px] flex items-center justify-center transition-colors border ${manualSources.includes("indeed") ? "bg-blue-600 border-blue-600 text-white" : "border-slate-300 bg-white"}`}>
+                      <div className={`w-4 h-4 rounded-[5px] flex items-center justify-center transition-colors border ${manualSources.includes("indeed") ? "bg-blue-600 dark:bg-blue-500 border-blue-600 dark:border-blue-500 text-white" : "border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800"}`}>
                         {manualSources.includes("indeed") && <Check className="w-3 h-3" strokeWidth={4} />}
                       </div>
                       Indeed Pipeline
@@ -416,7 +416,7 @@ export default function AdminSchedulerPage() {
                 <div>
                   <label className="text-[13px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Custom keywords (optional)</label>
                   <textarea
-                    className="w-full flex min-h-[100px] rounded-[14px] border border-slate-200/80 bg-white px-4 py-3 text-[14px] font-medium text-slate-800 shadow-[0_2px_10px_rgba(0,0,0,0.02)] placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 transition-shadow hover:shadow-[0_4px_20px_rgba(0,0,0,0.04)]"
+                    className="w-full flex min-h-[100px] rounded-[14px] border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-3 text-[14px] font-medium text-slate-800 dark:text-slate-100 shadow-[0_2px_10px_rgba(0,0,0,0.02)] dark:shadow-none placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 transition-shadow hover:shadow-[0_4px_20px_rgba(0,0,0,0.04)]"
                     placeholder="python developer, data engineer, react&#10;(leave blank to use internal skills.json registry)"
                     value={manualKeywords}
                     onChange={(e) => setManualKeywords(e.target.value)}
@@ -438,7 +438,7 @@ export default function AdminSchedulerPage() {
                     onClick={handleTriggerIndeedPipeline}
                     disabled={triggering || status.is_running || stopping}
                     variant="outline"
-                    className="h-11 px-6 rounded-xl font-bold w-full border-blue-200 text-blue-700 hover:bg-blue-50"
+                    className="h-11 px-6 rounded-xl font-bold w-full border-blue-200 dark:border-blue-800/50 text-blue-700 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30"
                   >
                     {triggering ? "Starting Indeed Pipeline..." : "Run Indeed Pipeline"}
                   </Button>
@@ -447,9 +447,9 @@ export default function AdminSchedulerPage() {
             </motion.div>
 
             {/* Config Panel */}
-            <motion.div variants={itemVariants} className="bg-white rounded-[24px] border border-slate-200/80 shadow-[0_2px_10px_rgba(0,0,0,0.02)] p-8 md:col-span-2">
+            <motion.div variants={itemVariants} className="bg-white dark:bg-slate-900 rounded-[24px] border border-slate-200/80 dark:border-slate-800 shadow-[0_2px_10px_rgba(0,0,0,0.02)] dark:shadow-none p-8 md:col-span-2">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-lg font-bold flex items-center gap-2 text-slate-800">
+                <h2 className="text-lg font-bold flex items-center gap-2 text-slate-800 dark:text-white">
                   <Settings className="w-5 h-5 text-slate-500" />
                   Global Configuration
                 </h2>
@@ -459,15 +459,15 @@ export default function AdminSchedulerPage() {
               </div>
               
               <div className="grid md:grid-cols-2 gap-x-8 gap-y-6">
-                <div className="flex items-center justify-between p-4 bg-slate-50 border border-slate-100 rounded-[16px] md:col-span-2">
+                <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-[16px] md:col-span-2">
                   <div>
-                     <label className="text-[15px] font-bold text-slate-800 block">Enable Automated Daily Scraper</label>
-                     <span className="text-[13px] font-medium text-slate-500">Master toggle for the background cron scheduler.</span>
+                     <label className="text-[15px] font-bold text-slate-800 dark:text-white block">Enable Automated Daily Scraper</label>
+                     <span className="text-[13px] font-medium text-slate-500 dark:text-slate-400">Master toggle for the background cron scheduler.</span>
                   </div>
                   <button 
                      type="button"
                      onClick={() => setConfig({...config, enabled: !config.enabled})}
-                     className={`w-11 h-6 rounded-full transition-colors relative focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${config.enabled ? "bg-blue-600" : "bg-slate-200"}`}
+                     className={`w-11 h-6 rounded-full transition-colors relative focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${config.enabled ? "bg-blue-600" : "bg-slate-200 dark:bg-slate-700"}`}
                   >
                      <div className={`absolute top-[2px] left-[2px] bg-white h-5 w-5 rounded-full shadow-sm transition-transform ${config.enabled ? "translate-x-5" : "translate-x-0"}`} />
                   </button>
@@ -479,7 +479,7 @@ export default function AdminSchedulerPage() {
                     value={config.schedule_windows_start.join(", ")} 
                     onChange={e => setConfig({...config, schedule_windows_start: e.target.value.split(",").map(s => s.trim())})}
                     placeholder="01:00, 06:00, 21:00"
-                    className="h-11 bg-white border border-slate-200/80 rounded-[14px] text-[14px] font-bold shadow-sm focus-visible:ring-blue-500"
+                    className="h-11 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-[14px] text-[14px] font-bold shadow-sm focus-visible:ring-blue-500"
                   />
                   <span className="text-[12px] font-semibold text-slate-400 mt-1.5 block">Comma separated times in 24hr format</span>
                 </div>
@@ -491,7 +491,7 @@ export default function AdminSchedulerPage() {
                         type="number" 
                         value={config.duration_seconds} 
                         onChange={e => setConfig({...config, duration_seconds: parseInt(e.target.value)})}
-                        className="h-11 bg-white border border-slate-200/80 rounded-[14px] text-[14px] font-bold shadow-sm focus-visible:ring-blue-500"
+                        className="h-11 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-[14px] text-[14px] font-bold shadow-sm focus-visible:ring-blue-500"
                     />
                   </div>
                   <div>
@@ -500,7 +500,7 @@ export default function AdminSchedulerPage() {
                         type="number" 
                         value={config.max_jobs_per_skill} 
                         onChange={e => setConfig({...config, max_jobs_per_skill: parseInt(e.target.value)})}
-                        className="h-11 bg-white border border-slate-200/80 rounded-[14px] text-[14px] font-bold shadow-sm focus-visible:ring-blue-500"
+                        className="h-11 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-[14px] text-[14px] font-bold shadow-sm focus-visible:ring-blue-500"
                     />
                   </div>
                 </div>
@@ -508,10 +508,10 @@ export default function AdminSchedulerPage() {
                 <div className="md:col-span-2">
                   <label className="text-[13px] font-bold text-slate-500 uppercase tracking-widest flex justify-between items-center mb-2">
                     <span>Proxy Network Nodes (IP Whitelist)</span>
-                    <span className="bg-blue-50 text-blue-700 px-2 py-0.5 rounded-md text-[11px]">{config.proxies?.length || 0} nodes live</span>
+                    <span className="bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 px-2 py-0.5 rounded-md text-[11px]">{config.proxies?.length || 0} nodes live</span>
                   </label>
                   <textarea 
-                    className="w-full flex min-h-[100px] rounded-[14px] border border-slate-200/80 bg-slate-50/50 px-4 py-3 text-[14px] font-medium text-slate-800 shadow-inner placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 transition-colors tracking-widest font-mono"
+                    className="w-full flex min-h-[100px] rounded-[14px] border border-slate-200/80 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 px-4 py-3 text-[14px] font-medium text-slate-800 dark:text-slate-100 shadow-inner dark:shadow-none placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 transition-colors tracking-widest font-mono"
                     placeholder="http://192.168.1.1:8000"
                     value={(config.proxies || []).join('\n')}
                     onChange={(e) => {
@@ -527,9 +527,9 @@ export default function AdminSchedulerPage() {
             </motion.div>
 
             {/* Run History */}
-            <motion.div variants={itemVariants} className="bg-white rounded-[24px] border border-slate-200/80 shadow-[0_2px_10px_rgba(0,0,0,0.02)] md:col-span-2 overflow-hidden relative pb-4">
-               <div className="p-8 pb-6 border-b border-slate-100 flex justify-between items-center">
-                 <h2 className="text-lg font-bold flex items-center gap-2 text-slate-800">
+            <motion.div variants={itemVariants} className="bg-white dark:bg-slate-900 rounded-[24px] border border-slate-200/80 dark:border-slate-800 shadow-[0_2px_10px_rgba(0,0,0,0.02)] dark:shadow-none md:col-span-2 overflow-hidden relative pb-4">
+               <div className="p-8 pb-6 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
+                 <h2 className="text-lg font-bold flex items-center gap-2 text-slate-800 dark:text-white">
                     Run History Logging
                  </h2>
                </div>
@@ -537,7 +537,7 @@ export default function AdminSchedulerPage() {
                <div className="overflow-x-auto">
                  <table className="w-full text-left border-collapse">
                    <thead>
-                     <tr className="bg-slate-50/50 border-b border-slate-100">
+                     <tr className="bg-slate-50/50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800">
                        {["Timestamp", "Sourcing Scope", "Execution Time", "Data Harvested", "Pipeline End State"].map(
                          (h, i) => (
                            <th
@@ -550,25 +550,25 @@ export default function AdminSchedulerPage() {
                        )}
                      </tr>
                    </thead>
-                   <tbody className="divide-y divide-slate-100">
+                   <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                       {status.history.length === 0 ? (
                         <tr>
                           <td colSpan={5} className="py-20 text-center">
-                            <div className="inline-flex w-16 h-16 bg-slate-50 rounded-[16px] border border-slate-100 items-center justify-center mb-4 shadow-inner">
-                                <Clock className="w-8 h-8 text-slate-300" />
+                            <div className="inline-flex w-16 h-16 bg-slate-50 dark:bg-slate-800/50 rounded-[16px] border border-slate-100 dark:border-slate-800 items-center justify-center mb-4 shadow-inner">
+                                <Clock className="w-8 h-8 text-slate-300 dark:text-slate-600" />
                             </div>
                             <p className="text-slate-500 font-bold text-[15px]">No execution records found in log.</p>
                           </td>
                         </tr>
                       ) : (
                         status.history.map((run, i) => (
-                          <tr key={i} className="hover:bg-blue-50/30 transition-colors group">
+                          <tr key={i} className="hover:bg-blue-50/30 dark:hover:bg-blue-900/20 transition-colors group">
                             <td className="px-8 py-6">
                                <div className="flex flex-col gap-0.5">
-                                 <span className="text-[14px] font-bold text-slate-800">
+                                 <span className="text-[14px] font-bold text-slate-800 dark:text-slate-200">
                                    {new Date(run.start).toLocaleDateString("en-GB", { month: "short", day: "numeric", year: "numeric" })}
                                  </span>
-                                 <span className="text-[13px] font-semibold text-slate-500">
+                                 <span className="text-[13px] font-semibold text-slate-500 dark:text-slate-400">
                                    {new Date(run.start).toLocaleTimeString("en-GB")}
                                  </span>
                                </div>
@@ -578,8 +578,8 @@ export default function AdminSchedulerPage() {
                                 <span
                                   className={`inline-flex w-fit items-center rounded-lg px-2.5 py-1 text-[11px] font-bold shadow-sm border ${
                                     (run.keywords?.length || 0) > 0
-                                      ? "bg-blue-50 text-blue-700 border-blue-200"
-                                      : "bg-slate-100 text-slate-700 border-slate-200"
+                                      ? "bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 border-blue-200 dark:border-blue-800/50"
+                                      : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700"
                                   }`}
                                 >
                                   {(run.keywords?.length || 0) > 0 ? "Custom Keywords" : "Registry Defaults"}
@@ -590,27 +590,27 @@ export default function AdminSchedulerPage() {
                               </div>
                             </td>
                             <td className="px-8 py-6">
-                               <span className="text-[14px] font-bold text-slate-600 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100">{run.duration.split(".")[0]}</span>
+                               <span className="text-[14px] font-bold text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-100 dark:border-slate-700">{run.duration.split(".")[0]}</span>
                             </td>
                             <td className="px-8 py-6">
                               <div className="flex gap-3">
-                                 <div className="flex flex-col items-center p-2 rounded-xl border border-slate-100 bg-white shadow-sm min-w-[60px]">
+                                 <div className="flex flex-col items-center p-2 rounded-xl border border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm min-w-[60px]">
                                     <span className="text-[10px] font-bold text-slate-400 uppercase">LI</span>
-                                    <span className="text-[15px] font-extrabold text-blue-600">{run.results.linkedin_scraped || 0}</span>
+                                    <span className="text-[15px] font-extrabold text-blue-600 dark:text-blue-400">{run.results.linkedin_scraped || 0}</span>
                                  </div>
-                                 <div className="flex flex-col items-center p-2 rounded-xl border border-slate-100 bg-white shadow-sm min-w-[60px]">
+                                 <div className="flex flex-col items-center p-2 rounded-xl border border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm min-w-[60px]">
                                     <span className="text-[10px] font-bold text-slate-400 uppercase">IN</span>
-                                    <span className="text-[15px] font-extrabold text-emerald-600">{run.results.indeed_scraped || 0}</span>
+                                    <span className="text-[15px] font-extrabold text-emerald-600 dark:text-emerald-400">{run.results.indeed_scraped || 0}</span>
                                  </div>
                               </div>
                             </td>
                             <td className="px-8 py-6 text-right">
                               <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] text-[12px] font-bold border shadow-sm ${
                                 run.status === 'success'
-                                  ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                                  ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/50'
                                   : run.status === 'cancelled'
-                                  ? 'bg-amber-50 text-amber-700 border-amber-200'
-                                  : 'bg-red-50 text-red-700 border-red-200'
+                                  ? 'bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-800/50'
+                                  : 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 border-red-200 dark:border-red-800/50'
                               }`}>
                                 <span className={`w-2 h-2 rounded-full shadow-inner ${
                                   run.status === 'success' ? 'bg-emerald-500' : run.status === 'cancelled' ? 'bg-amber-500' : 'bg-red-500' 

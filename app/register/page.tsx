@@ -4,9 +4,11 @@ import { Suspense, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { ArrowRight, Eye, EyeOff, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Eye, EyeOff, CheckCircle2, ArrowLeft, UserPlus, FileText, Briefcase } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
   return (
@@ -17,6 +19,7 @@ export default function RegisterPage() {
 }
 
 function RegisterPageContent() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -83,20 +86,19 @@ function RegisterPageContent() {
 
   if (success) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
-        <div className="w-full max-w-md text-center"
-          style={{ background: "white", borderRadius: 20, padding: "40px 32px", boxShadow: "0 10px 40px rgba(0,0,0,0.08)" }}>
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 px-4">
+        <div className="w-full max-w-md text-center bg-white dark:bg-slate-900 rounded-[20px] p-[40px_32px] shadow-[0_10px_40px_rgba(0,0,0,0.08)] dark:shadow-none border border-transparent dark:border-slate-800">
           <div style={{
             width: 64, height: 64, borderRadius: 16,
             background: "linear-gradient(135deg, #dcfce7, #bbf7d0)",
             border: "1px solid #86efac",
             display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px"
           }}>
-            <CheckCircle2 className="h-8 w-8 text-emerald-500" />
+            <CheckCircle2 className="h-8 w-8 text-emerald-600" />
           </div>
-          <h2 className="text-2xl font-bold text-slate-800 mb-2">Check your email</h2>
-          <p className="text-slate-500 text-sm leading-relaxed mb-6">
-            We sent a verification link to <strong className="text-slate-700">{email}</strong>.
+          <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-2">Check your email</h2>
+          <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-6">
+            We sent a verification link to <strong className="text-slate-700 dark:text-slate-300">{email}</strong>.
             Click the link to activate your account, then come back to sign in.
           </p>
           <Link href="/login">
@@ -132,32 +134,39 @@ function RegisterPageContent() {
           <Image 
             src="/hirely_wordmark_white.png" 
             alt="Hirely" 
-            width={160}
-            height={32}
-            className="h-8 w-auto object-contain"
+            width={400}
+            height={100}
+            className="h-[80px] lg:h-[100px] w-auto object-contain object-left -ml-6"
             priority
           />
         </div>
 
         {/* Steps */}
-        <div className="relative z-10 space-y-5">
-          <p className="text-white/50 text-xs font-semibold uppercase tracking-widest">
+        <div className="relative z-10 space-y-8 mt-12">
+          <p className="text-white/50 text-xs font-bold uppercase tracking-[0.2em]">
             How it works
           </p>
-          {[
-            { step: "01", title: "Create your free account", desc: "Sign up in under a minute — no credit card needed." },
-            { step: "02", title: "Upload your CV", desc: "We extract your skills and experience to personalise your matches." },
-            { step: "03", title: "Find sponsored jobs", desc: "Browse hundreds of verified UK sponsor licence job listings." },
-          ].map((item) => (
-            <div key={item.step} className="flex items-start gap-4">
-              <div className="text-xs font-bold text-blue-400"
-                style={{ minWidth: 28, paddingTop: 2 }}>{item.step}</div>
-              <div>
-                <p className="text-white font-semibold text-sm">{item.title}</p>
-                <p className="text-white/50 text-xs mt-0.5">{item.desc}</p>
+          <div className="space-y-8 relative">
+            <div className="absolute left-[23px] top-6 bottom-6 w-[2px] bg-gradient-to-b from-blue-400/40 via-blue-400/10 to-transparent rounded-full" />
+            {[
+              { step: "01", icon: <UserPlus className="w-5 h-5 text-blue-400" strokeWidth={2.5} />, title: "Create your free account", desc: "Sign up in under a minute — no credit card needed." },
+              { step: "02", icon: <FileText className="w-5 h-5 text-blue-400" strokeWidth={2.5} />, title: "Upload your CV", desc: "We extract your skills and experience to personalise your matches." },
+              { step: "03", icon: <Briefcase className="w-5 h-5 text-blue-400" strokeWidth={2.5} />, title: "Find sponsored jobs", desc: "Browse hundreds of verified UK sponsor licence job listings." },
+            ].map((item) => (
+              <div key={item.step} className="flex gap-6 relative group">
+                <div className="relative z-10 flex-shrink-0 w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shadow-lg group-hover:bg-blue-500/20 group-hover:border-blue-400/50 group-hover:scale-110 transition-all duration-300 backdrop-blur-md">
+                  {item.icon}
+                  <div className="absolute -bottom-1 -right-1 w-[22px] h-[22px] rounded-full bg-blue-500 text-[10px] font-bold text-white flex items-center justify-center border-2 border-[#0f2d5c] shadow-sm">
+                    {item.step.replace('0', '')}
+                  </div>
+                </div>
+                <div className="pt-1 flex-1">
+                  <p className="text-white font-bold text-[16px] mb-1.5 group-hover:text-blue-200 transition-colors">{item.title}</p>
+                  <p className="text-white/60 text-[14px] leading-relaxed">{item.desc}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
         <div className="relative z-10 text-sm text-white/30">
@@ -166,41 +175,49 @@ function RegisterPageContent() {
       </div>
 
       {/* Right panel — form */}
-      <div className="flex-1 flex items-center justify-center px-6 py-12 bg-slate-50">
-        <div className="w-full max-w-md">
+      <div className="flex-1 flex flex-col items-center justify-center px-6 pb-12 pt-24 lg:pt-28 bg-slate-50 dark:bg-slate-950 relative">
+        {/* Top Controls */}
+        <div className="absolute top-6 left-6 right-6 flex justify-between items-center z-10">
+          <button onClick={() => router.back()} className="flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-100 transition-colors">
+            <ArrowLeft className="w-4 h-4" /> Go Back
+          </button>
+          <ThemeToggle />
+        </div>
+
+        <div className="w-full max-w-md mt-10 md:mt-0">
 
           {/* Mobile logo */}
           <div className="flex lg:hidden justify-center mb-8">
             <Link href="/" className="flex items-center">
-              <div className="bg-blue-600 p-1.5 rounded-lg shadow-sm">
-                <Image 
-                  src="/hirely_wordmark_white.png" 
-                  alt="Hirely" 
-                  width={120}
-                  height={24}
-                  className="h-6 w-auto object-contain"
-                  priority
-                />
-              </div>
+              <Image 
+                src="/hirely_wordmark_transparent_dark.png" 
+                alt="Hirely" 
+                width={400}
+                height={100}
+                className="h-[70px] w-auto object-contain dark:hidden"
+                priority
+              />
+              <Image 
+                src="/hirely_wordmark_white.png" 
+                alt="Hirely" 
+                width={400}
+                height={100}
+                className="h-[70px] w-auto object-contain hidden dark:block"
+                priority
+              />
             </Link>
           </div>
 
           <div className="mb-8">
-            <h2 className="text-2xl font-bold text-slate-800 mb-1.5">Create your account</h2>
-            <p className="text-slate-500 text-sm">Start finding visa-sponsored jobs today — it&apos;s free</p>
+            <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-1.5">Create your account</h2>
+            <p className="text-slate-500 dark:text-slate-400 text-sm">Start finding visa-sponsored jobs today — it&apos;s free</p>
           </div>
 
           {/* Google */}
           <button
             onClick={handleGoogleSignUp}
             disabled={googleLoading}
-            className="w-full flex items-center justify-center gap-3 py-2.5 px-4 rounded-xl text-sm font-medium transition-all duration-200"
-            style={{
-              background: "white", border: "1.5px solid #e2e8f0", color: "#374151",
-              cursor: "pointer", boxShadow: "0 1px 3px rgba(0,0,0,0.05)"
-            }}
-            onMouseOver={e => (e.currentTarget.style.borderColor = "#cbd5e1")}
-            onMouseOut={e => (e.currentTarget.style.borderColor = "#e2e8f0")}
+            className="w-full flex items-center justify-center gap-3 py-2.5 px-4 rounded-xl text-sm font-medium transition-all duration-200 bg-white dark:bg-slate-900 border-[1.5px] border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 hover:border-slate-300 dark:hover:border-slate-700 shadow-[0_1px_3px_rgba(0,0,0,0.05)] dark:shadow-none"
           >
             <svg className="h-4 w-4" viewBox="0 0 24 24">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
@@ -212,44 +229,38 @@ function RegisterPageContent() {
           </button>
 
           <div className="flex items-center gap-3 my-5">
-            <div className="flex-1 h-px bg-slate-200" />
-            <span className="text-xs text-slate-400 font-medium">or</span>
-            <div className="flex-1 h-px bg-slate-200" />
+            <div className="flex-1 h-px bg-slate-200 dark:bg-slate-800" />
+            <span className="text-xs text-slate-400 dark:text-slate-500 font-medium">or</span>
+            <div className="flex-1 h-px bg-slate-200 dark:bg-slate-800" />
           </div>
 
           <form onSubmit={handleRegister} className="space-y-4">
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-slate-700">Full name</label>
+              <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Full name</label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Your name"
                 required
-                className="w-full px-3.5 py-2.5 text-sm rounded-xl outline-none transition-all duration-200"
-                style={{ background: "white", border: "1.5px solid #e2e8f0", color: "#1e293b", boxShadow: "0 1px 2px rgba(0,0,0,0.04)" }}
-                onFocus={e => (e.currentTarget.style.borderColor = "#3b82f6")}
-                onBlur={e => (e.currentTarget.style.borderColor = "#e2e8f0")}
+                className="w-full px-3.5 py-2.5 text-sm rounded-xl outline-none transition-all duration-200 bg-white dark:bg-slate-900 border-[1.5px] border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 shadow-[0_1px_2px_rgba(0,0,0,0.04)] dark:shadow-none focus:border-blue-500 dark:focus:border-blue-500"
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-slate-700">Email address</label>
+              <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Email address</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
-                className="w-full px-3.5 py-2.5 text-sm rounded-xl outline-none transition-all duration-200"
-                style={{ background: "white", border: "1.5px solid #e2e8f0", color: "#1e293b", boxShadow: "0 1px 2px rgba(0,0,0,0.04)" }}
-                onFocus={e => (e.currentTarget.style.borderColor = "#3b82f6")}
-                onBlur={e => (e.currentTarget.style.borderColor = "#e2e8f0")}
+                className="w-full px-3.5 py-2.5 text-sm rounded-xl outline-none transition-all duration-200 bg-white dark:bg-slate-900 border-[1.5px] border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 shadow-[0_1px_2px_rgba(0,0,0,0.04)] dark:shadow-none focus:border-blue-500 dark:focus:border-blue-500"
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-slate-700">Password</label>
+              <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Password</label>
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
@@ -258,15 +269,12 @@ function RegisterPageContent() {
                   placeholder="Min. 8 characters"
                   minLength={8}
                   required
-                  className="w-full px-3.5 py-2.5 text-sm rounded-xl outline-none transition-all duration-200 pr-10"
-                  style={{ background: "white", border: "1.5px solid #e2e8f0", color: "#1e293b", boxShadow: "0 1px 2px rgba(0,0,0,0.04)" }}
-                  onFocus={e => (e.currentTarget.style.borderColor = "#3b82f6")}
-                  onBlur={e => (e.currentTarget.style.borderColor = "#e2e8f0")}
+                  className="w-full px-3.5 py-2.5 text-sm rounded-xl outline-none transition-all duration-200 pr-10 bg-white dark:bg-slate-900 border-[1.5px] border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 shadow-[0_1px_2px_rgba(0,0,0,0.04)] dark:shadow-none focus:border-blue-500 dark:focus:border-blue-500"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
                 >
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
@@ -289,9 +297,9 @@ function RegisterPageContent() {
             </button>
           </form>
 
-          <p className="text-center text-sm text-slate-500 mt-6">
+          <p className="text-center text-sm text-slate-500 dark:text-slate-400 mt-6">
             Already have an account?{" "}
-            <Link href={loginHref} className="text-blue-600 hover:text-blue-700 font-semibold">
+            <Link href={loginHref} className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold">
               Sign in
             </Link>
           </p>

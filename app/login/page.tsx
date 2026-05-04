@@ -5,9 +5,10 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { getMe } from "@/lib/api/users";
-import { ArrowRight, Eye, EyeOff } from "lucide-react";
+import { ArrowRight, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function LoginPage() {
   return (
@@ -112,9 +113,9 @@ function LoginPageContent() {
           <Image 
             src="/hirely_wordmark_white.png" 
             alt="Hirely" 
-            width={160}
-            height={32}
-            className="h-8 w-auto object-contain"
+            width={400}
+            height={100}
+            className="h-[80px] lg:h-[100px] w-auto object-contain object-left -ml-6"
             priority
           />
         </div>
@@ -157,44 +158,50 @@ function LoginPageContent() {
       </div>
 
       {/* Right panel — form */}
-      <div className="flex-1 flex items-center justify-center px-6 py-12 bg-slate-50">
-        <div className="w-full max-w-md">
+      <div className="flex-1 flex flex-col items-center justify-center px-6 pb-12 pt-24 lg:pt-28 bg-slate-50 dark:bg-slate-950 relative">
+        
+        {/* Top Controls */}
+        <div className="absolute top-6 left-6 right-6 flex justify-between items-center z-10">
+          <button onClick={() => router.back()} className="flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-100 transition-colors">
+            <ArrowLeft className="w-4 h-4" /> Go Back
+          </button>
+          <ThemeToggle />
+        </div>
+
+        <div className="w-full max-w-md mt-10 md:mt-0">
 
           {/* Mobile logo */}
           <div className="flex lg:hidden justify-center mb-8">
             <Link href="/" className="flex items-center">
-              <div className="bg-blue-600 p-1.5 rounded-lg shadow-sm">
-                <Image 
-                  src="/hirely_wordmark_white.png" 
-                  alt="Hirely" 
-                  width={120}
-                  height={24}
-                  className="h-6 w-auto object-contain"
-                  priority
-                />
-              </div>
+              <Image 
+                src="/hirely_wordmark_transparent_dark.png" 
+                alt="Hirely" 
+                width={400}
+                height={100}
+                className="h-[70px] w-auto object-contain dark:hidden"
+                priority
+              />
+              <Image 
+                src="/hirely_wordmark_white.png" 
+                alt="Hirely" 
+                width={400}
+                height={100}
+                className="h-[70px] w-auto object-contain hidden dark:block"
+                priority
+              />
             </Link>
           </div>
 
           <div className="mb-8">
-            <h2 className="text-2xl font-bold text-slate-800 mb-1.5">Welcome back</h2>
-            <p className="text-slate-500 text-sm">Sign in to your account to continue</p>
+            <h2 className="text-2xl font-bold text-slate-800 dark:text-white mb-1.5">Welcome back</h2>
+            <p className="text-slate-500 dark:text-slate-400 text-sm">Sign in to your account to continue</p>
           </div>
 
           {/* Google */}
           <button
             onClick={handleGoogleLogin}
             disabled={googleLoading}
-            className="w-full flex items-center justify-center gap-3 py-2.5 px-4 rounded-xl text-sm font-medium transition-all duration-200"
-            style={{
-              background: "white",
-              border: "1.5px solid #e2e8f0",
-              color: "#374151",
-              cursor: "pointer",
-              boxShadow: "0 1px 3px rgba(0,0,0,0.05)"
-            }}
-            onMouseOver={e => (e.currentTarget.style.borderColor = "#cbd5e1")}
-            onMouseOut={e => (e.currentTarget.style.borderColor = "#e2e8f0")}
+            className="w-full flex items-center justify-center gap-3 py-2.5 px-4 rounded-xl text-sm font-medium transition-all duration-200 bg-white dark:bg-slate-900 border-[1.5px] border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 hover:border-slate-300 dark:hover:border-slate-700 shadow-[0_1px_3px_rgba(0,0,0,0.05)] dark:shadow-none"
           >
             <svg className="h-4 w-4" viewBox="0 0 24 24">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
@@ -206,35 +213,29 @@ function LoginPageContent() {
           </button>
 
           <div className="flex items-center gap-3 my-5">
-            <div className="flex-1 h-px bg-slate-200" />
-            <span className="text-xs text-slate-400 font-medium">or</span>
-            <div className="flex-1 h-px bg-slate-200" />
+            <div className="flex-1 h-px bg-slate-200 dark:bg-slate-800" />
+            <span className="text-xs text-slate-400 dark:text-slate-500 font-medium">or</span>
+            <div className="flex-1 h-px bg-slate-200 dark:bg-slate-800" />
           </div>
 
           {/* Email form */}
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-slate-700">Email address</label>
+              <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Email address</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
-                className="w-full px-3.5 py-2.5 text-sm rounded-xl outline-none transition-all duration-200"
-                style={{
-                  background: "white", border: "1.5px solid #e2e8f0", color: "#1e293b",
-                  boxShadow: "0 1px 2px rgba(0,0,0,0.04)"
-                }}
-                onFocus={e => (e.currentTarget.style.borderColor = "#3b82f6")}
-                onBlur={e => (e.currentTarget.style.borderColor = "#e2e8f0")}
+                className="w-full px-3.5 py-2.5 text-sm rounded-xl outline-none transition-all duration-200 bg-white dark:bg-slate-900 border-[1.5px] border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 shadow-[0_1px_2px_rgba(0,0,0,0.04)] dark:shadow-none focus:border-blue-500 dark:focus:border-blue-500"
               />
             </div>
 
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-slate-700">Password</label>
-                <Link href="/forgot-password" className="text-xs text-blue-600 hover:text-blue-700 font-medium">
+                <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Password</label>
+                <Link href="/forgot-password" className="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium">
                   Forgot password?
                 </Link>
               </div>
@@ -245,18 +246,12 @@ function LoginPageContent() {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   required
-                  className="w-full px-3.5 py-2.5 text-sm rounded-xl outline-none transition-all duration-200 pr-10"
-                  style={{
-                    background: "white", border: "1.5px solid #e2e8f0", color: "#1e293b",
-                    boxShadow: "0 1px 2px rgba(0,0,0,0.04)"
-                  }}
-                  onFocus={e => (e.currentTarget.style.borderColor = "#3b82f6")}
-                  onBlur={e => (e.currentTarget.style.borderColor = "#e2e8f0")}
+                  className="w-full px-3.5 py-2.5 text-sm rounded-xl outline-none transition-all duration-200 pr-10 bg-white dark:bg-slate-900 border-[1.5px] border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 shadow-[0_1px_2px_rgba(0,0,0,0.04)] dark:shadow-none focus:border-blue-500 dark:focus:border-blue-500"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
                 >
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
@@ -279,9 +274,9 @@ function LoginPageContent() {
             </button>
           </form>
 
-          <p className="text-center text-sm text-slate-500 mt-6">
+          <p className="text-center text-sm text-slate-500 dark:text-slate-400 mt-6">
             Don&apos;t have an account?{" "}
-            <Link href={registerHref} className="text-blue-600 hover:text-blue-700 font-semibold">
+            <Link href={registerHref} className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold">
               Create one free
             </Link>
           </p>

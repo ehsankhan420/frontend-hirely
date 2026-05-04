@@ -253,11 +253,11 @@ export default function AdminSponsorsPage() {
                  value={search}
                  onChange={(e) => setSearch(e.target.value)}
                  placeholder="Search sponsors by name..."
-                 className="pl-11 h-12 bg-white border border-slate-200/80 text-slate-800 placeholder:text-slate-400 focus-visible:ring-blue-500 rounded-[14px] shadow-[0_2px_10px_rgba(0,0,0,0.02)] text-[15px] font-medium transition-shadow hover:shadow-[0_4px_20px_rgba(0,0,0,0.04)] w-full"
+                 className="pl-11 h-12 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-slate-800 dark:text-slate-100 placeholder:text-slate-400 focus-visible:ring-blue-500 rounded-[14px] shadow-[0_2px_10px_rgba(0,0,0,0.02)] dark:shadow-none text-[15px] font-medium transition-shadow hover:shadow-[0_4px_20px_rgba(0,0,0,0.04)] w-full"
                />
              </div>
              {importResult && (
-               <div className="flex items-center gap-2 text-emerald-600 bg-emerald-50 px-4 py-2.5 rounded-[12px] border border-emerald-100 font-semibold text-sm whitespace-nowrap">
+               <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-4 py-2.5 rounded-[12px] border border-emerald-100 dark:border-emerald-800/50 font-semibold text-sm whitespace-nowrap">
                  <CheckCircle className="h-4 w-4" />
                  {importResult.imported} new, {importResult.updated} updated
                </div>
@@ -270,7 +270,7 @@ export default function AdminSponsorsPage() {
                href="https://www.gov.uk/government/publications/register-of-licensed-sponsors-workers"
                target="_blank"
                rel="noopener noreferrer"
-               className="inline-flex items-center gap-2 h-12 px-4 rounded-[14px] text-[13px] font-bold text-sky-600 bg-sky-50 border border-transparent hover:border-sky-200 hover:bg-sky-100 transition-colors shadow-sm"
+               className="inline-flex items-center gap-2 h-12 px-4 rounded-[14px] text-[13px] font-bold text-sky-600 dark:text-sky-400 bg-sky-50 dark:bg-sky-900/30 border border-transparent hover:border-sky-200 dark:hover:border-sky-800/50 hover:bg-sky-100 dark:hover:bg-sky-900/50 transition-colors shadow-sm"
              >
                <ExternalLink className="h-4 w-4" /> Sync Home Office Direct Link
              </a>
@@ -278,11 +278,11 @@ export default function AdminSponsorsPage() {
         </motion.div>
 
         {/* Modern Bento Table */}
-        <motion.div variants={itemVariants} className="bg-white rounded-[24px] border border-slate-200/80 shadow-[0_2px_10px_rgba(0,0,0,0.02)] overflow-hidden relative">
+        <motion.div variants={itemVariants} className="bg-white dark:bg-slate-900 rounded-[24px] border border-slate-200/80 dark:border-slate-800 shadow-[0_2px_10px_rgba(0,0,0,0.02)] dark:shadow-none overflow-hidden relative">
           {loading ? (
             <div className="flex items-center justify-center py-32">
               <div className="flex flex-col items-center gap-4">
-                <div className="h-10 w-10 animate-spin rounded-full border-4 border-slate-100 border-t-blue-600" />
+                <div className="h-10 w-10 animate-spin rounded-full border-4 border-slate-100 dark:border-slate-800 border-t-blue-600 shadow-sm" />
                 <span className="text-sm font-bold tracking-widest text-slate-400 uppercase">Loading Registry...</span>
               </div>
             </div>
@@ -290,7 +290,7 @@ export default function AdminSponsorsPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-slate-50/50 border-b border-slate-100">
+                  <tr className="bg-slate-50/50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800">
                     {["Organisation", "Location", "Route", "Status", "Updated"].map(
                       (h) => (
                         <th
@@ -303,18 +303,18 @@ export default function AdminSponsorsPage() {
                     )}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                   {filtered.map((s) => (
                     <tr
                       key={s.id}
-                      className="hover:bg-blue-50/30 transition-colors group"
+                      className="hover:bg-blue-50/30 dark:hover:bg-blue-900/20 transition-colors group"
                     >
                       <td className="px-7 py-5">
                         <div className="flex items-center gap-3">
-                           <div className="flex-shrink-0 w-8 h-8 rounded-[8px] bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 font-bold">
+                           <div className="flex-shrink-0 w-8 h-8 rounded-[8px] bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-100 dark:border-indigo-800/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold">
                                <Building2 className="w-4 h-4" />
                            </div>
-                           <span className="text-[15px] font-bold text-slate-800 line-clamp-1 max-w-[300px]">
+                           <span className="text-[15px] font-bold text-slate-800 dark:text-slate-200 line-clamp-1 max-w-[300px]">
                              {s.organisation_name}
                            </span>
                         </div>
@@ -322,7 +322,7 @@ export default function AdminSponsorsPage() {
                       <td className="px-7 py-5">
                         <div className="flex items-center gap-2">
                            <MapPin className="w-3.5 h-3.5 text-slate-400" />
-                           <span className="text-[13px] font-semibold text-slate-500 whitespace-nowrap tracking-tight">
+                           <span className="text-[13px] font-semibold text-slate-500 dark:text-slate-400 whitespace-nowrap tracking-tight">
                              {[s.town, s.county].filter(Boolean).join(", ") || "UK Based"}
                            </span>
                         </div>
@@ -330,7 +330,7 @@ export default function AdminSponsorsPage() {
                       <td className="px-7 py-5">
                         <div className="flex items-center gap-2">
                            <Route className="w-3.5 h-3.5 text-slate-400" />
-                           <span className="text-[13px] font-semibold text-slate-500 whitespace-nowrap">
+                           <span className="text-[13px] font-semibold text-slate-500 dark:text-slate-400 whitespace-nowrap">
                              {s.route || "Global Route"}
                            </span>
                         </div>
@@ -339,8 +339,8 @@ export default function AdminSponsorsPage() {
                         <span
                           className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[8px] text-[11px] font-bold border whitespace-nowrap shadow-sm ${
                             s.is_active
-                              ? "text-emerald-700 bg-emerald-50 border-emerald-200"
-                              : "text-rose-700 bg-rose-50 border-rose-200"
+                              ? "text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 border-emerald-200 dark:border-emerald-800/50"
+                              : "text-rose-700 dark:text-rose-400 bg-rose-50 dark:bg-rose-900/30 border-rose-200 dark:border-rose-800/50"
                           }`}
                         >
                           <BadgeCheck className="h-4 w-4" />
@@ -350,7 +350,7 @@ export default function AdminSponsorsPage() {
                       <td className="px-7 py-5">
                          <div className="flex items-center gap-2">
                            <RefreshCw className="w-3.5 h-3.5 text-slate-400" />
-                           <span className="text-[13px] font-semibold text-slate-500 whitespace-nowrap tracking-tight">
+                           <span className="text-[13px] font-semibold text-slate-500 dark:text-slate-400 whitespace-nowrap tracking-tight">
                              {s.last_updated || "—"}
                            </span>
                          </div>
@@ -360,8 +360,8 @@ export default function AdminSponsorsPage() {
                   {filtered.length === 0 && (
                     <tr>
                       <td colSpan={5} className="text-center py-20">
-                          <div className="inline-flex w-16 h-16 bg-slate-50 rounded-[16px] border border-slate-100 items-center justify-center mb-4 shadow-inner">
-                              <BadgeCheck className="w-8 h-8 text-slate-300" />
+                          <div className="inline-flex w-16 h-16 bg-slate-50 dark:bg-slate-800/50 rounded-[16px] border border-slate-100 dark:border-slate-800 items-center justify-center mb-4 shadow-inner">
+                              <BadgeCheck className="w-8 h-8 text-slate-300 dark:text-slate-600" />
                           </div>
                           <p className="text-slate-500 font-bold text-[15px]">
                               {search ? "No sponsors match your search." : "No sponsors found. Please upload a register CSV."}

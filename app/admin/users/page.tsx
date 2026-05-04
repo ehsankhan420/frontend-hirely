@@ -42,17 +42,17 @@ const ROLE_CONFIG: Record<
 > = {
   free: {
     label: "Free",
-    className: "text-slate-600 bg-slate-100 border-slate-200",
+    className: "text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700",
     icon: Users,
   },
   premium: {
     label: "Premium",
-    className: "text-amber-700 bg-amber-50 border-amber-200",
+    className: "text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/30 border-amber-200 dark:border-amber-800/50",
     icon: Crown,
   },
   admin: {
     label: "Admin",
-    className: "text-indigo-700 bg-indigo-50 border-indigo-200",
+    className: "text-indigo-700 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 border-indigo-200 dark:border-indigo-800/50",
     icon: ShieldCheck,
   },
 };
@@ -174,15 +174,15 @@ export default function AdminUsersPage() {
             
             {!loading && (
               <div className="flex flex-wrap gap-3 shrink-0 mt-2 md:mt-0">
-                <div className="flex items-center gap-4 bg-white rounded-xl h-11 px-6 shadow-[0_4px_14px_rgba(255,255,255,0.2)] border-none">
+                <div className="flex items-center gap-4 bg-white dark:bg-slate-900 rounded-xl h-11 px-6 shadow-[0_4px_14px_rgba(255,255,255,0.2)] border-none">
                   <div className="flex items-center gap-2">
                     <Crown className="w-4 h-4 text-amber-500" />
-                    <span className="text-blue-900 font-bold text-[14px]">{totalPremium} <span className="text-blue-600/80 font-medium">Premium</span></span>
+                    <span className="text-blue-900 dark:text-blue-100 font-bold text-[14px]">{totalPremium} <span className="text-blue-600/80 dark:text-blue-400/80 font-medium">Premium</span></span>
                   </div>
-                  <div className="w-px h-4 bg-slate-200" />
+                  <div className="w-px h-4 bg-slate-200 dark:bg-slate-700" />
                   <div className="flex items-center gap-2">
                     <Users className="w-4 h-4 text-slate-400" />
-                    <span className="text-blue-900 font-bold text-[14px]">{totalFree} <span className="text-blue-600/80 font-medium">Free</span></span>
+                    <span className="text-blue-900 dark:text-blue-100 font-bold text-[14px]">{totalFree} <span className="text-blue-600/80 dark:text-blue-400/80 font-medium">Free</span></span>
                   </div>
                 </div>
               </div>
@@ -201,18 +201,18 @@ export default function AdminUsersPage() {
                  value={search}
                  onChange={(e) => setSearch(e.target.value)}
                  placeholder="Search users by name or email..."
-                 className="pl-11 h-12 bg-white border border-slate-200/80 text-slate-800 placeholder:text-slate-400 focus-visible:ring-indigo-500 rounded-[14px] shadow-[0_2px_10px_rgba(0,0,0,0.02)] text-[15px] font-medium transition-shadow hover:shadow-[0_4px_20px_rgba(0,0,0,0.04)] w-full"
+                 className="pl-11 h-12 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-slate-800 dark:text-slate-100 placeholder:text-slate-400 focus-visible:ring-indigo-500 rounded-[14px] shadow-[0_2px_10px_rgba(0,0,0,0.02)] dark:shadow-none text-[15px] font-medium transition-shadow hover:shadow-[0_4px_20px_rgba(0,0,0,0.04)] w-full"
                />
              </div>
            </div>
         </motion.div>
 
         {/* Modern Bento Table */}
-        <motion.div variants={itemVariants} className="bg-white rounded-[24px] border border-slate-200/80 shadow-[0_2px_10px_rgba(0,0,0,0.02)] overflow-hidden relative">
+        <motion.div variants={itemVariants} className="bg-white dark:bg-slate-900 rounded-[24px] border border-slate-200/80 dark:border-slate-800 shadow-[0_2px_10px_rgba(0,0,0,0.02)] dark:shadow-none overflow-hidden relative">
           {loading ? (
             <div className="flex items-center justify-center py-32">
               <div className="flex flex-col items-center gap-4">
-                <div className="h-10 w-10 animate-spin rounded-full border-4 border-slate-100 border-t-indigo-600" />
+                <div className="h-10 w-10 animate-spin rounded-full border-4 border-slate-100 dark:border-slate-800 border-t-indigo-600 shadow-sm" />
                 <span className="text-sm font-bold tracking-widest text-slate-400 uppercase">Loading Directory...</span>
               </div>
             </div>
@@ -220,7 +220,7 @@ export default function AdminUsersPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-slate-50/50 border-b border-slate-100">
+                  <tr className="bg-slate-50/50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800">
                     {["User Identity", "Plan Status", "Account Health", "Date Joined", "Actions"].map(
                       (h) => (
                         <th
@@ -233,7 +233,7 @@ export default function AdminUsersPage() {
                     )}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                   {filtered.map((u) => {
                     const roleConf = ROLE_CONFIG[u.role] || ROLE_CONFIG["free"];
                     const RoleIcon = roleConf.icon;
@@ -244,18 +244,18 @@ export default function AdminUsersPage() {
                     return (
                       <tr
                         key={u.id}
-                        className="hover:bg-indigo-50/30 transition-colors group"
+                        className="hover:bg-indigo-50/30 dark:hover:bg-indigo-900/20 transition-colors group"
                       >
                         <td className="px-8 py-6">
                            <div className="flex items-center gap-4">
-                             <div className="h-11 w-11 rounded-[12px] bg-gradient-to-br from-indigo-100 to-blue-50 flex items-center justify-center text-[13px] font-extrabold text-indigo-700 shrink-0 border border-indigo-200/50 shadow-sm">
+                             <div className="h-11 w-11 rounded-[12px] bg-gradient-to-br from-indigo-100 dark:from-indigo-900/50 to-blue-50 dark:to-blue-900/20 flex items-center justify-center text-[13px] font-extrabold text-indigo-700 dark:text-indigo-400 shrink-0 border border-indigo-200/50 dark:border-indigo-800/50 shadow-sm">
                                {initials}
                              </div>
                              <div className="min-w-0 flex flex-col justify-center">
-                               <p className="text-[15px] font-bold text-slate-800 truncate">
+                               <p className="text-[15px] font-bold text-slate-800 dark:text-slate-200 truncate">
                                  {u.name || "—"}
                                </p>
-                               <p className="text-[13px] font-semibold text-slate-500 truncate mt-0.5">
+                               <p className="text-[13px] font-semibold text-slate-500 dark:text-slate-400 truncate mt-0.5">
                                  {u.email}
                                </p>
                              </div>
@@ -277,8 +277,8 @@ export default function AdminUsersPage() {
                           <span
                             className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-[8px] text-[12px] font-bold border whitespace-nowrap shadow-sm ${
                               u.is_active
-                                ? "text-emerald-700 bg-emerald-50 border-emerald-200"
-                                : "text-rose-700 bg-rose-50 border-rose-200"
+                                ? "text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 border-emerald-200 dark:border-emerald-800/50"
+                                : "text-rose-700 dark:text-rose-400 bg-rose-50 dark:bg-rose-900/30 border-rose-200 dark:border-rose-800/50"
                             }`}
                           >
                             <span
@@ -291,7 +291,7 @@ export default function AdminUsersPage() {
                         </td>
 
                         {/* Joined */}
-                        <td className="px-8 py-6 text-[13px] font-semibold text-slate-600 whitespace-nowrap">
+                        <td className="px-8 py-6 text-[13px] font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap">
                           {new Date(u.created_at).toLocaleDateString("en-GB", { month: "short", day: "numeric", year: "numeric" })}
                         </td>
 
@@ -303,10 +303,10 @@ export default function AdminUsersPage() {
                                 variant="ghost"
                                 size="sm"
                                 disabled={updatingId === u.id}
-                                className="h-9 w-9 p-0 text-slate-400 hover:text-slate-800 hover:bg-slate-100 rounded-[10px] focus-visible:ring-1 focus-visible:ring-indigo-500"
+                                className="h-9 w-9 p-0 text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-[10px] focus-visible:ring-1 focus-visible:ring-indigo-500"
                               >
                                 {updatingId === u.id ? (
-                                  <Loader2 className="h-4 w-4 animate-spin text-indigo-600" />
+                                  <Loader2 className="h-4 w-4 animate-spin text-indigo-600 dark:text-indigo-400" />
                                 ) : (
                                   <MoreHorizontal className="h-5 w-5" />
                                 )}
@@ -314,26 +314,26 @@ export default function AdminUsersPage() {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent
                               align="end"
-                              className="w-52 bg-white border border-slate-200/80 shadow-[0_10px_40px_rgba(0,0,0,0.08)] rounded-[16px] p-1.5"
+                              className="w-52 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-[0_10px_40px_rgba(0,0,0,0.08)] dark:shadow-none rounded-[16px] p-1.5"
                             >
                               <DropdownMenuItem
                                 onClick={() => handleRoleChange(u.id, "premium")}
-                                className="cursor-pointer text-slate-700 font-semibold text-[13px] rounded-[10px] focus:bg-amber-50 focus:text-amber-900 py-2.5"
+                                className="cursor-pointer text-slate-700 dark:text-slate-300 font-semibold text-[13px] rounded-[10px] focus:bg-amber-50 dark:focus:bg-amber-900/30 focus:text-amber-900 dark:focus:text-amber-100 py-2.5"
                               >
                                 <Crown className="mr-2.5 h-4 w-4 text-amber-500" />
                                 Upgrade Premium
                               </DropdownMenuItem>
                               <DropdownMenuItem
                                 onClick={() => handleRoleChange(u.id, "free")}
-                                className="cursor-pointer text-slate-700 font-semibold text-[13px] rounded-[10px] focus:bg-slate-50 focus:text-slate-900 py-2.5"
+                                className="cursor-pointer text-slate-700 dark:text-slate-300 font-semibold text-[13px] rounded-[10px] focus:bg-slate-50 dark:focus:bg-slate-800 focus:text-slate-900 dark:focus:text-slate-100 py-2.5"
                               >
                                 <TrendingUp className="mr-2.5 h-4 w-4 text-slate-400" />
                                 Downgrade Free
                               </DropdownMenuItem>
-                              <DropdownMenuSeparator className="bg-slate-100 my-1" />
+                              <DropdownMenuSeparator className="bg-slate-100 dark:bg-slate-800 my-1" />
                               <DropdownMenuItem
                                 onClick={() => handleDeactivate(u.id)}
-                                className="cursor-pointer text-rose-600 font-bold text-[13px] rounded-[10px] focus:bg-rose-50 focus:text-rose-700 py-2.5"
+                                className="cursor-pointer text-rose-600 dark:text-rose-400 font-bold text-[13px] rounded-[10px] focus:bg-rose-50 dark:focus:bg-rose-900/30 focus:text-rose-700 dark:focus:text-rose-300 py-2.5"
                               >
                                 <UserX className="mr-2.5 h-4 w-4" />
                                 Deactivate Account
@@ -347,8 +347,8 @@ export default function AdminUsersPage() {
                   {filtered.length === 0 && (
                     <tr>
                       <td colSpan={5} className="text-center py-20">
-                          <div className="inline-flex w-16 h-16 bg-slate-50 rounded-[16px] border border-slate-100 items-center justify-center mb-4 shadow-inner">
-                              <Users className="w-8 h-8 text-slate-300" />
+                          <div className="inline-flex w-16 h-16 bg-slate-50 dark:bg-slate-800/50 rounded-[16px] border border-slate-100 dark:border-slate-800 items-center justify-center mb-4 shadow-inner">
+                              <Users className="w-8 h-8 text-slate-300 dark:text-slate-600" />
                           </div>
                           <p className="text-slate-500 font-bold text-[15px]">
                               {search ? "No users match your criteria." : "No registered users."}
