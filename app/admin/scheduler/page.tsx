@@ -63,6 +63,7 @@ interface SchedulerStatus {
       linkedin_scraped?: number;
       indeed_scraped?: number;
       ingestion?: string;
+      linkedin_session_id?: string;
     };
     status: string;
     sources?: string[];
@@ -111,6 +112,14 @@ export default function AdminSchedulerPage() {
       }
     } catch {
       toast.error("Error communicating with backend.");
+    }
+  };
+
+  const pollSchedulerStatus = async (maxMs = 90000, intervalMs = 3000) => {
+    const started = Date.now();
+    while (Date.now() - started < maxMs) {
+      await fetchData();
+      await new Promise((resolve) => setTimeout(resolve, intervalMs));
     }
   };
 
@@ -175,7 +184,7 @@ export default function AdminSchedulerPage() {
             keywords.length ? `${keywords.length} custom keyword(s)` : "skills.json keywords"
           }.`
         );
-        setTimeout(() => fetchData(), 2000);
+        pollSchedulerStatus();
       } else {
         const err = await res.json().catch(() => ({}));
         toast.error(err?.detail || "Failed to trigger scraper");
@@ -214,7 +223,7 @@ export default function AdminSchedulerPage() {
         if (payload?.ingest_contract?.callback_url) {
           toast.message(`CSV ingest callback ready: ${payload.ingest_contract.callback_url}`);
         }
-        setTimeout(() => fetchData(), 2000);
+        pollSchedulerStatus();
       } else {
         const err = await res.json().catch(() => ({}));
         toast.error(err?.detail || "Failed to trigger Indeed pipeline");
@@ -587,6 +596,11 @@ export default function AdminSchedulerPage() {
                                 <span className="text-[12px] font-bold text-slate-400 uppercase tracking-wide">
                                   {(run.sources && run.sources.length > 0 ? run.sources : ["linkedin", "indeed"]).join(", ")}
                                 </span>
+                                {run.results.linkedin_session_id && (
+                                  <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">
+                                    Session {run.results.linkedin_session_id}
+                                  </span>
+                                )}
                               </div>
                             </td>
                             <td className="px-8 py-6">

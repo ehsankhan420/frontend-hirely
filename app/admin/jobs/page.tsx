@@ -38,6 +38,10 @@ interface JobRow {
   job_type: string;
   sponsorship_confirmed: boolean;
   posted_date: string;
+  description?: string | null;
+  required_skills?: string[] | string | null;
+  scraper_source?: string | null;
+  session_id?: string | null;
 }
 
 type CsvRow = Record<string, string>;
@@ -261,6 +265,8 @@ export default function AdminJobsPage() {
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
   const [sortOrder, setSortOrder] = useState<"desc" | "asc">("desc");
+  const [sourceFilter, setSourceFilter] = useState("all");
+  const [sessionFilter, setSessionFilter] = useState("");
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -268,7 +274,7 @@ export default function AdminJobsPage() {
     const supabase = createClient();
     const { data, error } = await supabase
       .from("jobs")
-      .select("id,title,company_name,location,job_type,sponsorship_confirmed,posted_date")
+      .select("id,title,company_name,location,job_type,sponsorship_confirmed,posted_date,description,required_skills,scraper_source,session_id")
       .eq("is_active", true)
       .order("posted_date", { ascending: false })
       .limit(500);
@@ -418,10 +424,23 @@ export default function AdminJobsPage() {
 
   const filtered = jobs.filter(
     (j) => {
-      const matchSearch = j.title.toLowerCase().includes(search.toLowerCase()) || 
-                          j.company_name.toLowerCase().includes(search.toLowerCase());
+      const searchValue = search.toLowerCase().trim();
+      const skillsText = Array.isArray(j.required_skills)
+        ? j.required_skills.join(" ")
+        : (j.required_skills || "");
+      const matchSearch =
+        !searchValue ||
+        j.title.toLowerCase().includes(searchValue) ||
+        j.company_name.toLowerCase().includes(searchValue) ||
+        (j.description || "").toLowerCase().includes(searchValue) ||
+        skillsText.toLowerCase().includes(searchValue);
       const matchType = typeFilter === "all" || j.job_type === typeFilter;
-      return matchSearch && matchType;
+      const sourceValue = (j.scraper_source || "unknown").toLowerCase();
+      const matchSource = sourceFilter === "all" || sourceValue === sourceFilter;
+      const matchSession =
+        !sessionFilter.trim() ||
+        (j.session_id || "").toLowerCase().includes(sessionFilter.toLowerCase().trim());
+      return matchSearch && matchType && matchSource && matchSession;
     }
   ).sort((a, b) => {
     const timeA = new Date(a.posted_date).getTime();
@@ -494,7 +513,7 @@ export default function AdminJobsPage() {
              </div>
            </div>
 
-           <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">
+            <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">
               {/* Type Filter */}
               <Select value={typeFilter} onValueChange={setTypeFilter}>
                 <SelectTrigger className="w-[160px] h-12 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-slate-700 dark:text-slate-200 text-[13px] font-bold rounded-[14px] shadow-[0_2px_10px_rgba(0,0,0,0.02)] dark:shadow-none hover:shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all focus:ring-2 focus:ring-blue-500 focus:ring-offset-0">
@@ -506,6 +525,20 @@ export default function AdminJobsPage() {
                   <SelectItem value="part-time" className="rounded-[10px] cursor-pointer font-bold text-slate-600 dark:text-slate-300 focus:bg-blue-50 dark:focus:bg-blue-900/30 focus:text-blue-700 dark:focus:text-blue-400 text-[13px] py-2">Part-Time</SelectItem>
                   <SelectItem value="contract" className="rounded-[10px] cursor-pointer font-bold text-slate-600 dark:text-slate-300 focus:bg-blue-50 dark:focus:bg-blue-900/30 focus:text-blue-700 dark:focus:text-blue-400 text-[13px] py-2">Contract</SelectItem>
                   <SelectItem value="remote" className="rounded-[10px] cursor-pointer font-bold text-slate-600 dark:text-slate-300 focus:bg-blue-50 dark:focus:bg-blue-900/30 focus:text-blue-700 dark:focus:text-blue-400 text-[13px] py-2">Remote</SelectItem>
+                </SelectContent>
+              </Select>
+
+              {/* Source Filter */}
+              <Select value={sourceFilter} onValueChange={setSourceFilter}>
+                <SelectTrigger className="w-[160px] h-12 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-slate-700 dark:text-slate-200 text-[13px] font-bold rounded-[14px] shadow-[0_2px_10px_rgba(0,0,0,0.02)] dark:shadow-none hover:shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all focus:ring-2 focus:ring-blue-500 focus:ring-offset-0">
+                  <SelectValue placeholder="All Sources" />
+                </SelectTrigger>
+                <SelectContent className="rounded-[16px] border-slate-200 dark:border-slate-800 shadow-xl p-1 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+                  <SelectItem value="all" className="rounded-[10px] cursor-pointer font-bold text-slate-600 dark:text-slate-300 focus:bg-blue-50 dark:focus:bg-blue-900/30 focus:text-blue-700 dark:focus:text-blue-400 text-[13px] py-2">All Sources</SelectItem>
+                  <SelectItem value="linkedin" className="rounded-[10px] cursor-pointer font-bold text-slate-600 dark:text-slate-300 focus:bg-blue-50 dark:focus:bg-blue-900/30 focus:text-blue-700 dark:focus:text-blue-400 text-[13px] py-2">LinkedIn</SelectItem>
+                  <SelectItem value="indeed" className="rounded-[10px] cursor-pointer font-bold text-slate-600 dark:text-slate-300 focus:bg-blue-50 dark:focus:bg-blue-900/30 focus:text-blue-700 dark:focus:text-blue-400 text-[13px] py-2">Indeed</SelectItem>
+                  <SelectItem value="manual" className="rounded-[10px] cursor-pointer font-bold text-slate-600 dark:text-slate-300 focus:bg-blue-50 dark:focus:bg-blue-900/30 focus:text-blue-700 dark:focus:text-blue-400 text-[13px] py-2">Manual</SelectItem>
+                  <SelectItem value="unknown" className="rounded-[10px] cursor-pointer font-bold text-slate-600 dark:text-slate-300 focus:bg-blue-50 dark:focus:bg-blue-900/30 focus:text-blue-700 dark:focus:text-blue-400 text-[13px] py-2">Unknown</SelectItem>
                 </SelectContent>
               </Select>
               
@@ -523,10 +556,17 @@ export default function AdminJobsPage() {
                 </SelectContent>
               </Select>
 
+              <Input
+                value={sessionFilter}
+                onChange={(e) => setSessionFilter(e.target.value)}
+                placeholder="Session ID"
+                className="w-[160px] h-12 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-slate-800 dark:text-slate-100 placeholder:text-slate-400 focus-visible:ring-blue-500 rounded-[14px] shadow-[0_2px_10px_rgba(0,0,0,0.02)] dark:shadow-none text-[13px] font-bold"
+              />
+
                {/* Clear Filters */}
-               {(typeFilter !== 'all' || search !== '' || sortOrder !== 'desc') && (
+                 {(typeFilter !== 'all' || sourceFilter !== 'all' || search !== '' || sortOrder !== 'desc' || sessionFilter !== '') && (
                    <button 
-                       onClick={() => { setSearch(''); setTypeFilter('all'); setSortOrder('desc'); }}
+                     onClick={() => { setSearch(''); setTypeFilter('all'); setSourceFilter('all'); setSessionFilter(''); setSortOrder('desc'); }}
                        className="h-12 px-4 rounded-[14px] text-[13px] font-extrabold text-rose-500 hover:bg-rose-50 hover:text-rose-600 transition-colors flex items-center gap-2 border border-transparent hover:border-rose-100"
                    >
                        <X className="w-4 h-4" /> Clear

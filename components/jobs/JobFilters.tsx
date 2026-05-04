@@ -72,14 +72,14 @@ export default function JobFiltersPanel({
 
   // Shared input/select clean style
   const cleanInput =
-    "h-10 bg-white border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 rounded-lg shadow-sm";
+    "h-10 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 rounded-lg shadow-sm";
 
   return (
     <div className="space-y-4">
       {/* Search bar */}
       <form onSubmit={handleSearch} className="flex gap-3">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400 pointer-events-none" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400 dark:text-slate-500 pointer-events-none" />
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -89,7 +89,7 @@ export default function JobFiltersPanel({
         </div>
         <button
           type="submit"
-          className="px-6 h-12 rounded-lg font-semibold text-white bg-indigo-600 hover:bg-indigo-700 transition-colors shadow-sm shrink-0"
+          className="px-6 h-12 rounded-lg font-semibold text-white bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 transition-colors shadow-sm shrink-0"
         >
           Search
         </button>
@@ -106,7 +106,7 @@ export default function JobFiltersPanel({
           <SelectTrigger className={cleanInput}>
             <SelectValue placeholder="Location" />
           </SelectTrigger>
-          <SelectContent className="bg-white border-slate-200">
+          <SelectContent className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
             <SelectItem value="all">All locations</SelectItem>
             <SelectItem value="London">London</SelectItem>
             <SelectItem value="Manchester">Manchester</SelectItem>
@@ -128,7 +128,7 @@ export default function JobFiltersPanel({
           <SelectTrigger className={cleanInput}>
             <SelectValue placeholder="Job type" />
           </SelectTrigger>
-          <SelectContent className="bg-white border-slate-200">
+          <SelectContent className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
             <SelectItem value="all">All types</SelectItem>
             <SelectItem value="full-time">Full-time</SelectItem>
             <SelectItem value="part-time">Part-time</SelectItem>
@@ -161,7 +161,7 @@ export default function JobFiltersPanel({
           <SelectTrigger className={cleanInput}>
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>
-          <SelectContent className="bg-white border-slate-200">
+          <SelectContent className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
             <SelectItem value="match">Best match</SelectItem>
             <SelectItem value="recent">Most recent</SelectItem>
             <SelectItem value="salary">Highest salary</SelectItem>
@@ -171,14 +171,14 @@ export default function JobFiltersPanel({
 
       {/* Active filter chips */}
       <div className="flex flex-wrap items-center gap-3 pt-1">
-        <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500">
+        <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-slate-400">
           <SlidersHorizontal className="h-4 w-4" />
           Filters active: {activeFilterCount}
         </span>
         {hasActiveFilters && (
           <button
             onClick={clearFilters}
-            className="inline-flex items-center gap-1 px-3 py-1 rounded-md text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors"
+            className="inline-flex items-center gap-1 px-3 py-1 rounded-md text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
           >
             Clear all
             <X className="h-3.5 w-3.5" />

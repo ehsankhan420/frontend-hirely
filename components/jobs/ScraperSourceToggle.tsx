@@ -29,9 +29,9 @@ export default function ScraperSourceToggle({
   const totalCount = linkedinCount + indeedCount;
 
   return (
-    <div className="flex items-center gap-4 p-4 bg-white/80 backdrop-blur-xl rounded-[16px] border border-slate-200/80 shadow-sm hover:shadow-md transition-all duration-300">
+    <div className="flex items-center gap-4 p-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-[16px] border border-slate-200/80 dark:border-slate-800/80 shadow-sm hover:shadow-md transition-all duration-300">
       {/* Header */}
-      <div className="text-sm font-semibold text-slate-600 whitespace-nowrap">
+      <div className="text-sm font-semibold text-slate-600 dark:text-slate-400 whitespace-nowrap">
         Session jobs:
       </div>
 
@@ -44,7 +44,7 @@ export default function ScraperSourceToggle({
           className={`relative px-4 py-2.5 rounded-[10px] font-semibold text-sm transition-all duration-300 flex items-center gap-2 ${
             activeSource === "all"
               ? "text-white"
-              : "text-slate-600 hover:text-slate-900"
+              : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
           } disabled:opacity-50 disabled:cursor-not-allowed`}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
@@ -66,7 +66,7 @@ export default function ScraperSourceToggle({
           className={`relative px-4 py-2.5 rounded-[10px] font-semibold text-sm transition-all duration-300 flex items-center gap-2 ${
             activeSource === "linkedin"
               ? "text-white"
-              : "text-slate-600 hover:text-slate-900"
+              : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
           } disabled:opacity-50 disabled:cursor-not-allowed`}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
@@ -89,7 +89,7 @@ export default function ScraperSourceToggle({
           className={`relative px-4 py-2.5 rounded-[10px] font-semibold text-sm transition-all duration-300 flex items-center gap-2 ${
             activeSource === "indeed"
               ? "text-white"
-              : "text-slate-600 hover:text-slate-900"
+              : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
           } disabled:opacity-50 disabled:cursor-not-allowed`}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
@@ -119,7 +119,7 @@ export default function ScraperSourceToggle({
                 key={i}
                 animate={{ opacity: [0.5, 1, 0.5] }}
                 transition={{ duration: 1.5, delay: i * 0.2, repeat: Infinity }}
-                className="w-1.5 h-1.5 rounded-full bg-slate-400"
+                className="w-1.5 h-1.5 rounded-full bg-slate-400 dark:bg-slate-500"
               />
             ))}
           </div>

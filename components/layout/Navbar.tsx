@@ -18,6 +18,7 @@ import { User } from "@/types";
 import { Bookmark, Settings, LogOut, ShieldCheck } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 interface NavbarProps {
   user?: User | null;
@@ -66,7 +67,7 @@ export default function Navbar({ user }: NavbarProps) {
 
   return (
     <header
-      className="sticky top-0 z-50 w-full bg-white/90 backdrop-blur-xl border-b border-slate-200/60 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] transition-all duration-300"
+      className="sticky top-0 z-50 w-full bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border-b border-slate-200/60 dark:border-slate-800/60 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] transition-all duration-300"
       style={{ fontFamily: "'Inter', sans-serif" }}
     >
       <div className="container mx-auto flex h-20 max-w-7xl items-center justify-between px-4 lg:px-8">
@@ -83,7 +84,15 @@ export default function Navbar({ user }: NavbarProps) {
               alt="Hirely"
               width={300}
               height={60}
-              className="h-[60px] w-auto object-contain scale-110 object-left -ml-5"
+              className="h-[60px] w-auto object-contain scale-110 object-left -ml-5 dark:hidden"
+              priority
+            />
+            <Image
+              src="/hirely_wordmark_white.png"
+              alt="Hirely"
+              width={300}
+              height={60}
+              className="h-[60px] w-auto object-contain scale-110 object-left -ml-5 hidden dark:block"
               priority
             />
           </motion.div>
@@ -100,8 +109,8 @@ export default function Navbar({ user }: NavbarProps) {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     className={`px-4 py-2.5 rounded-[12px] font-bold text-[14px] transition-all duration-200 cursor-pointer flex items-center gap-2 ${active
-                        ? "bg-blue-50 shadow-inner border border-blue-100/50 text-blue-700"
-                        : "text-slate-500 hover:bg-slate-50 hover:text-slate-800 border border-transparent"
+                        ? "bg-blue-50 dark:bg-blue-900/40 shadow-inner border border-blue-100/50 dark:border-blue-800/50 text-blue-700 dark:text-blue-400"
+                        : "text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900/50 hover:text-slate-800 dark:hover:text-slate-200 border border-transparent"
                       }`}
                   >
                     {link.label}
@@ -143,7 +152,8 @@ export default function Navbar({ user }: NavbarProps) {
                 )}
               </div>
 
-              <div className="h-8 w-px bg-slate-200 hidden sm:block mx-1" />
+              <div className="h-8 w-px bg-slate-200 dark:bg-slate-800 hidden sm:block mx-1" />
+              <ThemeToggle />
 
               {/* Profile Dropdown */}
               <DropdownMenu>
@@ -153,27 +163,27 @@ export default function Navbar({ user }: NavbarProps) {
                     whileTap={{ scale: 0.95 }}
                     className="focus:outline-none rounded-full"
                   >
-                    <Avatar className="h-10 w-10 shrink-0 shadow-sm border border-slate-200/60 bg-white hover:shadow-md transition-all">
-                      <AvatarFallback className="bg-gradient-to-br from-indigo-100 to-blue-50 text-blue-700 text-sm font-bold leading-none">
+                    <Avatar className="h-10 w-10 shrink-0 shadow-sm border border-slate-200/60 dark:border-slate-700 bg-white dark:bg-slate-800 hover:shadow-md transition-all">
+                      <AvatarFallback className="bg-gradient-to-br from-indigo-100 to-blue-50 dark:from-slate-800 dark:to-slate-700 text-blue-700 dark:text-blue-400 text-sm font-bold leading-none">
                         {initials}
                       </AvatarFallback>
                     </Avatar>
                   </motion.button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56 rounded-[16px] p-2 border-slate-200 shadow-xl" style={{ fontFamily: "'Inter', sans-serif" }}>
-                  <div className="px-3 py-2.5 mb-1 bg-slate-50 rounded-[10px] border border-slate-100">
-                    <p className="text-[14px] font-bold text-slate-800 leading-tight truncate">{user.name || "User"}</p>
-                    <p className="text-[12px] font-semibold text-slate-500 truncate mt-0.5">{user.email}</p>
+                <DropdownMenuContent align="end" className="w-56 rounded-[16px] p-2 border-slate-200 dark:border-slate-800 shadow-xl bg-white dark:bg-slate-900" style={{ fontFamily: "'Inter', sans-serif" }}>
+                  <div className="px-3 py-2.5 mb-1 bg-slate-50 dark:bg-slate-800/50 rounded-[10px] border border-slate-100 dark:border-slate-700/50">
+                    <p className="text-[14px] font-bold text-slate-800 dark:text-slate-100 leading-tight truncate">{user.name || "User"}</p>
+                    <p className="text-[12px] font-semibold text-slate-500 dark:text-slate-400 truncate mt-0.5">{user.email}</p>
                   </div>
 
-                  <DropdownMenuItem asChild className="rounded-[10px] cursor-pointer focus:bg-blue-50 focus:text-blue-700 py-2.5 mt-1 font-semibold text-slate-600 text-[13px]">
+                  <DropdownMenuItem asChild className="rounded-[10px] cursor-pointer focus:bg-blue-50 dark:focus:bg-blue-900/40 focus:text-blue-700 dark:focus:text-blue-400 py-2.5 mt-1 font-semibold text-slate-600 dark:text-slate-300 text-[13px]">
                     <Link href="/profile" className="flex items-center">
                       <Settings className="mr-2.5 h-4 w-4" />
                       Profile & CV
                     </Link>
                   </DropdownMenuItem>
 
-                  <DropdownMenuItem asChild className="rounded-[10px] cursor-pointer focus:bg-blue-50 focus:text-blue-700 py-2.5 font-semibold text-slate-600 text-[13px]">
+                  <DropdownMenuItem asChild className="rounded-[10px] cursor-pointer focus:bg-blue-50 dark:focus:bg-blue-900/40 focus:text-blue-700 dark:focus:text-blue-400 py-2.5 font-semibold text-slate-600 dark:text-slate-300 text-[13px]">
                     <Link href="/my-jobs" className="flex items-center">
                       <Bookmark className="mr-2.5 h-4 w-4" />
                       My Jobs
@@ -181,7 +191,7 @@ export default function Navbar({ user }: NavbarProps) {
                   </DropdownMenuItem>
 
                   {user.role === "admin" && (
-                    <DropdownMenuItem asChild className="rounded-[10px] cursor-pointer focus:bg-purple-50 focus:text-purple-700 py-2.5 font-semibold text-slate-600 text-[13px]">
+                    <DropdownMenuItem asChild className="rounded-[10px] cursor-pointer focus:bg-purple-50 dark:focus:bg-purple-900/40 focus:text-purple-700 dark:focus:text-purple-400 py-2.5 font-semibold text-slate-600 dark:text-slate-300 text-[13px]">
                       <Link href="/admin" className="flex items-center">
                         <ShieldCheck className="mr-2.5 h-4 w-4" />
                         Admin Panel
@@ -189,12 +199,12 @@ export default function Navbar({ user }: NavbarProps) {
                     </DropdownMenuItem>
                   )}
 
-                  <DropdownMenuSeparator className="my-1.5" />
+                  <DropdownMenuSeparator className="my-1.5 dark:bg-slate-800" />
 
                   <DropdownMenuItem
                     onClick={handleSignOut}
                     disabled={loading}
-                    className="rounded-[10px] cursor-pointer focus:bg-red-50 focus:text-red-600 py-2.5 font-bold text-red-500 text-[13px]"
+                    className="rounded-[10px] cursor-pointer focus:bg-red-50 dark:focus:bg-red-900/40 focus:text-red-600 dark:focus:text-red-400 py-2.5 font-bold text-red-500 dark:text-red-400 text-[13px]"
                   >
                     <LogOut className="mr-2.5 h-4 w-4" strokeWidth={2.5} />
                     {loading ? "Signing out..." : "Sign out"}
@@ -206,11 +216,13 @@ export default function Navbar({ user }: NavbarProps) {
           ) : (
             /* Unauthenticated State */
             <div className="flex items-center gap-3">
+              <ThemeToggle />
+              <div className="h-8 w-px bg-slate-200 dark:bg-slate-800 hidden sm:block mx-1" />
               <Link href="/login">
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="px-4 py-2 font-bold text-slate-500 hover:text-slate-800 hover:bg-slate-50 rounded-[12px] text-[14px] transition-colors"
+                  className="px-4 py-2 font-bold text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-[12px] text-[14px] transition-colors"
                 >
                   Sign in
                 </motion.button>
