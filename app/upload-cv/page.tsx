@@ -56,18 +56,27 @@ function canonicalizeSkill(skill: string): string {
   return cleaned;
 }
 
+function normalizeSkillKey(skill: string): string {
+  return skill.toLowerCase().replace(/[^a-z0-9]+/g, "");
+}
+
+function normalizeSkillList(rawSkills: string[]): string[] {
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const skill of rawSkills) {
+    const canonical = canonicalizeSkill(skill);
+    if (!canonical) continue;
+    const key = normalizeSkillKey(canonical);
+    if (!key || seen.has(key)) continue;
+    seen.add(key);
+    out.push(canonical);
+  }
+  return out;
+}
+
 function normalizeParsedCVProfile(profile: ParsedCVProfile): ParsedCVProfile {
   // Deduplicate skills case-insensitively, keeping the first canonical form seen
-  const seenLower = new Set<string>();
-  const skills = (profile.skills || [])
-    .map((skill) => canonicalizeSkill(skill))
-    .filter(Boolean)
-    .filter((skill) => {
-      const lower = skill.toLowerCase().replace(/\s+/g, "");
-      if (seenLower.has(lower)) return false;
-      seenLower.add(lower);
-      return true;
-    });
+  const skills = normalizeSkillList(profile.skills || []);
   const experienceBreakdown = (profile.experience_breakdown || [])
     .map((item) => ({
       role: (typeof item?.role === "string" ? item.role.trim() : String(item?.role || "")).trim(),
@@ -233,7 +242,9 @@ export default function UploadCVPage() {
     if (!extracted) return;
     setConfirming(true);
     try {
-      await confirmCVProfile(extracted);
+      const normalized = normalizeParsedCVProfile(extracted);
+      await confirmCVProfile(normalized);
+      setExtracted(normalized);
       setCvSaved(true);
       toast.success("Profile saved! Your job matches are now personalised.");
     } catch (err: unknown) {
@@ -249,24 +260,36 @@ export default function UploadCVPage() {
 
   const removeSkill = (skill: string) => {
     if (!extracted) return;
+    const targetKey = normalizeSkillKey(skill);
     setExtracted({
       ...extracted,
-      skills: extracted.skills.filter((s) => s !== skill),
+      skills: extracted.skills.filter((s) => normalizeSkillKey(s) !== targetKey),
     });
   };
 
   const addSkill = () => {
     if (!newSkill.trim() || !extracted) return;
-    if (!extracted.skills.includes(newSkill.trim())) {
-      setExtracted({
-        ...extracted,
-        skills: [...extracted.skills, newSkill.trim()],
-      });
-    }
+    const nextSkills = normalizeSkillList([...extracted.skills, newSkill]);
+    setExtracted({
+      ...extracted,
+      skills: nextSkills,
+    });
     setNewSkill("");
   };
 
   const handleContinue = () => router.push("/jobs");
+  const openFilePicker = () => {
+    const input = fileInputRef.current;
+    if (!input) {
+      toast.error("Upload control unavailable. Please refresh and try again.");
+      return;
+    }
+    if (typeof input.showPicker === "function") {
+      input.showPicker();
+    } else {
+      input.click();
+    }
+  };
 
   // Loading screen
   if (loading) {
@@ -480,7 +503,11 @@ export default function UploadCVPage() {
                           View Job Matches
                         </button>
                         <button
-                          onClick={() => setCvSaved(false)}
+                          onClick={() => {
+                            setCvSaved(false);
+                            setExtracted(null);
+                            openFilePicker();
+                          }}
                           className="w-full text-[14px] font-bold text-slate-400 dark:text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition-colors py-2"
                         >
                           Upload a different CV
@@ -565,7 +592,11 @@ export default function UploadCVPage() {
                           View Job Matches <ArrowRight className="h-5 w-5" strokeWidth={3} />
                         </button>
                         <button
-                          onClick={() => { setCvSaved(false); setExtracted(null); }}
+                          onClick={() => {
+                            setCvSaved(false);
+                            setExtracted(null);
+                            openFilePicker();
+                          }}
                           className="w-full text-[14px] font-bold text-slate-400 hover:text-slate-800 transition-colors py-2"
                         >
                           Upload a different CV
@@ -710,7 +741,7 @@ export default function UploadCVPage() {
                           {confirming ? "Saving Profile..." : "Confirm & Save Profile"}
                         </button>
                         <button
-                          onClick={() => fileInputRef.current?.click()}
+                          onClick={openFilePicker}
                           disabled={uploading}
                           className="w-full text-[14px] font-bold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors py-2.5 rounded-xl disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                         >
@@ -748,7 +779,7 @@ export default function UploadCVPage() {
 
                       {/* Drop zone */}
                       <div
-                        onClick={() => fileInputRef.current?.click()}
+                        onClick={openFilePicker}
                         onDrop={handleDrop}
                         onDragOver={(e) => {
                           e.preventDefault();
