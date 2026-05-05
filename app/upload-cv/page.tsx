@@ -57,9 +57,17 @@ function canonicalizeSkill(skill: string): string {
 }
 
 function normalizeParsedCVProfile(profile: ParsedCVProfile): ParsedCVProfile {
-  const skills = Array.from(
-    new Set((profile.skills || []).map((skill) => canonicalizeSkill(skill)).filter(Boolean))
-  );
+  // Deduplicate skills case-insensitively, keeping the first canonical form seen
+  const seenLower = new Set<string>();
+  const skills = (profile.skills || [])
+    .map((skill) => canonicalizeSkill(skill))
+    .filter(Boolean)
+    .filter((skill) => {
+      const lower = skill.toLowerCase().replace(/\s+/g, "");
+      if (seenLower.has(lower)) return false;
+      seenLower.add(lower);
+      return true;
+    });
   const experienceBreakdown = (profile.experience_breakdown || [])
     .map((item) => ({
       role: (typeof item?.role === "string" ? item.role.trim() : String(item?.role || "")).trim(),
@@ -431,6 +439,14 @@ export default function UploadCVPage() {
 
             {/* Right — upload card */}
             <motion.div variants={itemVariants} className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-hidden relative min-h-[500px] flex flex-col justify-center">
+              {/* Always-mounted hidden file input so "Add CV Again" button always works */}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".pdf,.doc,.docx"
+                className="hidden"
+                onChange={handleFileChange}
+              />
               <AnimatePresence mode="wait">
               <div className="p-8 md:p-12 relative z-10 w-full h-full flex flex-col justify-center">
                   {/* Already saved — no extracted data shown */}
@@ -747,13 +763,7 @@ export default function UploadCVPage() {
                             : "border-slate-300 dark:border-slate-700 bg-slate-50/80 dark:bg-slate-900/50 hover:border-blue-400 dark:hover:border-blue-500 hover:bg-blue-50/40 dark:hover:bg-blue-900/10 hover:shadow-sm"
                         }`}
                       >
-                        <input
-                          ref={fileInputRef}
-                          type="file"
-                          accept=".pdf,.doc,.docx"
-                          className="hidden"
-                          onChange={handleFileChange}
-                        />
+                        {/* File input is hoisted above AnimatePresence — no ref needed here */}
                         {uploading ? (
                           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col items-center">
                             <Loader2 className="h-14 w-14 animate-spin text-blue-600 dark:text-blue-500 mb-6" strokeWidth={2.5} />
